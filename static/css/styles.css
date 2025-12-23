@@ -1,3 +1,4 @@
+/* Index Page Styles*/
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +7,12 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #141414; 
+    background-color: #141414;
     color: #F2F2F2; 
+    min-height: 100vh;
+}
+
+body.index-page {
     overflow: hidden;
     height: 100vh;
 }
@@ -78,4 +83,38 @@ body {
 
 .footer-link:hover {
     text-decoration: underline;
+}
+
+/*Homepage styles*/
+.paradox-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(214, 163, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paradox-card:hover {
+    background: rgba(214, 163, 255, 0.08);
+    border-color: rgba(214, 163, 255, 0.3);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(214, 163, 255, 0.15);
+}
+
+.card-icon {
+    transition: all 0.3s ease;
+}
+
+.paradox-card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: #d6a3ff;
+}
+
+.coming-soon {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.coming-soon:hover {
+    transform: none;
+    box-shadow: none;
 }

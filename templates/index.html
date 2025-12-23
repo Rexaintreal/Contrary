@@ -11,16 +11,16 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
  </head>
- <body>
+ <body class="index-page">
     <canvas id="canvas-bg"></canvas>
     <div class="content flex flex-col h-screen">
-        <nav class="py-6 flex items-center justify-between">
+        <nav class="py-6 flex items-center justify-between px-8">
             <div class="flex items-center">
                 <a href="https://hackclub.com/" target="_blank" class="nav-link">
                     <img src="{{ url_for('static', filename='assets/hackclubflag.png') }}" alt="Hack Club" class="h-14">
                 </a>
             </div>
-            <div class="flex items-center gap-4 pr-8">
+            <div class="flex items-center gap-4">
                 <a href="https://hackclub.com/" target="_blank" class="nav-link">
                      <img src="{{ url_for('static', filename='assets/hackclub.png') }}" alt="Hack Club" class="h-8">
                 </a>
@@ -34,7 +34,7 @@
             <p class="text-xl text-gray-400 mb-10 max-w-2xl px-8">
                 Interactive simulations and visualizations that make counterintuitive math problems come alive
             </p>
-            <a href="/paradoxes">
+            <a href="/home">
                 <button class="btn-primary">
                     Explore
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
