@@ -1,0 +1,59 @@
+Contrary - An ineractive web app where users can explore and play with famous math paradoxes using simulations and visualization.
+
+Tech Stack - HTML, Tailwind CSS (CDN), JS, Flask
+Libraries - Chart.js (for probability visualizations and graphs)
+
+Project Structure:
+    Contrary/
+    ├── assets/
+    │   ├── design.txt 
+    │   └── logo.png
+    ├── static/
+    │   ├── css/
+    │   │   └── style.css
+    │   └── js/
+    │       ├── monty-hall.js
+    │       ├── birthday.js
+    │       ├── zeno.js
+    │       └── charts.js
+    ├── templates/
+    │   ├── home.html
+    │   ├── about.html
+    │   ├── monty-hall.html
+    │   ├── birthday.html
+    │   └── zeno.html
+    ├── .gitignore
+    ├── app.py
+    ├── README.md
+    └── requirements.txt
+
+
+Color Palette:
+um not final yet will decide later
+
+
+Fonts:
+Headings/Body - Poppins (400, 500, 600, 700)
+Code/Numbers - JetBrains Mono (400, 500)
+
+Logo - assets/logo.png
+
+Pages:
+home.html - Landing page with a 3d room interactive where users can choose paradoxes by clicking like a 2.5d space
+about.html - explanation of all paradoxes in simple terms with reference to wikipedia page
+<paradoxname>.html - Paradox page with simulation and charts for visualization
+
+Features: 
+- interactive 2d simulations like games
+- real time prob charts using chart.JS
+- no user accounts or other pages (profile, auth, settings)
+- Local storage for tracking visited Paradoxes
+
+Paradoxes - Monty Hall Problem, Birthday Paradox, Braess’s Paradox, Simpson’s Paradox (Parrondo’s Paradox Prisoner’s Dilemma variants if time allows)
+
+User flow:
+Landing page -> browse paradoxes -> click paradox -> read setup or guide -> interact with simulation -> see results -> explore explanation -> back to home (Repeat)
+
+Landing Pages ideas - A room or a book room can have paintings which will allow users to go to the ismulation page or um idk maybe a book where the pages turn like in the indie game what remains of edith finch where pages turn and we see new pardoxes where we could go? idk both works will look cool and are really worth it 
+
+Logo Ideas - Maybe a text in 'Oi' Font or idk no logo a question mark perhaps? i want it to be cozy cute indie comic style lol keywords
