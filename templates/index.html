@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+ </head>
+ <body>
+    <canvas id="canvas-bg"></canvas>
+    <div class="content flex flex-col h-screen">
+        <nav class="py-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="https://hackclub.com/" target="_blank" class="nav-link">
+                    <img src="{{ url_for('static', filename='assets/hackclubflag.png') }}" alt="Hack Club" class="h-14">
+                </a>
+            </div>
+            <div class="flex items-center gap-4 pr-8">
+                <a href="https://hackclub.com/" target="_blank" class="nav-link">
+                     <img src="{{ url_for('static', filename='assets/hackclub.png') }}" alt="Hack Club" class="h-8">
+                </a>
+                <a href="https://github.com/Rexaintreal/Contrary" target="_blank" class="nav-link">
+                    <i data-lucide="github" class="w-7 h-7 text-white"></i>
+                </a>
+            </div>
+        </nav>
+        <section class="flex-1 flex flex-col items-center justify-center text-center">
+            <h1 class="logo-text text-8xl text-white mb-6">Contrary</h1>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl px-8">
+                Interactive simulations and visualizations that make counterintuitive math problems come alive
+            </p>
+            <a href="/paradoxes">
+                <button class="btn-primary">
+                    Explore
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </a>
+        </section>
+        <footer class="pb-8 text-center">
+            <div class="footer-text flex items-center justify-center gap-2">
+                Made for 
+                <a href="https://axiom.hackclub.com/" target="_blank" class="inline-flex items-center">
+                     <img src="{{ url_for('static', filename='assets/axiom.png') }}" alt="AXIOM" class="h-4">
+                </a>
+                by 
+                <a href="https://saurabhcodesawfully.pythonanywhere.com/" target="_blank" class="footer-link">Saurabh Tiwari</a>
+            </div>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+ </body>
+</html>

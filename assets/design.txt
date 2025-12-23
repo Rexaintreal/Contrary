@@ -29,17 +29,18 @@ Project Structure:
 
 
 Color Palette:
-um not final yet will decide later
+Background - #141414
+Text - #F2F2F2
+Accent - #D6A3FF
+Secondary - #B8B8B8
 
-
-Fonts:
-Headings/Body - Poppins (400, 500, 600, 700)
-Code/Numbers - JetBrains Mono (400, 500)
-
-Logo - assets/logo.png
+Font - Open Sans 
+Logo - Just a text in a good font (Futura maybe) nvm no logo or icons not Imp
+Icons - any CDN pack opensourced (using lucide icons)
 
 Pages:
-home.html - Landing page with a 3d room interactive where users can choose paradoxes by clicking like a 2.5d space
+index.html - Landing page
+home.html - cards with paradoxes
 about.html - explanation of all paradoxes in simple terms with reference to wikipedia page
 <paradoxname>.html - Paradox page with simulation and charts for visualization
 
@@ -53,7 +54,3 @@ Paradoxes - Monty Hall Problem, Birthday Paradox, Braess’s Paradox, Simpson’
 
 User flow:
 Landing page -> browse paradoxes -> click paradox -> read setup or guide -> interact with simulation -> see results -> explore explanation -> back to home (Repeat)
-
-Landing Pages ideas - A room or a book room can have paintings which will allow users to go to the ismulation page or um idk maybe a book where the pages turn like in the indie game what remains of edith finch where pages turn and we see new pardoxes where we could go? idk both works will look cool and are really worth it 
-
-Logo Ideas - Maybe a text in 'Oi' Font or idk no logo a question mark perhaps? i want it to be cozy cute indie comic style lol keywords
