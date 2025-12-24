@@ -25,10 +25,10 @@ const AudioManager = {
         
         //pre loading all the sounnds
         this.sounds = {
-            doorOpen: new Audio('/static/assets/dooropen.mp3'),
-            goat: new Audio('/static/assets/goat.mp3'),
-            click: new Audio('/static/assets/click.mp3'),
-            success: new Audio('/static/assets/success.mp3')
+            doorOpen: new Audio('/static/assets/monty/dooropen.mp3'),
+            goat: new Audio('/static/assets/monty/goat.mp3'),
+            click: new Audio('/static/assets/monty/click.mp3'),
+            success: new Audio('/static/assets/monty/success.mp3')
         };
         Object.values(this.sounds).forEach(sound => {
             sound.volume = 0.5;
@@ -227,7 +227,7 @@ function revealDoor() {
     doorNum.classList.add('hidden');
     doorContent.classList.remove('hidden');
     
-    contentImg.src = "/static/assets/goat.png";
+    contentImg.src = "/static/assets/monty/goat.png";
     contentImg.alt = 'Goat';
     contentText.textContent = 'GOAT';
     contentText.classList.add('text-gray-400');
@@ -301,7 +301,7 @@ function endGame(won, switched) {
             
             if (i === carDoor) {
                 // Car (the first img i found on google)
-                contentImg.src = "/static/assets/car.png";
+                contentImg.src = "/static/assets/monty/car.png";
                 contentImg.alt = 'Car';
                 contentText.textContent = 'CAR';
                 contentText.classList.add('text-[#16a34a]');
@@ -309,7 +309,7 @@ function endGame(won, switched) {
                 door.classList.remove('bg-[#8b5a2b]');
             } else {
                 //DA GOAT?? 🐐🐐🐐🐐🐐 Messi or Ronaldo? (I dont follow football sorry)
-                contentImg.src = "/static/assets/goat.png";
+                contentImg.src = "/static/assets/monty/goat.png";
                 contentImg.alt = 'Goat';
                 contentText.textContent = 'GOAT';
                 contentText.classList.add('text-gray-400');
