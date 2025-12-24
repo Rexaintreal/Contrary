@@ -54,3 +54,10 @@ Paradoxes - Monty Hall Problem, Birthday Paradox, Braess’s Paradox, Simpson’
 
 User flow:
 Landing page -> browse paradoxes -> click paradox -> read setup or guide -> interact with simulation -> see results -> explore explanation -> back to home (Repeat)
+
+
+Things to do in Monty Hall - 
+- revamp UI 
+- better layout
+- Modal for alerts
+- Background music

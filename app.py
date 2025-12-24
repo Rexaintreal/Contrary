@@ -10,5 +10,9 @@ def index():
 def home(): 
     return render_template('home.html')
 
+@app.route('/monty-hall')
+def monty_hall():
+    return render_template('monty-hall.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
