@@ -14,6 +14,64 @@ let stats = {
 
 let statsChart;
 
+//Modal System
+function showModal(title, message, type = 'info', buttons = []) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 modal-overlay';
+    
+    const iconMap = {
+        'success': { icon: 'trophy', color: '#16a34a' },
+        'error': { icon: 'x-circle', color: '#dc2626' },
+        'info': { icon: 'info', color: '#d6a3ff' },
+        'warning': { icon: 'alert-triangle', color: '#f59e0b' }
+    };
+    
+    const { icon, color } = iconMap[type] || iconMap['info'];
+    
+    modal.innerHTML = `
+        <div class="bg-[#1a1a1a] border border-[#d6a3ff] rounded-2xl p-8 max-w-md mx-4 modal-content">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background-color: ${color}20;">
+                    <i data-lucide="${icon}" class="w-8 h-8" style="color: ${color};"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">${title}</h2>
+                <p class="text-gray-300 mb-6">${message}</p>
+                <div class="flex gap-3 w-full">
+                    ${buttons.map(btn => `
+                        <button class="modal-btn flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${btn.class || 'bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414]'}" data-action="${btn.action}">
+                            ${btn.text}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    lucide.createIcons();
+    modal.querySelectorAll('.modal-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            if (action) {
+                window[action]?.();
+            }
+            closeModal(modal);
+        });
+    });
+    modal.querySelector('.modal-overlay')?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            closeModal(modal);
+        }
+    });
+    
+    return modal;
+}
+
+function closeModal(modal) {
+    modal.classList.add('opacity-0');
+    setTimeout(() => modal.remove(), 200);
+}
+
 //first visit ---> help modal
 function checkFirstVisit() {
     const hasVisited = localStorage.getItem('montyHallVisited');
@@ -211,6 +269,19 @@ function endGame(won, switched) {
         document.getElementById('gameStatus').querySelector('p').className = won 
             ? 'text-lg text-[#16a34a] font-bold'
             : 'text-lg text-[#dc2626] font-bold';
+        
+        //result modal
+        showModal(
+            won ? 'Congratulations!' : 'Better Luck Next Time',
+            won 
+                ? `You ${switched ? 'switched' : 'stayed'} and won the car! ${switched ? 'Switching increases your odds to 66.7%!' : 'You got lucky with the 33.3% chance!'}` 
+                : `You ${switched ? 'switched' : 'stayed'} and got a goat. ${!switched ? 'Try switching next time for better odds!' : 'Keep playing to see the statistics emerge!'}`,
+            won ? 'success' : 'error',
+            [
+                { text: 'Play Again', action: 'initGame', class: 'bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414]' }
+            ]
+        );
+        
         saveStats();
         updateStatsDisplay();
         updateChart();
@@ -335,28 +406,52 @@ function runSimulation(count) {
     saveStats();
     updateStatsDisplay();
     updateChart();
-    const status = document.getElementById('gameStatus').querySelector('p');
-    status.textContent = 'Completed 100 simulations! Check the updated statistics.';
-    status.className = 'text-lg text-[#d6a3ff] font-semibold';
+    
+    showModal(
+        '⚡ Simulation Complete!',
+        `Ran 100 simulations successfully! Check out how the statistics now closely match the theoretical probabilities.`,
+        'success',
+        [
+            { text: 'Awesome!', action: null, class: 'bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414]' }
+        ]
+    );
 }
 
 //clear stats
 function clearStats() {
-    if (confirm('Are you sure you want to clear all statistics?')) {
-        stats = {
-            stayWins: 0,
-            stayTotal: 0,
-            switchWins: 0,
-            switchTotal: 0
-        };
-        saveStats();
-        updateStatsDisplay();
-        updateChart();
-        
-        const status = document.getElementById('gameStatus').querySelector('p');
-        status.textContent = 'Statistics cleared. Start a new game!'; // add modal instead of alerts later
-        status.className = 'text-lg text-gray-300';
-    }
+    showModal(
+        '🗑️ Clear Statistics?',
+        'Are you sure you want to clear all your game statistics? This action cannot be undone.',
+        'warning',
+        [
+            { 
+                text: 'Cancel', 
+                action: null, 
+                class: 'bg-gray-600 hover:bg-gray-700 text-white' 
+            },
+            { 
+                text: 'Clear All', 
+                action: 'confirmClearStats', 
+                class: 'bg-[#dc2626] hover:bg-[#b91c1c] text-white' 
+            }
+        ]
+    );
+}
+
+function confirmClearStats() {
+    stats = {
+        stayWins: 0,
+        stayTotal: 0,
+        switchWins: 0,
+        switchTotal: 0
+    };
+    saveStats();
+    updateStatsDisplay();
+    updateChart();
+    
+    const status = document.getElementById('gameStatus').querySelector('p');
+    status.textContent = 'Statistics cleared. Start a new game!';
+    status.className = 'text-lg text-gray-300';
 }
 
 //event listener
