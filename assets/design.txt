@@ -65,8 +65,11 @@ Monty hall link reference except wikipedia - https://www.youtube.com/watch?v=TVq
 
 WE NEED A FAVICON
 
-in birthday paradox - sound effects reused for now fix that 
-- better references and descriptions
+in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
+- sound effects reused for now fix that - done 
+- better references and descriptions - done 
 - UI 
 
-um i want to try a dashboard no scroll layout responsive in Tailwind.css but i cant fit the charts rn
+um i want to try a dashboard no scroll layout responsive in Tailwind.css but i cant fit the charts rn 
+
+a custom really thin scrollbar will be great - done

@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/axiom.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
  </head>
  <body>
     <div id="tutorialModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
@@ -52,8 +52,8 @@
                     </div>
                 </div>
                 <div class="bg-[#d6a3ff]/10 border border-[#d6a3ff]/30 rounded-lg p-4 mt-6">
-                    <p class="text-[#d6a3ff] font-semibold">The Paradox:</p>
-                    <p class="text-sm mt-2">With just 23 people, there's a 50% chance two share a birthday! With 70 people, it's 99.9%!</p>
+                    <p class="text-[#d6a3ff] font-semibold">Why It's Wild:</p>
+                    <p class="text-sm mt-2">With just 23 people, there's already a 50% chance of a birthday match. With 70 people, it jumps to 99.9%! Your intuition says it should take way more people, right?</p>
                 </div>
             </div>
             <button id="startExploring" class="w-full mt-8 bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414] px-6 py-3 rounded-lg font-semibold transition-all">
@@ -103,8 +103,8 @@
                                 The Question
                             </h2>
                             <div class="text-gray-300 space-y-3 text-sm leading-relaxed">
-                                <p>How many people do you need in a room before there's a 50% chance that two people share the same birthday?</p>
-                                <p>Most people guess around 183 (half of 365), but the actual answer is just <strong class="text-[#d6a3ff]">23 people!</strong></p>
+                                <p>How many people do you need in a room before there's a better-than-even chance that two of them share the same birthday?</p>
+                                <p>Most people guess somewhere around 183 (half of 365 days), but the real answer is surprisingly low: just <strong class="text-[#d6a3ff]">23 people</strong> gives you a 50% chance!</p>
                             </div>
                         </div>
                         <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
@@ -113,15 +113,18 @@
                                 Why It Works
                             </h2>
                             <div class="text-gray-300 space-y-3 text-sm leading-relaxed">
-                                <p><strong class="text-[#d6a3ff]">Key Insight:</strong> We're not asking if someone shares YOUR birthday. We're asking if ANY two people share a birthday.</p>
-                                <p><strong class="text-[#d6a3ff]">The Math:</strong> With 23 people, there are 253 possible pairs. Each pair has a 1/365 chance of matching.</p>
-                                <p><strong class="text-[#d6a3ff]">Formula:</strong> P(match) = 1 - (365/365 × 364/365 × 363/365 × ... × 343/365)</p>
+                                <p><strong class="text-[#d6a3ff]">Key Insight:</strong> We're not asking if someone shares YOUR specific birthday. We're asking if ANY two people in the room share a birthday with each other.</p>
+                                
+                                <p><strong class="text-[#d6a3ff]">The Math:</strong> With 23 people, you get 253 unique pairs of people. That's a lot of opportunities for a match! Each pair has a 1/365 chance of matching.</p>
+                                
+                                <p><strong class="text-[#d6a3ff]">The Formula:</strong> We calculate the probability that NO ONE shares a birthday, then flip it. P(match) = 1 - (365/365 × 364/365 × 363/365 × ... × 343/365)</p>
+                                
                                 <div class="bg-[#d6a3ff]/10 border border-[#d6a3ff]/30 rounded-lg p-3 mt-4">
-                                    <p class="text-[#d6a3ff] font-semibold text-xs">Fun Facts:</p>
+                                    <p class="text-[#d6a3ff] font-semibold text-xs">Mind-Blowing Facts:</p>
                                     <ul class="text-xs mt-2 space-y-1">
-                                        <li>• 50 people: 97% chance</li>
-                                        <li>• 70 people: 99.9% chance</li>
-                                        <li>• 367 people: 100% (Pigeonhole Principle)</li>
+                                        <li>• With 50 people: 97% chance of a match</li>
+                                        <li>• With 70 people: 99.9% virtually guaranteed</li>
+                                        <li>• With 367 people: 100% certain (Pigeonhole Principle)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -132,12 +135,18 @@
                                 Learn More
                             </h2>
                             <p class="text-gray-400 text-sm mb-4">
-                                This paradox was first discussed in the context of probability theory and has practical applications in cryptography and hash collisions.
+                                First discussed in probability theory, this paradox has real-world applications in cryptography, hash collisions, and data security.
                             </p>
-                            <a href="https://en.wikipedia.org/wiki/Birthday_problem" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
-                                Read on Wikipedia
-                                <i data-lucide="external-link" class="w-4 h-4"></i>
-                            </a>
+                            <div class="space-y-2">
+                                <a href="https://en.wikipedia.org/wiki/Birthday_problem" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Read on Wikipedia
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://www.youtube.com/watch?v=ofTb57aZHZs" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Watch VSauce2 Explanation
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="lg:col-span-2 space-y-6">

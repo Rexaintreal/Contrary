@@ -10,13 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
  </head>
  <body class="index-page">
     <canvas id="canvas-bg"></canvas>
     <div class="content flex flex-col h-screen">
         <nav class="py-6 flex items-center justify-between px-8">
             <div class="flex items-center">
-                <a href="https://hackclub.com/" target="_blank" class="nav-link">
+                <a href="https://hackclub.com/" target="_blank" class="nav-link absolute left-0">
                     <img src="{{ url_for('static', filename='assets/hackclubflag.png') }}" alt="Hack Club" class="h-14">
                 </a>
             </div>

@@ -11,7 +11,7 @@ let stats = {
 
 let probabilityChart;
 
-// Audio Manager (reused from montyhall for now)
+// Audio Manager 
 const AudioManager = {
     sounds: {},
     muted: false,
@@ -20,11 +20,11 @@ const AudioManager = {
         this.muted = localStorage.getItem('soundMuted') === 'true';
         this.updateMuteButton();
         
-        // Preload sounds (reusing monty hall sounds for now will add diff later)
+        // Preloaded sounds 
         this.sounds = {
-            click: new Audio('/static/assets/monty/click.mp3'),
-            success: new Audio('/static/assets/monty/success.mp3'),
-            goat: new Audio('/static/assets/monty/goat.mp3')
+            click: new Audio('/static/assets/birthday/softclick.mp3'),
+            match: new Audio('/static/assets/birthday/match.mp3'),
+            nomatch: new Audio('/static/assets/birthday/nomatch.mp3')
         };
         
         Object.values(this.sounds).forEach(sound => {
@@ -231,10 +231,10 @@ function generateAndDisplay() {
     stats.totalSimulations++;
     if (hasMatch) {
         stats.matchCount++;
-        AudioManager.play('success');
+        AudioManager.play('match');
     } else {
         stats.noMatchCount++;
-        AudioManager.play('goat');
+        AudioManager.play('nomatch');
     }
     
     saveStats();
