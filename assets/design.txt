@@ -57,7 +57,8 @@ Landing page -> browse paradoxes -> click paradox -> read setup or guide -> inte
 
 
 Things to do in Monty Hall - 
+Monty hall link reference except wikipedia - https://www.youtube.com/watch?v=TVq2ivVpZgQ (VSAUCE)
 - revamp UI 
 - better layout
-- Modal for alerts
-- Background music
+- Modal for alerts - done 
+- Background music - done

@@ -14,6 +14,59 @@ let stats = {
 
 let statsChart;
 
+//audio mngmt
+const AudioManager = {
+    sounds: {},
+    muted: false,
+    
+    init() {
+        this.muted = localStorage.getItem('soundMuted') === 'true';
+        this.updateMuteButton();
+        
+        //pre loading all the sounnds
+        this.sounds = {
+            doorOpen: new Audio('/static/assets/dooropen.mp3'),
+            goat: new Audio('/static/assets/goat.mp3'),
+            click: new Audio('/static/assets/click.mp3'),
+            success: new Audio('/static/assets/success.mp3')
+        };
+        Object.values(this.sounds).forEach(sound => {
+            sound.volume = 0.5;
+        });
+    },
+    
+    play(soundName) {
+        if (this.muted || !this.sounds[soundName]) return;
+        const sound = this.sounds[soundName].cloneNode();
+        sound.volume = this.sounds[soundName].volume;
+        sound.play().catch(err => console.log('Audio play failed:', err));
+    },
+    
+    toggleMute() {
+        this.muted = !this.muted;
+        localStorage.setItem('soundMuted', this.muted);
+        this.updateMuteButton();
+        if (!this.muted) {
+            this.play('click');
+        }
+    },
+    
+    updateMuteButton() {
+        const btn = document.getElementById('muteBtn');
+        if (!btn) return;
+        
+        const iconName = this.muted ? 'volume-x' : 'volume-2';
+        btn.innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6"></i>`;
+        
+        if (this.muted) {
+            btn.classList.add('opacity-50');
+        } else {
+            btn.classList.remove('opacity-50');
+        }
+        lucide.createIcons();
+    }
+};
+
 //Modal System
 function showModal(title, message, type = 'info', buttons = []) {
     const modal = document.createElement('div');
@@ -51,6 +104,7 @@ function showModal(title, message, type = 'info', buttons = []) {
     lucide.createIcons();
     modal.querySelectorAll('.modal-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            AudioManager.play('click');
             const action = e.target.dataset.action;
             if (action) {
                 window[action]?.();
@@ -130,6 +184,7 @@ function initGame() {
 
 function handleDoorClick(doorIndex) {
     if (gameStage !== 'choose') return;
+    AudioManager.play('click');
     
     chosenDoor = doorIndex;
     gameStage = 'reveal';
@@ -154,6 +209,7 @@ function handleDoorClick(doorIndex) {
 function revealDoor() {
     const availableDoors = [0, 1, 2].filter(d => d !== chosenDoor && d !== carDoor);
     revealedDoor = availableDoors[Math.floor(Math.random() * availableDoors.length)];
+    AudioManager.play('doorOpen');
     
     //show da GOAT
     const revealedContainer = document.querySelector(`[data-door="${revealedDoor}"]`);
@@ -185,6 +241,7 @@ function revealDoor() {
 
 
 function handleStay() {
+    AudioManager.play('click');
     stats.stayTotal++;
     const won = chosenDoor === carDoor;
     if (won) stats.stayWins++;
@@ -194,6 +251,7 @@ function handleStay() {
 
 
 function handleSwitch() {
+    AudioManager.play('click');
     stats.switchTotal++;
 
     const oldContainer = document.querySelector(`[data-door="${chosenDoor}"]`);
@@ -220,6 +278,14 @@ function handleSwitch() {
 function endGame(won, switched) {
     gameStage = 'result';
     document.getElementById('actionButtons').classList.add('hidden');
+    
+    //play audio based on outcome
+    if (won) {
+        AudioManager.play('success');
+    } else {
+        AudioManager.play('goat');
+    }
+    
     document.querySelectorAll('.door-container').forEach((container, i) => {
         const door = container.querySelector('.door');
         const doorIcon = door.querySelector('.door-icon');
@@ -394,6 +460,8 @@ function updateChart() {
 
 //auto sim 
 function runSimulation(count) {
+    AudioManager.play('click');
+    
     for (let i = 0; i < count; i++) {
         const car = Math.floor(Math.random() * 3);
         const choice = Math.floor(Math.random() * 3);
@@ -408,7 +476,7 @@ function runSimulation(count) {
     updateChart();
     
     showModal(
-        '⚡ Simulation Complete!',
+        'Simulation Complete!',
         `Ran 100 simulations successfully! Check out how the statistics now closely match the theoretical probabilities.`,
         'success',
         [
@@ -420,7 +488,7 @@ function runSimulation(count) {
 //clear stats
 function clearStats() {
     showModal(
-        '🗑️ Clear Statistics?',
+        'Clear Statistics?',
         'Are you sure you want to clear all your game statistics? This action cannot be undone.',
         'warning',
         [
@@ -456,24 +524,33 @@ function confirmClearStats() {
 
 //event listener
 document.addEventListener('DOMContentLoaded', () => {
+    //init audio manager
+    AudioManager.init();
+    
     loadStats();
     initChart();
     updateChart();
     initGame();
     checkFirstVisit();
+    document.getElementById('muteBtn')?.addEventListener('click', () => {
+        AudioManager.toggleMute();
+    });
     
     //tutorial
     document.getElementById('showTutorial').addEventListener('click', () => {
+        AudioManager.play('click');
         document.getElementById('tutorialModal').classList.remove('hidden');
     });
     
     
     document.getElementById('closeTutorial').addEventListener('click', () => {
+        AudioManager.play('click');
         document.getElementById('tutorialModal').classList.add('hidden');
     });
 
 
     document.getElementById('startPlaying').addEventListener('click', () => {
+        AudioManager.play('click');
         document.getElementById('tutorialModal').classList.add('hidden');
     });
 
@@ -492,7 +569,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('stayBtn').addEventListener('click', handleStay);
     document.getElementById('switchBtn').addEventListener('click', handleSwitch);
-    document.getElementById('resetBtn').addEventListener('click', initGame);
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        AudioManager.play('click');
+        initGame();
+    });
     document.getElementById('simulate100').addEventListener('click', () => runSimulation(100));
     document.getElementById('clearStats').addEventListener('click', clearStats);
 });

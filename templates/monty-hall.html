@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/monty.png') }}">
  </head>
  <body>
     <div id="tutorialModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
@@ -68,6 +69,9 @@
                 </a>
             </div>
             <div class="flex items-center gap-4">
+                <button id="muteBtn" class="text-gray-400 hover:text-white transition-all flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+                    <i data-lucide="volume-2" class="w-6 h-6"></i>
+                </button>
                 <button id="showTutorial" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
                     <i data-lucide="help-circle" class="w-6 h-6"></i>
                     <span>How to Play</span>
@@ -130,6 +134,10 @@
                             </p>
                             <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
                                 Read on Wikipedia
+                                <i data-lucide="external-link" class="w-4 h-4"></i>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=TVq2ivVpZgQ" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                VSauce Video
                                 <i data-lucide="external-link" class="w-4 h-4"></i>
                             </a>
                         </div>
