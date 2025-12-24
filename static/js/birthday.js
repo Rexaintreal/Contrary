@@ -10,6 +10,7 @@ let stats = {
 };
 
 let probabilityChart;
+let isSimulating = false;
 
 // Audio Manager 
 const AudioManager = {
@@ -63,6 +64,33 @@ const AudioManager = {
         lucide.createIcons();
     }
 };
+
+function animateValue(elementId, start, end, duration = 500, suffix = '') {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const range = end - start;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        const value = Math.floor(start + range * easeProgress);
+        element.textContent = value + suffix;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = end + suffix;
+        }
+    }
+    requestAnimationFrame(update);
+}
 
 function showModal(title, message, type = 'info', buttons = []) {
     const modal = document.createElement('div');
@@ -227,7 +255,10 @@ function generateAndDisplay() {
     const matches = findMatches(birthdays);
     const hasMatch = matches.length > 0;
     
-
+    const oldTotal = stats.totalSimulations;
+    const oldMatch = stats.matchCount;
+    const oldNoMatch = stats.noMatchCount;
+    
     stats.totalSimulations++;
     if (hasMatch) {
         stats.matchCount++;
@@ -238,7 +269,21 @@ function generateAndDisplay() {
     }
     
     saveStats();
-    updateStatsDisplay();
+    
+    //animate
+    animateValue('totalSimulations', oldTotal, stats.totalSimulations, 300);
+    animateValue('matchCount', oldMatch, stats.matchCount, 300);
+    animateValue('noMatchCount', oldNoMatch, stats.noMatchCount, 300);
+    
+    const matchRate = stats.totalSimulations > 0 
+        ? (stats.matchCount / stats.totalSimulations * 100).toFixed(1)
+        : 0;
+    
+    const rateElement = document.getElementById('matchRate');
+    const actualProbElement = document.getElementById('actualProb');
+    if (rateElement) rateElement.textContent = matchRate + '%';
+    if (actualProbElement) actualProbElement.textContent = matchRate + '%';
+    
     renderPeopleGrid();
     const statusEl = document.getElementById('statusMessage').querySelector('p');
     if (hasMatch) {
@@ -251,29 +296,76 @@ function generateAndDisplay() {
 }
 
 
-function runSimulations(count) {
+async function runSimulations(count) {
+    if (isSimulating) return;
+    
     AudioManager.play('click');
+    isSimulating = true;
+    
+    const button = document.getElementById('simulate1000');
+    const originalText = button.innerHTML;
     
     let matches = 0;
-    for (let i = 0; i < count; i++) {
-        const bdays = generateBirthdays(numPeople);
-        const foundMatches = findMatches(bdays);
-        if (foundMatches.length > 0) matches++;
+    const batchSize = 50;
+    const batches = Math.ceil(count / batchSize);
+    
+    const oldTotal = stats.totalSimulations;
+    const oldMatch = stats.matchCount;
+    const oldNoMatch = stats.noMatchCount;
+    
+    for (let batch = 0; batch < batches; batch++) {
+        const currentBatchSize = Math.min(batchSize, count - batch * batchSize);
+        
+        const progress = Math.round(((batch * batchSize) / count) * 100);
+        button.innerHTML = `
+            <i data-lucide="loader" class="w-5 h-5 animate-spin"></i>
+            Simulating... ${progress}%
+        `;
+        lucide.createIcons();
+        
+        for (let i = 0; i < currentBatchSize; i++) {
+            const bdays = generateBirthdays(numPeople);
+            const foundMatches = findMatches(bdays);
+            if (foundMatches.length > 0) matches++;
+        }
+        
+        const currentTotal = oldTotal + (batch + 1) * batchSize;
+        const currentMatches = oldMatch + matches;
+        const currentNoMatches = oldNoMatch + ((batch + 1) * batchSize - matches);
+        
+        stats.totalSimulations = Math.min(currentTotal, oldTotal + count);
+        stats.matchCount = currentMatches;
+        stats.noMatchCount = currentNoMatches;
+        
+        animateValue('totalSimulations', oldTotal + batch * batchSize, stats.totalSimulations, 200);
+        animateValue('matchCount', oldMatch + (matches - currentBatchSize), stats.matchCount, 200);
+        animateValue('noMatchCount', oldNoMatch + ((batch * batchSize) - (matches - currentBatchSize)), stats.noMatchCount, 200);
+        
+        const matchRate = stats.totalSimulations > 0 
+            ? (stats.matchCount / stats.totalSimulations * 100).toFixed(1)
+            : 0;
+        
+        document.getElementById('matchRate').textContent = matchRate + '%';
+        document.getElementById('actualProb').textContent = matchRate + '%';
+        updateChartHighlight();
+        
+        // wait a sec for visual feedback
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
     
-    stats.totalSimulations += count;
-    stats.matchCount += matches;
-    stats.noMatchCount += (count - matches);
-    
     saveStats();
-    updateStatsDisplay();
+    
+    button.innerHTML = originalText;
+    lucide.createIcons();
+    isSimulating = false;
     
     const actualProb = (matches / count * 100).toFixed(1);
     const theoreticalProb = calculateTheoreticalProbability(numPeople).toFixed(1);
+    const convergence = Math.max(0, 100 - Math.abs(actualProb - theoreticalProb) * 10).toFixed(0);
     
     showModal(
         'Simulation Complete!',
-        `Ran ${count} simulations with ${numPeople} people.\n\nMatches found: ${matches}/${count}\nActual: ${actualProb}%\nTheoretical: ${theoreticalProb}%`,
+        `Ran ${count} simulations with ${numPeople} people.\n\nMatches found: ${matches}/${count}\nActual: ${actualProb}%\nTheoretical: ${theoreticalProb}%\nConvergence: ${convergence}%`,
         'success',
         [
             { text: 'Awesome!', action: null, class: 'bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414]' }
@@ -305,6 +397,43 @@ function updatePeopleCount() {
     document.getElementById('statusMessage').querySelector('p').className = 'text-lg text-gray-300';
     
     birthdays = [];
+    updateChartHighlight();
+}
+
+//update chart
+function updateChartHighlight() {
+    if (!probabilityChart) return;
+    
+    const currentIndex = Math.floor((numPeople - 2) / 2);
+    const actualRate = stats.totalSimulations > 0 
+        ? (stats.matchCount / stats.totalSimulations * 100)
+        : null;
+    
+    //update
+    probabilityChart.data.datasets[0].pointRadius = probabilityChart.data.labels.map((label, index) => {
+        return index === currentIndex ? 8 : 0;
+    });
+    
+    probabilityChart.data.datasets[0].pointBackgroundColor = probabilityChart.data.labels.map((label, index) => {
+        return index === currentIndex ? '#d6a3ff' : '#d6a3ff';
+    });
+    
+    //prob line
+    if (actualRate !== null && probabilityChart.data.datasets.length === 1) {
+        probabilityChart.data.datasets.push({
+            label: 'Your Actual Probability',
+            data: new Array(probabilityChart.data.labels.length).fill(actualRate),
+            borderColor: '#16a34a',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            fill: false,
+            pointRadius: 0
+        });
+    } else if (actualRate !== null && probabilityChart.data.datasets.length === 2) {
+        probabilityChart.data.datasets[1].data = new Array(probabilityChart.data.labels.length).fill(actualRate);
+    }
+    
+    probabilityChart.update('none');
 }
 
 //initialize prob chart
@@ -322,7 +451,7 @@ function initChart() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Probability of Match (%)',
+                label: 'Theoretical Probability',
                 data: data,
                 borderColor: '#d6a3ff',
                 backgroundColor: 'rgba(214, 163, 255, 0.1)',
@@ -339,6 +468,10 @@ function initChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
             scales: {
                 y: {
                     beginAtZero: true,
@@ -365,7 +498,11 @@ function initChart() {
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    labels: {
+                        color: '#9CA3AF',
+                        usePointStyle: true
+                    }
                 },
                 tooltip: {
                     backgroundColor: '#1a1a1a',
@@ -375,7 +512,7 @@ function initChart() {
                     borderWidth: 1,
                     callbacks: {
                         label: function(context) {
-                            return context.parsed.y.toFixed(1) + '% chance';
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
                         },
                         title: function(context) {
                             return context[0].label + ' people';
@@ -389,6 +526,8 @@ function initChart() {
             }
         }
     });
+    
+    updateChartHighlight();
 }
 
 //event listeneres

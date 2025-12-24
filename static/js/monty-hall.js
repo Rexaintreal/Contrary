@@ -13,6 +13,7 @@ let stats = {
 };
 
 let statsChart;
+let isSimulating = false;
 
 //audio mngmt
 const AudioManager = {
@@ -66,6 +67,62 @@ const AudioManager = {
         lucide.createIcons();
     }
 };
+
+function animateValue(elementId, start, end, duration = 500, suffix = '') {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const range = end - start;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        const value = Math.floor(start + range * easeProgress);
+        element.textContent = value + suffix;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = end + suffix;
+        }
+    }
+    requestAnimationFrame(update);
+}
+
+function animatePercentage(elementId, start, end, duration = 500) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const startVal = parseFloat(start) || 0;
+    const endVal = parseFloat(end) || 0;
+    const range = endVal - startVal;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        const value = startVal + range * easeProgress;
+        element.textContent = value.toFixed(1) + '%';
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = endVal.toFixed(1) + '%';
+        }
+    }
+    requestAnimationFrame(update);
+}
 
 //Modal System
 function showModal(title, message, type = 'info', buttons = []) {
@@ -358,19 +415,26 @@ function endGame(won, switched) {
 
 function updateStatsDisplay() {
     const totalGames = stats.stayTotal + stats.switchTotal;
-    document.getElementById('gamesPlayed').textContent = totalGames;
+    const oldTotal = parseInt(document.getElementById('gamesPlayed').textContent) || 0;
+    animateValue('gamesPlayed', oldTotal, totalGames, 300);
     
-    document.getElementById('stayWins').textContent = stats.stayWins;
-    document.getElementById('stayTotal').textContent = stats.stayTotal;
-    document.getElementById('stayPercent').textContent = stats.stayTotal > 0 
-        ? `${((stats.stayWins / stats.stayTotal) * 100).toFixed(1)}%`
-        : '0%';
+    const oldStayWins = parseInt(document.getElementById('stayWins').textContent) || 0;
+    const oldStayTotal = parseInt(document.getElementById('stayTotal').textContent) || 0;
+    animateValue('stayWins', oldStayWins, stats.stayWins, 300);
+    animateValue('stayTotal', oldStayTotal, stats.stayTotal, 300);
     
-    document.getElementById('switchWins').textContent = stats.switchWins;
-    document.getElementById('switchTotal').textContent = stats.switchTotal;
-    document.getElementById('switchPercent').textContent = stats.switchTotal > 0 
-        ? `${((stats.switchWins / stats.switchTotal) * 100).toFixed(1)}%`
-        : '0%';
+    const oldStayPercent = parseFloat(document.getElementById('stayPercent').textContent) || 0;
+    const newStayPercent = stats.stayTotal > 0 ? (stats.stayWins / stats.stayTotal) * 100 : 0;
+    animatePercentage('stayPercent', oldStayPercent, newStayPercent, 300);
+    
+    const oldSwitchWins = parseInt(document.getElementById('switchWins').textContent) || 0;
+    const oldSwitchTotal = parseInt(document.getElementById('switchTotal').textContent) || 0;
+    animateValue('switchWins', oldSwitchWins, stats.switchWins, 300);
+    animateValue('switchTotal', oldSwitchTotal, stats.switchTotal, 300);
+    
+    const oldSwitchPercent = parseFloat(document.getElementById('switchPercent').textContent) || 0;
+    const newSwitchPercent = stats.switchTotal > 0 ? (stats.switchWins / stats.switchTotal) * 100 : 0;
+    animatePercentage('switchPercent', oldSwitchPercent, newSwitchPercent, 300);
 }
 
 //init charts.js
@@ -400,6 +464,10 @@ function initChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
             scales: {
                 y: {
                     beginAtZero: true,
@@ -459,25 +527,57 @@ function updateChart() {
 }
 
 //auto sim 
-function runSimulation(count) {
-    AudioManager.play('click');
+async function runSimulation(count) {
+    if (isSimulating) return;
     
-    for (let i = 0; i < count; i++) {
-        const car = Math.floor(Math.random() * 3);
-        const choice = Math.floor(Math.random() * 3);
-        stats.stayTotal++;
-        if (choice === car) stats.stayWins++;
-        stats.switchTotal++;
-        if (choice !== car) stats.switchWins++;
+    AudioManager.play('click');
+    isSimulating = true;
+    
+    const button = document.getElementById('simulate100');
+    const originalText = button.innerHTML;
+    
+    const batchSize = 20;
+    const batches = Math.ceil(count / batchSize);
+    
+    for (let batch = 0; batch < batches; batch++) {
+        const currentBatchSize = Math.min(batchSize, count - batch * batchSize);
+        
+        const progress = Math.round(((batch * batchSize) / count) * 100);
+        button.innerHTML = `
+            <i data-lucide="loader" class="w-5 h-5 animate-spin"></i>
+            Simulating... ${progress}%
+        `;
+        lucide.createIcons();
+        
+        // Run batch
+        for (let i = 0; i < currentBatchSize; i++) {
+            const car = Math.floor(Math.random() * 3);
+            const choice = Math.floor(Math.random() * 3);
+            stats.stayTotal++;
+            if (choice === car) stats.stayWins++;
+            stats.switchTotal++;
+            if (choice !== car) stats.switchWins++;
+        }
+        
+        // Update display progressively
+        updateStatsDisplay();
+        updateChart();
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
     
     saveStats();
-    updateStatsDisplay();
-    updateChart();
+    
+    button.innerHTML = originalText;
+    lucide.createIcons();
+    isSimulating = false;
+    
+    const stayRate = (stats.stayWins / stats.stayTotal * 100).toFixed(1);
+    const switchRate = (stats.switchWins / stats.switchTotal * 100).toFixed(1);
     
     showModal(
         'Simulation Complete!',
-        `Ran 100 simulations successfully! Check out how the statistics now closely match the theoretical probabilities.`,
+        `Ran ${count} simulations successfully!\n\nStay Win Rate: ${stayRate}% (Theoretical: 33.3%)\nSwitch Win Rate: ${switchRate}% (Theoretical: 66.7%)\n\nThe more you play, the closer it gets to theory!`,
         'success',
         [
             { text: 'Awesome!', action: null, class: 'bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414]' }
