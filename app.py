@@ -14,5 +14,9 @@ def home():
 def monty_hall():
     return render_template('monty-hall.html')
 
+@app.route('/birthday')
+def birthday():
+    return render_template('birthday.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
