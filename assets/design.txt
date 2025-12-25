@@ -1,81 +1,41 @@
-Contrary - An ineractive web app where users can explore and play with famous math paradoxes using simulations and visualization.
+Contrary - a cozy indie hand drawn art like game in a website you open the website choose a mathamatical paradox to play it redirects and the game/canvas loads a visual novel styled simulation of the paradox which is interactive (art+music+sound effects) then say you're playing the monty hall problem the host comes you choose a door etc and then in the end the Math is revealed with stats and graphs.
 
-Tech Stack - HTML, Tailwind CSS (CDN), JS, Flask
-Libraries - Chart.js (for probability visualizations and graphs)
+Theme - light warm color sketch book 
+assets - from the internet of hand drawn (mspaint gng time to show my art skills)
 
-Project Structure:
-    Contrary/
-    ├── assets/
-    │   ├── design.txt 
-    │   └── logo.png
-    ├── static/
-    │   ├── css/
-    │   │   └── style.css
-    │   └── js/
-    │       ├── monty-hall.js
-    │       ├── birthday.js
-    │       ├── zeno.js
-    │       └── charts.js
-    ├── templates/
-    │   ├── home.html
-    │   ├── about.html
-    │   ├── monty-hall.html
-    │   ├── birthday.html
-    │   └── zeno.html
-    ├── .gitignore
-    ├── app.py
-    ├── README.md
-    └── requirements.txt
+pages - three or more paradoxes, landing page thats it more in future
+
+features - a landing page with CTA button a page to choose paradoxes background music volume slider, sound effects, art and math used shown in end with explanation and references link
+
+font - a handwriting font a cute font rounded corners 
+
+elements - will draw manually buttons etc and background cards etc in assets
+
+Credits 
+Landing page music - https://open.spotify.com/track/49vIvmsneQwxyFTdmCQzmV?si=e97457e3e0f94a72 (テレフォン・ナンバー by Junko Ohashi)
 
 
-Color Palette:
-Background - #141414
-Text - #F2F2F2
-Accent - #D6A3FF
-Secondary - #B8B8B8
-
-Font - Open Sans 
-Logo - Just a text in a good font (Futura maybe) nvm no logo or icons not Imp
-Icons - any CDN pack opensourced (using lucide icons)
-
-Pages:
-index.html - Landing page
-home.html - cards with paradoxes
-about.html - explanation of all paradoxes in simple terms with reference to wikipedia page
-<paradoxname>.html - Paradox page with simulation and charts for visualization
-
-Features: 
-- interactive 2d simulations like games
-- real time prob charts using chart.JS
-- no user accounts or other pages (profile, auth, settings)
-- Local storage for tracking visited Paradoxes
-
-Paradoxes - Monty Hall Problem, Birthday Paradox, Braess’s Paradox, Simpson’s Paradox (Parrondo’s Paradox Prisoner’s Dilemma variants if time allows)
-
-User flow:
-Landing page -> browse paradoxes -> click paradox -> read setup or guide -> interact with simulation -> see results -> explore explanation -> back to home (Repeat)
-
-
-Things to do in Monty Hall - 
-Monty hall link reference except wikipedia - https://www.youtube.com/watch?v=TVq2ivVpZgQ (VSAUCE)
-- revamp UI 
-- better layout
-- Modal for alerts - done 
-- Background music - done
-
-WE NEED A FAVICON
-
-in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
-- sound effects reused for now fix that - done 
-- better references and descriptions - done 
-- UI 
-- add custom assets for no same bday people and same bday people - done
-
-um i want to try a dashboard no scroll layout responsive in Tailwind.css but i cant fit the charts rn 
-
-a custom really thin scrollbar will be great - done
-
-Zenos Paradox -  reference https://www.youtube.com/watch?v=JWqQOfblTqw
-- need better visualization
-
-would be fun if we had like background musci in all the pages with volume sliders and change songs functionality 
+Contrary/
+├── static/
+│   ├── css/
+│   │   └── landing.css
+│   ├── js/
+│   │   └── landing.js
+│   ├── assets/
+│   │   ├── landing/
+│   │   │   ├── math-divide.png      
+│   │   │   ├── math-plus.png        
+│   │   │   ├── math-multiply.png    
+│   │   │   ├── math-integral.png    
+│   │   │   ├── math-pi.png          
+│   │   │   ├── math-sqrt.png        
+│   │   │   └── github-logo.png      
+│   │   └── music/
+│   │       └── landingmusic.mp3     
+│   └── sfx/
+│       ├── click.mp3                
+│       └── woosh.mp3     
+├── templates/
+│   └── index.html
+├── app.py
+└── requirements.txt
