@@ -20,6 +20,32 @@
         .running {
             animation: bounce 0.3s ease-in-out infinite;
         }
+        @keyframes pulse-once {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-once {
+            animation: pulse-once 0.5s ease-in-out;
+        }
+        #speedLines {
+            transition: opacity 0.3s ease;
+        }
+        .running #speedLines {
+            opacity: 1 !important;
+        }
+        @keyframes speedLine {
+            0% { transform: translateX(0) scaleX(1); opacity: 1; }
+            100% { transform: translateX(-20px) scaleX(0.5); opacity: 0; }
+        }
+        .speed-line {
+            animation: speedLine 0.5s ease-out infinite;
+        }
+        .speed-line:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .speed-line:nth-child(3) {
+            animation-delay: 0.2s;
+        }
     </style>
  </head>
  <body>
@@ -202,15 +228,29 @@
                             <div id="raceTrack" class="bg-[#0a0a0a] rounded-lg p-8 mb-6 min-h-[180px] relative border border-gray-800">
                                 <div class="absolute top-6 left-6 text-sm text-gray-500 font-semibold">START</div>
                                 <div class="absolute top-6 right-6 text-sm text-[#16a34a] font-semibold">FINISH</div>
-                                <div id="trackLine" class="absolute left-12 right-12 top-1/2 h-2 bg-gray-700 rounded-full"></div>
-                                <div class="absolute left-12 right-12 top-1/2 h-2 flex items-center">
-                                    <div class="w-3 h-3 bg-gray-600 rounded-full"></div>
-                                    <div class="flex-1"></div>
-                                    <div class="w-3 h-3 bg-[#16a34a] rounded-full"></div>
+                                <div id="trackLine" class="absolute left-12 right-12 top-1/2 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div id="progressBar" class="h-full bg-gradient-to-r from-[#d6a3ff] to-[#16a34a] transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                                <div class="absolute left-12 right-12 top-1/2 h-2 flex items-center justify-between pointer-events-none">
+                                    <div class="w-3 h-3 bg-gray-600 rounded-full ring-2 ring-gray-700"></div>
+                                    <div class="w-2 h-2 bg-gray-700 rounded-full"></div>
+                                    <div class="w-2 h-2 bg-gray-700 rounded-full"></div>
+                                    <div class="w-2 h-2 bg-gray-700 rounded-full"></div>
+                                    <div class="w-3 h-3 bg-[#16a34a] rounded-full ring-2 ring-[#16a34a]/50"></div>
                                 </div>
                                 <div id="achilles" class="absolute top-1/2 transform -translate-y-1/2 transition-all duration-500" style="left: 50px;">
                                     <div class="flex flex-col items-center gap-1">
-                                        <img src="{{ url_for('static', filename='assets/zeno/manrunning.png') }}" alt="Achilles" class="w-12 h-12 object-contain">
+                                        <div class="relative">
+                                            <img src="{{ url_for('static', filename='assets/zeno/manrunning.png') }}" alt="Achilles" class="w-12 h-12 object-contain">
+                                            <!-- Speed lines effect -->
+                                            <div id="speedLines" class="absolute right-full top-1/2 transform -translate-y-1/2 opacity-0 transition-opacity mr-2">
+                                                <div class="flex flex-col gap-1">
+                                                    <div class="speed-line w-6 h-0.5 bg-[#d6a3ff] rounded-full"></div>
+                                                    <div class="speed-line w-5 h-0.5 bg-[#d6a3ff] opacity-70 rounded-full"></div>
+                                                    <div class="speed-line w-4 h-0.5 bg-[#d6a3ff] opacity-40 rounded-full"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="text-xs text-[#d6a3ff] font-semibold">Achilles</span>
                                     </div>
                                 </div>
@@ -261,7 +301,7 @@
                         </div>
                         <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
                             <h3 class="text-xl font-bold text-white mb-4">Step History</h3>
-                            <div id="stepHistory" class="space-y-2 max-h-[300px] overflow-y-auto">
+                            <div id="stepHistory" class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
                                 <p class="text-gray-500 text-center py-8">No steps yet. Start the race to see the progression.</p>
                             </div>
                         </div>

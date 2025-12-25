@@ -69,6 +69,7 @@ in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
 - sound effects reused for now fix that - done 
 - better references and descriptions - done 
 - UI 
+- add custom assets for no same bday people and same bday people - done
 
 um i want to try a dashboard no scroll layout responsive in Tailwind.css but i cant fit the charts rn 
 

@@ -236,17 +236,20 @@ function renderPeopleGrid() {
                 : 'bg-[#0a0a0a] border-gray-800'
         }`;
         
+        //custom images instead of icons
+        const imagePath = hasMatch 
+            ? "/static/assets/birthday/birthdayman.png"
+            : "/static/assets/birthday/normalman.png";
+        
         person.innerHTML = `
-            <i data-lucide="user" class="w-6 h-6 ${hasMatch ? 'text-[#16a34a]' : 'text-gray-400'} mb-2"></i>
+            <img src="${imagePath}" alt="${hasMatch ? 'Birthday Match' : 'Person'}" 
+                 class="w-8 h-8 object-contain mb-2 ${hasMatch ? 'animate-bounce' : ''}">
             <span class="text-xs font-semibold ${hasMatch ? 'text-[#16a34a]' : 'text-gray-500'}">${dayToDate(birthday)}</span>
         `;
         
         grid.appendChild(person);
     }
-    
-    lucide.createIcons();
 }
-
 
 function generateAndDisplay() {
     AudioManager.play('click');

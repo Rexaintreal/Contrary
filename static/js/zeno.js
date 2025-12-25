@@ -69,7 +69,7 @@ function checkFirstVisit() {
 
 function updateDistance() {
     totalDistance = parseInt(document.getElementById('distanceSlider').value);
-    document.getElementById('distanceValue').textContent = totalDistance;
+    document.getElementById('distanceValue').textContent = totalDistance + 'm';
     resetRace();
 }
 
@@ -129,10 +129,18 @@ function updateAchillesPosition() {
     const position = progress * trackWidth;
     achilles.style.left = (50 + position) + 'px';
     
-    if (progress > 0.1) {
+    //update bar
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+        progressBar.style.width = (progress * 100) + '%';
+    }
+    const speedLines = document.getElementById('speedLines');
+    if (progress > 0.1 && progress < 0.999) {
         achilles.classList.add('running');
+        if (speedLines) speedLines.classList.remove('opacity-0');
     } else {
         achilles.classList.remove('running');
+        if (speedLines) speedLines.classList.add('opacity-0');
     }
 }
 
@@ -176,14 +184,19 @@ function updateStepHistory() {
     
     container.innerHTML = recentSteps.map((step, index) => {
         const isRecent = index === 0;
+        const percentage = (step.distance / totalDistance * 100);
         return `
-        <div class="bg-[#0a0a0a] p-3 rounded-lg border ${isRecent ? 'border-[#d6a3ff]' : 'border-gray-800'} flex justify-between items-center transition-all ${isRecent ? 'scale-105' : ''}">
+        <div class="bg-[#0a0a0a] p-3 rounded-lg border ${isRecent ? 'border-[#d6a3ff] animate-pulse-once' : 'border-gray-800'} flex justify-between items-center transition-all">
             <div class="flex items-center gap-3">
-                <span class="text-[#d6a3ff] font-bold">Step ${step.step}</span>
-                <span class="text-gray-400 text-sm">+${step.distance.toFixed(6)}m</span>
+                <span class="text-[#d6a3ff] font-bold text-sm">Step ${step.step}</span>
+                <span class="text-gray-400 text-xs">+${step.distance.toFixed(6)}m</span>
+                <!-- Visual bar showing step size -->
+                <div class="w-12 h-2 bg-gray-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-[#d6a3ff] transition-all" style="width: ${Math.max(2, percentage * 2)}%"></div>
+                </div>
             </div>
             <div class="text-right">
-                <div class="text-white font-semibold">${step.total.toFixed(6)}m</div>
+                <div class="text-white font-semibold text-sm">${step.total.toFixed(6)}m</div>
                 <div class="text-xs text-gray-500">${step.percentage.toFixed(4)}%</div>
             </div>
         </div>
