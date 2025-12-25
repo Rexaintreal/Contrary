@@ -73,3 +73,8 @@ in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
 um i want to try a dashboard no scroll layout responsive in Tailwind.css but i cant fit the charts rn 
 
 a custom really thin scrollbar will be great - done
+
+Zenos Paradox -  reference https://www.youtube.com/watch?v=JWqQOfblTqw
+- need better visualization
+
+would be fun if we had like background musci in all the pages with volume sliders and change songs functionality 

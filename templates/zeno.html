@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeno's Paradox - Contrary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-5px) translateX(2px); }
+        }
+        .running {
+            animation: bounce 0.3s ease-in-out infinite;
+        }
+    </style>
+ </head>
+ <body>
+    <div id="tutorialModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-[#1a1a1a] border border-[#d6a3ff] rounded-2xl p-8 max-w-2xl mx-4">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold text-white">How It Works</h2>
+                <button id="closeTutorial" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="space-y-6 text-gray-300">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-[#d6a3ff] text-[#141414] rounded-full flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Set the Distance</h3>
+                        <p>Choose how far Achilles needs to travel to catch the tortoise. The default is 100 meters.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-[#d6a3ff] text-[#141414] rounded-full flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Adjust Speed</h3>
+                        <p>Control how fast the animation runs. Slower speeds let you see each step clearly.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-[#d6a3ff] text-[#141414] rounded-full flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Start the Race</h3>
+                        <p>Use "Start Race" for automatic steps, "Single Step" to advance manually, or "Auto Complete" to finish instantly.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-[#d6a3ff] text-[#141414] rounded-full flex items-center justify-center font-bold">4</div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-2">Watch the Convergence</h3>
+                        <p>See how the distance covered approaches the target through the chart and step history.</p>
+                    </div>
+                </div>
+                <div class="bg-[#d6a3ff]/10 border border-[#d6a3ff]/30 rounded-lg p-4 mt-6">
+                    <p class="text-[#d6a3ff] font-semibold">The Paradox:</p>
+                    <p class="text-sm mt-2">If you always travel half the remaining distance, you make infinite steps. So how do you ever reach your destination? The answer lies in infinite series convergence.</p>
+                </div>
+            </div>
+            <button id="startExploring" class="w-full mt-8 bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414] px-6 py-3 rounded-lg font-semibold transition-all">
+                Let's Go!
+            </button>
+        </div>
+    </div>
+    <div class="min-h-screen flex flex-col">
+        <nav class="py-6 px-8 flex items-center justify-between border-b border-gray-800">
+            <div class="flex items-center gap-6">
+                <a href="/" class="logo-text text-3xl text-white hover:opacity-70 transition-opacity">
+                    Contrary
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="muteBtn" class="text-gray-400 hover:text-white transition-all flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+                    <i data-lucide="volume-2" class="w-6 h-6"></i>
+                </button>
+                <button id="showTutorial" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                    <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    <span>How It Works</span>
+                </button>
+                <a href="/home" class="nav-link text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                </a>
+                <a href="https://hackclub.com/" target="_blank" class="nav-link">
+                    <img src="{{ url_for('static', filename='assets/hackclub.png') }}" alt="Hack Club" class="h-8">
+                </a>
+                <a href="https://github.com/Rexaintreal/Contrary" target="_blank" class="nav-link">
+                    <i data-lucide="github" class="w-7 h-7 text-white"></i>
+                </a>
+            </div>
+        </nav>
+        <main class="flex-1 px-8 py-8">
+            <div class="max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h1 class="text-3xl font-bold text-white mb-4">Zeno's Paradox</h1>
+                            <p class="text-gray-400 leading-relaxed">
+                                An ancient philosophical problem about motion and infinity that challenges our understanding of space and time.
+                            </p>
+                        </div>
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-5 h-5 text-[#d6a3ff]"></i>
+                                The Setup
+                            </h2>
+                            <div class="text-gray-300 space-y-3 text-sm leading-relaxed">
+                                <p>Achilles and a tortoise have a race. The tortoise gets a head start. Zeno argues that Achilles can never overtake the tortoise.</p>
+                                <p>Why? Because first Achilles must reach where the tortoise started. But by then, the tortoise has moved forward. Then Achilles must reach that new position, but the tortoise has moved again.</p>
+                                <p>This continues infinitely, so Achilles never catches up. Yet we know he does catch up in reality.</p>
+                            </div>
+                        </div>
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i data-lucide="brain" class="w-5 h-5 text-[#d6a3ff]"></i>
+                                The Resolution
+                            </h2>
+                            <div class="text-gray-300 space-y-3 text-sm leading-relaxed">
+                                <p><strong class="text-[#d6a3ff]">Infinite Series:</strong> The paradox assumes infinite steps take infinite time. But mathematically, an infinite series can have a finite sum.</p>
+                                <p><strong class="text-[#d6a3ff]">The Math:</strong> If Achilles travels 1/2, then 1/4, then 1/8 of the remaining distance, the sum is: 1/2 + 1/4 + 1/8 + 1/16... = 1</p>
+                                <p><strong class="text-[#d6a3ff]">Modern Understanding:</strong> Calculus and the concept of limits resolve this. Infinite steps in space can occur in finite time.</p>
+                                <div class="bg-[#d6a3ff]/10 border border-[#d6a3ff]/30 rounded-lg p-3 mt-4">
+                                    <p class="text-[#d6a3ff] font-semibold text-xs">Key Insight:</p>
+                                    <ul class="text-xs mt-2 space-y-1">
+                                        <li>• Infinite steps don't mean infinite time</li>
+                                        <li>• Each step takes less time than the previous</li>
+                                        <li>• The total time converges to a finite value</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <i data-lucide="book-open" class="w-5 h-5 text-[#d6a3ff]"></i>
+                                Learn More
+                            </h2>
+                            <p class="text-gray-400 text-sm mb-4">
+                                Proposed by the Greek philosopher Zeno of Elea around 450 BCE, this paradox troubled mathematicians for over 2000 years.
+                            </p>
+                            <div class="space-y-2">
+                                <a href="https://en.wikipedia.org/wiki/Zeno%27s_paradoxes" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Read on Wikipedia
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://www.youtube.com/watch?v=u7Z9UnWOJNY" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Numberphile
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://www.youtube.com/watch?v=JWqQOfblTqw" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Joe Scott
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://demonstrations.wolfram.com/ZenosArrowParadoxAndAnInfiniteSeries/" target="_blank" class="text-[#d6a3ff] hover:text-[#c48aff] text-sm font-semibold flex items-center gap-2 transition-colors">
+                                    Arrow Simulation
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-white">Interactive Visualization</h2>
+                                <div class="bg-[#d6a3ff]/10 px-4 py-2 rounded-lg border border-[#d6a3ff]/30">
+                                    <span class="text-sm text-gray-400">Steps Taken: </span>
+                                    <span id="stepCount" class="text-xl font-bold text-white">0</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-6 mb-8">
+                                <div>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <label class="text-lg font-semibold text-white">Total Distance:</label>
+                                        <div class="text-3xl font-bold text-[#d6a3ff]" id="distanceValue">100m</div>
+                                    </div>
+                                    <input type="range" id="distanceSlider" min="10" max="200" value="100" step="10"
+                                        class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#d6a3ff]">
+                                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                                        <span>10m</span>
+                                        <span>200m</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <label class="text-lg font-semibold text-white">Animation Speed:</label>
+                                        <div class="text-3xl font-bold text-[#16a34a]" id="speedValue">500ms</div>
+                                    </div>
+                                    <input type="range" id="speedSlider" min="100" max="1000" value="500" step="50"
+                                        class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#16a34a]">
+                                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                                        <span>Fast</span>
+                                        <span>Slow</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="raceTrack" class="bg-[#0a0a0a] rounded-lg p-8 mb-6 min-h-[180px] relative border border-gray-800">
+                                <div class="absolute top-6 left-6 text-sm text-gray-500 font-semibold">START</div>
+                                <div class="absolute top-6 right-6 text-sm text-[#16a34a] font-semibold">FINISH</div>
+                                <div id="trackLine" class="absolute left-12 right-12 top-1/2 h-2 bg-gray-700 rounded-full"></div>
+                                <div class="absolute left-12 right-12 top-1/2 h-2 flex items-center">
+                                    <div class="w-3 h-3 bg-gray-600 rounded-full"></div>
+                                    <div class="flex-1"></div>
+                                    <div class="w-3 h-3 bg-[#16a34a] rounded-full"></div>
+                                </div>
+                                <div id="achilles" class="absolute top-1/2 transform -translate-y-1/2 transition-all duration-500" style="left: 50px;">
+                                    <div class="flex flex-col items-center gap-1">
+                                        <img src="{{ url_for('static', filename='assets/zeno/manrunning.png') }}" alt="Achilles" class="w-12 h-12 object-contain">
+                                        <span class="text-xs text-[#d6a3ff] font-semibold">Achilles</span>
+                                    </div>
+                                </div>
+                                <div id="tortoise" class="absolute top-1/2 transform -translate-y-1/2" style="right: 50px;">
+                                    <div class="flex flex-col items-center gap-1">
+                                        <img src="{{ url_for('static', filename='assets/zeno/tutle.png') }}" alt="Tortoise" class="w-12 h-12 object-contain">
+                                        <span class="text-xs text-[#16a34a] font-semibold">Tortoise</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div class="bg-[#0a0a0a] p-4 rounded-lg border border-gray-800">
+                                    <div class="text-sm text-gray-400 mb-2">Distance Covered</div>
+                                    <div id="coveredDistance" class="text-2xl font-bold text-[#d6a3ff]">0m</div>
+                                </div>
+                                <div class="bg-[#0a0a0a] p-4 rounded-lg border border-gray-800">
+                                    <div class="text-sm text-gray-400 mb-2">Remaining</div>
+                                    <div id="remainingDistance" class="text-2xl font-bold text-[#16a34a]">100m</div>
+                                </div>
+                                <div class="bg-[#0a0a0a] p-4 rounded-lg border border-gray-800">
+                                    <div class="text-sm text-gray-400 mb-2">Progress</div>
+                                    <div id="progressPercent" class="text-2xl font-bold text-white">0%</div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <button id="startBtn" class="bg-[#d6a3ff] hover:bg-[#c48aff] text-[#141414] px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="play" class="w-5 h-5"></i>
+                                    Start Race
+                                </button>
+                                <button id="stepBtn" class="bg-[#16a34a] hover:bg-[#15803d] text-white px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="step-forward" class="w-5 h-5"></i>
+                                    Single Step
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <button id="autoCompleteBtn" class="bg-[#f59e0b] hover:bg-[#d97706] text-white px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                    Auto Complete
+                                </button>
+                                <button id="resetBtn" class="bg-[#374151] hover:bg-[#4b5563] text-white px-6 py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                                    Reset
+                                </button>
+                            </div>
+                            <div id="statusMessage" class="text-center p-4 bg-[#0a0a0a] rounded-lg border border-gray-800">
+                                <p class="text-lg text-gray-300">Set your distance and start the race!</p>
+                            </div>
+                        </div>
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Step History</h3>
+                            <div id="stepHistory" class="space-y-2 max-h-[300px] overflow-y-auto">
+                                <p class="text-gray-500 text-center py-8">No steps yet. Start the race to see the progression.</p>
+                            </div>
+                        </div>
+                        <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-white mb-6">Distance Convergence</h3>
+                            <div class="bg-[#0a0a0a] p-4 rounded-lg" style="height: 300px;">
+                                <canvas id="convergenceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="pb-8 text-center mt-12 border-t border-gray-800 pt-8">
+            <div class="footer-text flex items-center justify-center gap-2">
+                Made for 
+                <a href="https://axiom.hackclub.com/" target="_blank" class="inline-flex items-center">
+                    <img src="{{ url_for('static', filename='assets/axiom.png') }}" alt="AXIOM" class="h-4">
+                </a>
+                by 
+                <a href="https://saurabhcodesawfully.pythonanywhere.com/" target="_blank" class="footer-link">Saurabh Tiwari</a>
+            </div>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/zeno.js') }}"></script>
+ </body>
+</html>
+
+ 

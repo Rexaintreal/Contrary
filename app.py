@@ -18,5 +18,9 @@ def monty_hall():
 def birthday():
     return render_template('birthday.html')
 
+@app.route('/zeno')
+def zeno():
+    return render_template('zeno.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
