@@ -25,10 +25,14 @@
              alt="root" class="doodle doodle-6">
     </div>
 
-    <div class="music-indicator" id="musicToggle">
-        <i data-lucide="volume-2" id="iconSound"></i>
-        <i data-lucide="volume-x" id="iconMute" style="display: none;"></i>
-    </div>
+     <div class="music-indicator" id="musicToggle">
+          <span id="wrapperSound">
+               <i data-lucide="volume-2"></i>
+          </span>
+          <span id="wrapperMute" style="display: none;">
+               <i data-lucide="volume-x"></i>
+          </span>
+     </div>
 
     <a href="https://github.com/Rexaintreal/Contrary" 
        target="_blank" 
@@ -51,6 +55,11 @@
     <audio id="bgMusic" loop>
         <source src="{{ url_for('static', filename='assets/music/landingmusic.mp3') }}" type="audio/mpeg">
     </audio>
+
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+
     <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
     <script>
         lucide.createIcons();

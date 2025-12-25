@@ -12,7 +12,8 @@ font - a handwriting font a cute font rounded corners
 elements - will draw manually buttons etc and background cards etc in assets
 
 Credits 
-Landing page music - https://open.spotify.com/track/49vIvmsneQwxyFTdmCQzmV?si=e97457e3e0f94a72 (テレフォン・ナンバー by Junko Ohashi)
+Landing page music - https://www.youtube.com/watch?v=OCmvnmppqWo (Main Menu - Kirby Star Allies Music)
+sfx - pixbay.com
 
 
 Contrary/
@@ -39,3 +40,27 @@ Contrary/
 │   └── index.html
 ├── app.py
 └── requirements.txt
+
+
+-----------------------------
+Landing page
+Backgrounds
+#FFF8E7 (Floral White) - Gradient Start (0%)
+#FFE4B5 (Moccasin) - Gradient Middle (30%)
+#FFDAB9 (Peach Puff) - Gradient End (100%)
+rgba(139, 69, 19, 0.08) - Lined paper texture overlay
+
+Text & UI Elements
+#8B4513 (Saddle Brown) - Primary Text, Cursor, Borders
+#654321 (Dark Brown) - Subtitle Text
+#D2691E (Chocolate) - Subtitle Underline, Text Shadows
+
+Buttons (Call to Action)
+#FF6B6B (Soft Red) - Button Background
+#CC5555 (Dark Red) - Button Shadow/3D effect
+#FFF8E7 (Floral White) - Button Text
+
+icons - lucide icons 
+pencil svg from w3 school
+
+Font - Cabin Sketch,Patrick Hand,Architects Daughter

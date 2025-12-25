@@ -165,12 +165,47 @@ body::before {
     }
 }
 
-.doodle-1 { top: 10%; left: 15%; animation-delay: 0s; }
-.doodle-2 { top: 20%; right: 20%; animation-delay: 1s; width: 70px; height: 70px; }
-.doodle-3 { bottom: 25%; left: 10%; animation-delay: 2s; }
-.doodle-4 { bottom: 20%; right: 15%; animation-delay: 1.5s; width: 90px; height: 90px; }
-.doodle-5 { top: 40%; left: 8%; animation-delay: 0.5s; width: 65px; height: 65px; }
-.doodle-6 { top: 50%; right: 12%; animation-delay: 2.5s; }
+.doodle-1 { 
+    top: 10%; 
+    left: 15%; 
+    animation-delay: 0s; 
+}
+
+.doodle-2 { 
+    top: 20%; 
+    right: 20%; 
+    animation-delay: 1s; 
+    width: 70px; 
+    height: 70px; 
+}
+
+.doodle-3 { 
+    bottom: 25%; 
+    left: 10%; 
+    animation-delay: 2s; 
+}
+
+.doodle-4 { 
+    bottom: 20%; 
+    right: 15%; 
+    animation-delay: 1.5s; 
+    width: 90px; 
+    height: 90px; 
+}
+
+.doodle-5 { 
+    top: 40%; 
+    left: 8%;
+    animation-delay: 0.5s; 
+    width: 65px; 
+    height: 65px; 
+}
+
+.doodle-6 { 
+    top: 50%; 
+    right: 12%; 
+    animation-delay: 2.5s; 
+}
 
 .music-indicator {
     position: fixed;
@@ -258,17 +293,60 @@ body::before {
 }
 
 @media (max-width: 768px) {
-    .title { font-size: 72px; letter-spacing: 4px; }
-    .subtitle { font-size: 20px; }
-    .btn-start { font-size: 28px; padding: 20px 40px; }
-    .doodle { width: 50px; height: 50px; }
-    .github-link { width: 40px; height: 40px; top: 20px; left: 20px; }
-    .music-indicator { width: 32px; height: 32px; top: 20px; right: 20px; }
-    .credits { font-size: 14px; bottom: 15px; padding: 0 20px; }
+    .title { 
+        font-size: 72px; 
+        letter-spacing: 4px; 
+    }
+
+    .subtitle { 
+        font-size: 20px; 
+    }
+
+    .btn-start { 
+        font-size: 28px; 
+        padding: 20px 40px; 
+    }
+
+    .doodle { 
+        width: 50px; 
+        height: 50px; 
+    }
+
+    .github-link { 
+        width: 40px; 
+        height: 40px; 
+        top: 20px; 
+        left: 20px; 
+    }
+
+    .music-indicator { 
+        width: 32px; 
+        height: 32px; 
+        top: 20px; 
+        right: 20px; 
+    }
+
+    .credits { 
+        font-size: 14px; 
+        bottom: 15px; 
+        padding: 0 20px; 
+    }
+
 }
 
 @media (max-width: 480px) {
-    .title { font-size: 56px; }
-    .subtitle { font-size: 18px; margin-bottom: 40px; }
-    .btn-start { font-size: 24px; padding: 18px 35px; }
+    .title { 
+        font-size: 56px; 
+    }
+
+    .subtitle { 
+        font-size: 18px; 
+        margin-bottom: 40px; 
+    }
+
+    .btn-start {
+        font-size: 24px; 
+        padding: 18px 35px; 
+    }
+    
 }

@@ -1,20 +1,35 @@
 const startBtn = document.getElementById('startBtn');
 const bgMusic = document.getElementById('bgMusic');
+const clickSfx = document.getElementById('clickSfx');
 const musicToggle = document.getElementById('musicToggle');
-const iconSound = document.getElementById('iconSound');
-const iconMute = document.getElementById('iconMute');
+const wrapperSound = document.getElementById('wrapperSound');
+const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
 
+function playClickSound() {
+    clickSfx.currentTime = 0; 
+    clickSfx.volume = 0.4;
+    clickSfx.play().catch(err => console.log("Sound play delayed until user interaction"));
+}
+
+ window.addEventListener('mousedown', (e) => {
+    if (e.button === 0 || e.button === 2) {
+        playClickSound();
+    }
+});
+
 function updateMusicIcon(isPlaying) {
     if (isPlaying) {
-        iconSound.style.display = 'block';
-        iconMute.style.display = 'none';
+        wrapperSound.style.display = 'block';
+        wrapperMute.style.display = 'none';
+        
         musicToggle.style.animation = 'musicBounce 2s ease-in-out infinite';
         musicToggle.style.opacity = '1';
     } else {
-        iconSound.style.display = 'none';
-        iconMute.style.display = 'block';
+        wrapperSound.style.display = 'none';
+        wrapperMute.style.display = 'block';
+        
         musicToggle.style.animation = 'none';
         musicToggle.style.opacity = '0.7';
     }
