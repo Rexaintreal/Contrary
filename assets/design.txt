@@ -72,3 +72,5 @@ Extra references link -
 in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
 Monty hall link reference except wikipedia - https://www.youtube.com/watch?v=TVq2ivVpZgQ (VSAUCE)
 Paradox data in diff file - done
+
+TODO- create last 3 paradoxes art (if time is left)
