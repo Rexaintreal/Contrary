@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradoxes - Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/paradoxes.css') }}">
+</head>
+<body>
+    <div class="music-indicator" id="musicToggle">
+        <span id="wrapperSound">
+            <i data-lucide="volume-2"></i>
+        </span>
+        <span id="wrapperMute" style="display: none;">
+            <i data-lucide="volume-x"></i>
+        </span>
+    </div>
+    <a href="/" class="home-link" id="homeLink">
+        <i data-lucide="home"></i>
+    </a>
+
+    <div class="book-container">
+        <div class="book">
+            <div class="page left-page">
+                <div class="page-content">
+                    <img id="paradoxArt" src="" alt="Paradox Illustration" class="paradox-art">
+                </div>
+            </div>
+            <div class="page right-page">
+                <div class="page-content">
+                    <h1 class="paradox-title" id="paradoxTitle"></h1>
+                    <p class="paradox-description" id="paradoxDescription"></p>
+                    
+                    <div class="fun-fact-box">
+                        <h3>Fun Fact</h3>
+                        <p id="paradoxFact"></p>
+                    </div>
+
+                    <a href="#" id="wikiLink" target="_blank" class="wiki-link">
+                        Learn More on Wikipedia
+                    </a>
+
+                    <button class="play-btn" id="playBtn">
+                        <img src="{{ url_for('static', filename='assets/paradoxes/play-button.png') }}" alt="Play">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button class="nav-arrow left-arrow" id="prevBtn">
+            <img src="{{ url_for('static', filename='assets/paradoxes/arrow-left.png') }}" alt="Previous">
+        </button>
+        <button class="nav-arrow right-arrow" id="nextBtn">
+            <img src="{{ url_for('static', filename='assets/paradoxes/arrow-right.png') }}" alt="Next">
+        </button>
+        <div class="page-indicator">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+        </div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/landingmusic.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="pageFlipSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/woosh.mp3') }}" type="audio/mpeg">
+    </audio>
+    <script src="{{ url_for('static', filename='js/paradoxes.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

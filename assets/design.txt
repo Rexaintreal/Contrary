@@ -64,3 +64,5 @@ icons - lucide icons
 pencil svg from w3 school
 
 Font - Cabin Sketch,Patrick Hand,Architects Daughter
+
+Pardoxes Page - Things left - paradox illustration art, music, layout, sfx
