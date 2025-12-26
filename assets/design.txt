@@ -68,4 +68,7 @@ Font - Cabin Sketch,Patrick Hand,Architects Daughter
 Pardoxes Page - Things left - paradox illustration art, music, layout, sfx done
 menu music - https://www.youtube.com/watch?v=VFha6fN_V7I (Butter Building - Kirby's Epic Yarn)
 
-Paradox data in diff file
+Extra references link - 
+in birthday paradox  - (https://www.youtube.com/watch?v=ofTb57aZHZs) (Vsauce2)
+Monty hall link reference except wikipedia - https://www.youtube.com/watch?v=TVq2ivVpZgQ (VSAUCE)
+Paradox data in diff file - done

@@ -1,33 +1,12 @@
-// Paradox Data
-const paradoxes = [
-    {
-        id: 'monty-hall',
-        title: 'The Monty Hall Problem',
-        date: 'Classic Game Theory',
-        description: "You're on a game show. Three doors: one car, two goats. You pick door number 1. The host opens door number 3 and reveals a goat. Now he asks: Switch to door number 2, or stay with number 1? Most people think it doesn't matter. They're wrong. Switching DOUBLES your chances from 33% to 67%!",
-        funFact: "When this appeared in Parade Magazine in 1990, over 10,000 readers including 1,000 PhDs wrote in saying the answer was wrong. Even famous mathematicians initially disagreed with the solution!",
-        wikiLink: 'https://en.wikipedia.org/wiki/Monty_Hall_problem',
-        artSrc: '/static/assets/paradoxes/monty-hall-art.png',
-        polaroidCaption: 'Which door will you choose?'
-    },
-    {
-        id: 'birthday',
-        title: 'The Birthday Paradox',
-        date: 'Probability Theory',
-        description: "In a room of just 23 random people, there's a 50% chance that two of them share the same birthday. With 70 people, it jumps to 99.9%! Your brain tricks you because you think about YOUR birthday. But the math asks about ANY two people sharing. That changes everything.",
-        funFact: "Cryptographers used this paradox to break hash functions and forge digital signatures. Birthday attacks are a real security threat in computer science. Math is not just puzzles, it's power.",
-        wikiLink: 'https://en.wikipedia.org/wiki/Birthday_problem',
-        artSrc: '/static/assets/paradoxes/birthday-art.png',
-        polaroidCaption: '23 people equals 50% match'
-    }
-];
-
+let paradoxes = [];
 let currentIndex = 0;
 const paradoxTitle = document.getElementById('paradoxTitle');
 const entryDate = document.getElementById('entryDate');
 const paradoxDescription = document.getElementById('paradoxDescription');
 const paradoxFact = document.getElementById('paradoxFact');
 const wikiLink = document.getElementById('wikiLink');
+const videoLink = document.getElementById('videoLink');
+const videoTitle = document.getElementById('videoTitle');
 const paradoxArt = document.getElementById('paradoxArt');
 const polaroidCaption = document.getElementById('polaroidCaption');
 const playBtn = document.getElementById('playBtn');
@@ -44,6 +23,16 @@ const wrapperSound = document.getElementById('wrapperSound');
 const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
+
+async function loadParadoxData() {
+    try {
+        const response = await fetch('/static/paradoxes.json');
+        paradoxes = await response.json();
+        loadParadox(currentIndex);
+    } catch (error) {
+        console.error('Error loading paradox data:', error);
+    }
+}
 
 function playClickSound() {
     clickSfx.currentTime = 0;
@@ -86,7 +75,7 @@ function tryPlayMusic() {
             updateMusicIcon(true);
         })
         .catch(error => {
-            console.log("Autoplay prevented. Waiting for user interaction.");
+            console.log("Autoplay prevented. Waiting for user interaction."); // debug statement
             musicPlaying = false;
             updateMusicIcon(false);
             
@@ -103,7 +92,7 @@ function tryPlayMusic() {
 
 window.addEventListener('DOMContentLoaded', () => {
     tryPlayMusic();
-    loadParadox(currentIndex);
+    loadParadoxData();
 });
 
 musicToggle.addEventListener('click', (e) => {
@@ -122,6 +111,7 @@ musicToggle.addEventListener('click', (e) => {
 });
 
 function loadParadox(index) {
+    if (paradoxes.length === 0) return;    
     const paradox = paradoxes[index];
     
     journal.style.transform = 'rotate(-0.5deg) scale(0.98)';
@@ -133,6 +123,8 @@ function loadParadox(index) {
         paradoxDescription.textContent = paradox.description;
         paradoxFact.textContent = paradox.funFact;
         wikiLink.href = paradox.wikiLink;
+        videoLink.href = paradox.videoLink;
+        videoTitle.textContent = paradox.videoTitle;
         paradoxArt.src = paradox.artSrc;
         polaroidCaption.textContent = paradox.polaroidCaption;
         pageNum.textContent = `Page ${index + 1}/${paradoxes.length}`;
@@ -201,3 +193,4 @@ document.addEventListener('keydown', (e) => {
         loadParadox(currentIndex);
     }
 });
+

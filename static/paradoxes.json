@@ -1,0 +1,26 @@
+[
+    {
+        "id": "monty-hall",
+        "title": "The Monty Hall Problem",
+        "date": "Classic Game Theory",
+        "description": "You're on a game show. Three doors: one car, two goats. You pick door number 1. The host opens door number 3 and reveals a goat. Now he asks: Switch to door number 2, or stay with number 1? Most people think it doesn't matter. They're wrong. Switching DOUBLES your chances from 33% to 67%!",
+        "funFact": "When this appeared in Parade Magazine in 1990, over 10,000 readers including 1,000 PhDs wrote in saying the answer was wrong. Even famous mathematicians initially disagreed with the solution!",
+        "wikiLink": "https://en.wikipedia.org/wiki/Monty_Hall_problem",
+        "videoLink": "https://www.youtube.com/watch?v=TVq2ivVpZgQ",
+        "videoTitle": "Watch Vsauce explain it",
+        "artSrc": "/static/assets/paradoxes/monty-hall-art.png",
+        "polaroidCaption": "Which door will you choose?"
+    },
+    {
+        "id": "birthday",
+        "title": "The Birthday Paradox",
+        "date": "Probability Theory",
+        "description": "In a room of just 23 random people, there's a 50% chance that two of them share the same birthday. With 70 people, it jumps to 99.9%! Your brain tricks you because you think about YOUR birthday. But the math asks about ANY two people sharing. That changes everything.",
+        "funFact": "Cryptographers used this paradox to break hash functions and forge digital signatures. Birthday attacks are a real security threat in computer science. Math is not just puzzles, it's power.",
+        "wikiLink": "https://en.wikipedia.org/wiki/Birthday_problem",
+        "videoLink": "https://www.youtube.com/watch?v=ofTb57aZHZs",
+        "videoTitle": "Watch Vsauce2 explain it",
+        "artSrc": "/static/assets/paradoxes/birthday-art.png",
+        "polaroidCaption": "23 people equals 50% match"
+    }
+]

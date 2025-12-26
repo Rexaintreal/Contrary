@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+ <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paradoxes - Contrary</title>
     <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/paradoxes.css') }}">
-</head>
-<body>
+ </head>
+ <body>
     <div class="background-doodles">
         <img src="{{ url_for('static', filename='assets/landing/math-divide.png') }}" class="bg-doodle doodle-1" alt="">
         <img src="{{ url_for('static', filename='assets/landing/math-plus.png') }}" class="bg-doodle doodle-2" alt="">
@@ -66,10 +66,14 @@
                         <div class="sticky-note-header">Did You Know?</div>
                         <p id="paradoxFact"></p>
                     </div>
-
-                    <a href="#" id="wikiLink" target="_blank" class="wiki-link">
-                        Read more on Wikipedia
-                    </a>
+                    <div class="reference-links">
+                        <a href="#" id="videoLink" target="_blank" class="reference-link video-link">
+                            <span id="videoTitle"></span>
+                        </a>
+                        <a href="#" id="wikiLink" target="_blank" class="reference-link wiki-link">
+                            Read more on Wikipedia
+                        </a>
+                    </div>
                 </div>
                 <div class="page-number">
                     <span id="pageNum">Page 1/2</span>
@@ -97,5 +101,6 @@
     <script>
         lucide.createIcons();
     </script>
-</body>
+ </body>
 </html>
+
