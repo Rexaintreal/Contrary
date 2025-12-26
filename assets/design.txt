@@ -65,4 +65,7 @@ pencil svg from w3 school
 
 Font - Cabin Sketch,Patrick Hand,Architects Daughter
 
-Pardoxes Page - Things left - paradox illustration art, music, layout, sfx
+Pardoxes Page - Things left - paradox illustration art, music, layout, sfx done
+menu music - https://www.youtube.com/watch?v=VFha6fN_V7I (Butter Building - Kirby's Epic Yarn)
+
+Paradox data in diff file

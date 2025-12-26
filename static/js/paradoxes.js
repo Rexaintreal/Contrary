@@ -3,39 +3,45 @@ const paradoxes = [
     {
         id: 'monty-hall',
         title: 'The Monty Hall Problem',
-        description: "You're on a game show with three doors. Behind one is a car, behind the others are goats. You pick a door, then the host (who knows what's behind each door) opens another door revealing a goat. Should you switch your choice? The answer defies intuition!",
-        funFact: "When this problem was published in 1990, thousands of people (including mathematicians!) wrote angry letters insisting the answer was wrong. But math doesn't lie!",
+        date: 'Classic Game Theory',
+        description: "You're on a game show. Three doors: one car, two goats. You pick door number 1. The host opens door number 3 and reveals a goat. Now he asks: Switch to door number 2, or stay with number 1? Most people think it doesn't matter. They're wrong. Switching DOUBLES your chances from 33% to 67%!",
+        funFact: "When this appeared in Parade Magazine in 1990, over 10,000 readers including 1,000 PhDs wrote in saying the answer was wrong. Even famous mathematicians initially disagreed with the solution!",
         wikiLink: 'https://en.wikipedia.org/wiki/Monty_Hall_problem',
-        artSrc: '/static/assets/paradoxes/monty-hall-art.png'
+        artSrc: '/static/assets/paradoxes/monty-hall-art.png',
+        polaroidCaption: 'Which door will you choose?'
     },
     {
         id: 'birthday',
         title: 'The Birthday Paradox',
-        description: "In a room of just 23 people, there's a 50% chance that two people share the same birthday! With 70 people, it jumps to 99.9%. This seems impossible, but the math is beautifully simple.",
-        funFact: "This paradox was used by cryptographers to crack hash functions! It's not just a party trick—it has serious applications in computer security.",
+        date: 'Probability Theory',
+        description: "In a room of just 23 random people, there's a 50% chance that two of them share the same birthday. With 70 people, it jumps to 99.9%! Your brain tricks you because you think about YOUR birthday. But the math asks about ANY two people sharing. That changes everything.",
+        funFact: "Cryptographers used this paradox to break hash functions and forge digital signatures. Birthday attacks are a real security threat in computer science. Math is not just puzzles, it's power.",
         wikiLink: 'https://en.wikipedia.org/wiki/Birthday_problem',
-        artSrc: '/static/assets/paradoxes/birthday-art.png'
+        artSrc: '/static/assets/paradoxes/birthday-art.png',
+        polaroidCaption: '23 people equals 50% match'
     }
 ];
 
 let currentIndex = 0;
 const paradoxTitle = document.getElementById('paradoxTitle');
+const entryDate = document.getElementById('entryDate');
 const paradoxDescription = document.getElementById('paradoxDescription');
 const paradoxFact = document.getElementById('paradoxFact');
 const wikiLink = document.getElementById('wikiLink');
 const paradoxArt = document.getElementById('paradoxArt');
+const polaroidCaption = document.getElementById('polaroidCaption');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const dots = document.querySelectorAll('.dot');
-const book = document.querySelector('.book');
+const pageNum = document.getElementById('pageNum');
+const journal = document.querySelector('.journal');
 const bgMusic = document.getElementById('bgMusic');
 const clickSfx = document.getElementById('clickSfx');
 const pageFlipSfx = document.getElementById('pageFlipSfx');
 const musicToggle = document.getElementById('musicToggle');
 const wrapperSound = document.getElementById('wrapperSound');
 const wrapperMute = document.getElementById('wrapperMute');
-const homeLink = document.getElementById('homeLink');
 
 let musicPlaying = false;
 
@@ -51,8 +57,9 @@ function playPageFlipSound() {
     pageFlipSfx.play().catch(err => console.log("Sound play delayed"));
 }
 
-window.addEventListener('mousedown', (e) => {
-    if (e.button === 0 || e.button === 2) {
+document.addEventListener('mousedown', (e) => {
+    const isButton = e.target.closest('button, a, .tab, .dot');
+    if (isButton && (e.button === 0)) {
         playClickSound();
     }
 });
@@ -70,7 +77,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.3;
+    bgMusic.volume = 0.25;
     const playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
@@ -108,7 +115,7 @@ musicToggle.addEventListener('click', (e) => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.3;
+        bgMusic.volume = 0.25;
         musicPlaying = true;
         updateMusicIcon(true);
     }
@@ -117,28 +124,33 @@ musicToggle.addEventListener('click', (e) => {
 function loadParadox(index) {
     const paradox = paradoxes[index];
     
-    book.classList.add('flipping');
+    journal.style.transform = 'rotate(-0.5deg) scale(0.98)';
+    journal.style.opacity = '0.7';
     
     setTimeout(() => {
+        entryDate.textContent = paradox.date;
         paradoxTitle.textContent = paradox.title;
         paradoxDescription.textContent = paradox.description;
         paradoxFact.textContent = paradox.funFact;
         wikiLink.href = paradox.wikiLink;
         paradoxArt.src = paradox.artSrc;
+        polaroidCaption.textContent = paradox.polaroidCaption;
+        pageNum.textContent = `Page ${index + 1}/${paradoxes.length}`;
         playBtn.onclick = () => {
-            playBtn.style.transform = 'scale(0.9)';
+            playBtn.style.transform = 'scale(0.95) rotate(-1deg)';
             setTimeout(() => {
                 window.location.href = `/paradox/${paradox.id}`;
             }, 200);
         };
         
-        book.classList.remove('flipping');
+        journal.style.transform = 'rotate(-0.5deg) scale(1)';
+        journal.style.opacity = '1';
     }, 300);
     
     updateNavigation();
 }
 
-function updateNavigation() {
+function updateNavigation() { 
     dots.forEach((dot, index) => {
         if (index === currentIndex) {
             dot.classList.add('active');
