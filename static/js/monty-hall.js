@@ -239,7 +239,6 @@ function revealAll(won, switched) {
             updateDialogue(dialogues.stayLose);
             playSound(loseSfx);
         }
-        document.getElementById('playAgainBtn').classList.add('visible');
         
         setTimeout(() => {
             saveStats();
