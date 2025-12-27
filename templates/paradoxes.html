@@ -6,6 +6,7 @@
     <title>Paradoxes - Contrary</title>
     <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/paradoxes.css') }}">
  </head>
  <body>
@@ -88,9 +89,9 @@
         <span class="dot active" data-index="0"></span>
         <span class="dot" data-index="1"></span>
         <span class="dot" data-index="2"></span>
-        <span class="dot" data-index="3"></span>
-        <span class="dot" data-index="4"></span>
-        <span class="dot" data-index="5"></span>
+        <!-- <span class="dot" data-index="3"></span> -->
+        <!-- <span class="dot" data-index="4"></span>
+        <span class="dot" data-index="5"></span> -->
     </div>
     <audio id="bgMusic" loop>
         <source src="{{ url_for('static', filename='assets/music/journal-music.mp3') }}" type="audio/mpeg">

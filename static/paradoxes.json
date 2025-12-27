@@ -34,41 +34,5 @@
         "videoTitle": "Watch Up and Atom explain it",
         "artSrc": "/static/assets/paradoxes/braess-art.png",
         "polaroidCaption": "More roads, more problems"
-    },
-    {
-        "id": "simpson",
-        "title": "Simpson's Paradox",
-        "date": "Statistical Paradox",
-        "description": "A treatment works better than another in every single hospital. But when you combine all the data, it suddenly looks worse. The trend reverses! This happens when lurking variables hide in your data. Statistics can show opposite conclusions from the same numbers. Truth depends on how you slice it.",
-        "funFact": "Berkeley was sued for gender discrimination in 1973. Overall, men had higher admission rates. But when broken down by department, women had equal or better rates. The paradox? Women applied to more competitive departments.",
-        "wikiLink": "https://en.wikipedia.org/wiki/Simpson%27s_paradox",
-        "videoLink": "https://www.youtube.com/watch?v=sxYrzzy3cq8",
-        "videoTitle": "Watch TED Ed explain it",
-        "artSrc": "/static/assets/paradoxes/simpson-art.png",
-        "polaroidCaption": "Data can lie both ways"
-    },
-    {
-        "id": "parrondo",
-        "title": "Parrondo's Paradox",
-        "date": "Game Theory",
-        "description": "You have two losing games. Play either one alone, and you'll lose money over time. But alternate between them randomly, and suddenly you're winning. Two negatives make a positive! It defies intuition. Losing strategies can combine into a winning strategy. Randomness creates profit from loss.",
-        "funFact": "This paradox has applications in genetics (evolution can proceed where neither mutation alone helps), financial markets, and even explains how biological systems use thermal noise to their advantage. Nature uses losing games to win!",
-        "wikiLink": "https://en.wikipedia.org/wiki/Parrondo%27s_paradox",
-        "videoLink": "https://www.youtube.com/watch?v=PpvboBJEozM",
-        "videoTitle": "Watch Vsauce2 explain it",
-        "artSrc": "/static/assets/paradoxes/parrondo-art.png",
-        "polaroidCaption": "Lose + Lose = Win?"
-    },
-    {
-        "id": "prisoner",
-        "title": "The Prisoner's Dilemma",
-        "date": "Game Theory Classic",
-        "description": "Two criminals are arrested. Separately, they're offered a deal: betray your partner and go free while they serve 10 years. If both stay silent, both get 1 year. If both betray, both get 5 years. The rational choice is to betray. But if both think rationally, both suffer. Cooperation beats logic, but trust is hard.",
-        "funFact": "Axelrod's tournament in 1980 proved the simplest strategy wins: Tit-for-Tat. Start by cooperating, then copy your opponent's last move. Kindness, forgiveness, and retaliation in perfect balance. It beat complex strategies from game theorists worldwide!",
-        "wikiLink": "https://en.wikipedia.org/wiki/Prisoner%27s_dilemma",
-        "videoLink": "https://www.youtube.com/watch?v=mScpHTIi-kM",
-        "videoTitle": "Watch Veritasium explain it",
-        "artSrc": "/static/assets/paradoxes/prisoner-art.png",
-        "polaroidCaption": "Trust or betray?"
     }
 ]
