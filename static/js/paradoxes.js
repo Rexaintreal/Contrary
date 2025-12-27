@@ -23,6 +23,10 @@ const wrapperSound = document.getElementById('wrapperSound');
 const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
+function getMasterVolume() {
+    const savedVolume = localStorage.getItem('contraryMasterVolume');
+    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+}
 
 async function loadParadoxData() {
     try {
@@ -36,13 +40,13 @@ async function loadParadoxData() {
 
 function playClickSound() {
     clickSfx.currentTime = 0;
-    clickSfx.volume = 0.4;
+    clickSfx.volume = 0.4 * getMasterVolume();
     clickSfx.play().catch(err => console.log("Sound play delayed"));
 }
 
 function playPageFlipSound() {
     pageFlipSfx.currentTime = 0;
-    pageFlipSfx.volume = 0.5;
+    pageFlipSfx.volume = 0.5 * getMasterVolume();
     pageFlipSfx.play().catch(err => console.log("Sound play delayed"));
 }
 
@@ -66,7 +70,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.25;
+    bgMusic.volume = 0.25 * getMasterVolume();
     const playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
@@ -104,7 +108,7 @@ musicToggle.addEventListener('click', (e) => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.25;
+        bgMusic.volume = 0.25 * getMasterVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

@@ -44,6 +44,11 @@ const dialogues = {
     switchLose: "You switched but... it's a goat! Your first pick was actually correct!",
 };
 
+function getMasterVolume() {
+    const savedVolume = localStorage.getItem('contraryMasterVolume');
+    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+}
+
 //modal 
 function showConfirmModal(title, text, onConfirm) {
     confirmTitle.textContent = title;
@@ -125,7 +130,7 @@ function updateDialogue(text) {
 function playSound(sound) {
     if (!sound) return;
     sound.currentTime = 0;
-    sound.volume = 0.5;
+    sound.volume = 0.5 * getMasterVolume();
     sound.play().catch(() => {});
 }
 
@@ -143,7 +148,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.25;
+    bgMusic.volume = 0.25 * getMasterVolume();
     bgMusic.play().then(() => {
         musicPlaying = true;
         updateMusicIcon(true);
@@ -161,6 +166,7 @@ musicToggle.addEventListener('click', () => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
+        bgMusic.volume = 0.25 * getMasterVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

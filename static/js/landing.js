@@ -7,13 +7,18 @@ const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
 
+function getMasterVolume() {
+    const savedVolume = localStorage.getItem('contraryMasterVolume');
+    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+}
+
 function playClickSound() {
     clickSfx.currentTime = 0; 
-    clickSfx.volume = 0.4;
+    clickSfx.volume = 0.4 * getMasterVolume();
     clickSfx.play().catch(err => console.log("Sound play delayed until user interaction"));
 }
 
- window.addEventListener('mousedown', (e) => {
+window.addEventListener('mousedown', (e) => {
     if (e.button === 0 || e.button === 2) {
         playClickSound();
     }
@@ -36,7 +41,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.3;
+    bgMusic.volume = 0.3 * getMasterVolume();
     const playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
@@ -73,7 +78,7 @@ musicToggle.addEventListener('click', (e) => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.3;
+        bgMusic.volume = 0.3 * getMasterVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+ </head>
+ <body>
+    <div class="background-doodles">
+        <img src="{{ url_for('static', filename='assets/landing/math-divide.png') }}" class="bg-doodle doodle-1" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-plus.png') }}" class="bg-doodle doodle-2" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-multiply.png') }}" class="bg-doodle doodle-3" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-integral.png') }}" class="bg-doodle doodle-4" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-pi.png') }}" class="bg-doodle doodle-5" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-sqrt.png') }}" class="bg-doodle doodle-6" alt="">
+    </div>
+    <a href="/" class="home-link">
+        <i data-lucide="home"></i>
+    </a>
+    <div class="settings-container">
+        <div class="settings-paper">
+            <div class="paper-lines"></div>
+            <div class="paper-content">
+                <h1 class="settings-title">Settings</h1>
+                <div class="settings-subtitle">Tune your experience!</div>
+                <div class="setting-group">
+                    <div class="setting-header">
+                        <i data-lucide="volume-2" class="setting-icon"></i>
+                        <h2 class="setting-label">Master Volume</h2>
+                    </div>
+                    <div class="setting-description">
+                        Controls music and sound effects across all pages
+                    </div>
+                    <div class="volume-control">
+                        <div class="volume-slider-container">
+                            <input 
+                                type="range" 
+                                id="masterVolume" 
+                                class="volume-slider" 
+                                min="0" 
+                                max="100" 
+                                value="50"
+                            >
+                            <div class="slider-track-fill" id="sliderFill"></div>
+                        </div>
+                        <div class="volume-value" id="volumeValue">50%</div>
+                    </div>
+                    <div class="volume-presets">
+                        <button class="preset-btn" data-volume="0">
+                            <i data-lucide="volume-x"></i>
+                            <span>Mute</span>
+                        </button>
+                        <button class="preset-btn" data-volume="25">
+                            <i data-lucide="volume-1"></i>
+                            <span>Low</span>
+                        </button>
+                        <button class="preset-btn" data-volume="50">
+                            <i data-lucide="volume-2"></i>
+                            <span>Medium</span>
+                        </button>
+                        <button class="preset-btn" data-volume="100">
+                            <i data-lucide="volume-2"></i>
+                            <span>Max</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <div class="setting-header">
+                        <i data-lucide="info" class="setting-icon"></i>
+                        <h2 class="setting-label">About</h2>
+                    </div>
+                    <div class="about-text">
+                        Your settings are saved automatically and will apply across all pages.
+                    </div>
+                </div>
+                <div class="reset-section">
+                    <button class="reset-btn" id="resetBtn">
+                        <i data-lucide="rotate-ccw"></i>
+                        Reset to Defaults
+                    </button>
+                </div>
+            </div>
+            <div class="paper-clip"></div>
+        </div>
+    </div>
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+ </body>
+</html>
+

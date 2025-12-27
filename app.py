@@ -34,5 +34,10 @@ def braess():
 # def prisoner():
 #     return render_template('prisoner.html')
 
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
