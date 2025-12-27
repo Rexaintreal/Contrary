@@ -23,6 +23,15 @@ const goatSfx = document.getElementById('goatSfx');
 const musicToggle = document.getElementById('musicToggle');
 const wrapperSound = document.getElementById('wrapperSound');
 const wrapperMute = document.getElementById('wrapperMute');
+const confirmModal = document.getElementById('confirmModal');
+const confirmTitle = document.getElementById('confirmTitle');
+const confirmText = document.getElementById('confirmText');
+const confirmYes = document.getElementById('confirmYes');
+const confirmNo = document.getElementById('confirmNo');
+const alertModal = document.getElementById('alertModal');
+const alertTitle = document.getElementById('alertTitle');
+const alertText = document.getElementById('alertText');
+const alertOk = document.getElementById('alertOk');
 
 //msges
 const dialogues = {
@@ -34,6 +43,49 @@ const dialogues = {
     switchWin: "You switched and WON THE CAR! Smart move! Switching doubles your chances!",
     switchLose: "You switched but... it's a goat! Your first pick was actually correct!",
 };
+
+//modal 
+function showConfirmModal(title, text, onConfirm) {
+    confirmTitle.textContent = title;
+    confirmText.textContent = text;
+    confirmModal.classList.add('visible');
+    
+    const handleYes = () => {
+        playSound(clickSfx);
+        confirmModal.classList.remove('visible');
+        confirmYes.removeEventListener('click', handleYes);
+        confirmNo.removeEventListener('click', handleNo);
+        if (onConfirm) onConfirm();
+    };
+    
+    const handleNo = () => {
+        playSound(clickSfx);
+        confirmModal.classList.remove('visible');
+        confirmYes.removeEventListener('click', handleYes);
+        confirmNo.removeEventListener('click', handleNo);
+    };
+    
+    confirmYes.addEventListener('click', handleYes);
+    confirmNo.addEventListener('click', handleNo);
+}
+
+function showAlertModal(title, htmlContent) {
+    alertTitle.textContent = title;
+    if (typeof htmlContent === 'string') {
+        alertText.innerHTML = htmlContent;
+    } else {
+        alertText.textContent = htmlContent;
+    }
+    alertModal.classList.add('visible');
+    
+    const handleOk = () => {
+        playSound(clickSfx);
+        alertModal.classList.remove('visible');
+        alertOk.removeEventListener('click', handleOk);
+    };
+    
+    alertOk.addEventListener('click', handleOk);
+}
 
 //init
 function init() {
@@ -286,18 +338,35 @@ function saveStats() {
 }
 
 function updateStatsDisplay() {
-    document.getElementById('stayWins').textContent = stats.stayWins;
-    document.getElementById('stayTotal').textContent = stats.stayTotal;
-    document.getElementById('switchWins').textContent = stats.switchWins;
-    document.getElementById('switchTotal').textContent = stats.switchTotal;
+    const stayPercentage = stats.stayTotal > 0 ? (stats.stayWins / stats.stayTotal * 100) : 0;
+    const switchPercentage = stats.switchTotal > 0 ? (stats.switchWins / stats.switchTotal * 100) : 0;
+    const stayBar = document.getElementById('stayBar');
+    const switchBar = document.getElementById('switchBar');
+    stayBar.style.animation = 'none';
+    switchBar.style.animation = 'none';
+    
+    setTimeout(() => {
+        stayBar.style.width = stayPercentage + '%';
+        switchBar.style.width = switchPercentage + '%';
+        stayBar.style.animation = 'barGrow 0.8s ease-out';
+        switchBar.style.animation = 'barGrow 0.8s ease-out';
+    }, 50);
+    document.getElementById('stayPercentage').textContent = stayPercentage.toFixed(1) + '%';
+    document.getElementById('switchPercentage').textContent = switchPercentage.toFixed(1) + '%';
+    document.getElementById('stayCount').textContent = `${stats.stayWins}/${stats.stayTotal}`;
+    document.getElementById('switchCount').textContent = `${stats.switchWins}/${stats.switchTotal}`;
 }
 
 function clearStats() {
-    if (!confirm('Clear all statistics? This cannot be undone!')) return;
-    
-    stats = { stayWins: 0, stayTotal: 0, switchWins: 0, switchTotal: 0 };
-    saveStats();
-    updateStatsDisplay();
+    showConfirmModal(
+        'Clear All Stats?',
+        'This will reset all your statistics and cannot be undone!',
+        () => {
+            stats = { stayWins: 0, stayTotal: 0, switchWins: 0, switchTotal: 0 };
+            saveStats();
+            updateStatsDisplay();
+        }
+    );
 }
 
 
@@ -316,7 +385,7 @@ async function simulate() {
         stats.switchTotal++;
         if (choice !== car) stats.switchWins++;
         
-        if (i % 10 === 0) {
+        if (i % 5 === 0) {
             updateStatsDisplay();
             await new Promise(r => setTimeout(r, 30));
         }
@@ -327,7 +396,18 @@ async function simulate() {
     btn.textContent = originalText;
     btn.disabled = false;
     
-    alert('Simulation complete!\n\nStay Strategy: ' + stats.stayWins + '/' + stats.stayTotal + ' wins\nSwitch Strategy: ' + stats.switchWins + '/' + stats.switchTotal + ' wins\n\nSwitching is clearly better!');
+    const stayPercentage = ((stats.stayWins / stats.stayTotal) * 100).toFixed(1);
+    const switchPercentage = ((stats.switchWins / stats.switchTotal) * 100).toFixed(1);
+    
+    const resultHTML = `
+        <div class="info-stats">
+            <p><strong>Stay Strategy:</strong><br>${stats.stayWins}/${stats.stayTotal} wins (${stayPercentage}%)</p>
+            <p><strong>Switch Strategy:</strong><br>${stats.switchWins}/${stats.switchTotal} wins (${switchPercentage}%)</p>
+        </div>
+        <p>Switching is clearly better! The math doesn't lie.</p>
+    `;
+    
+    showAlertModal('Simulation Complete!', resultHTML);
 }
 
 

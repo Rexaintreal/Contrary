@@ -56,21 +56,36 @@
         </div>
     </div>
     <div class="stats-modal" id="statsModal">
-        <div class="modal-content">
+        <div class="modal-content stats-modal-content">
             <h2 class="modal-title" id="modalTitle">Results!</h2>
             <p class="modal-result" id="modalResult">You won the car!</p>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-label">Stay Strategy</div>
-                    <div class="stat-value" id="stayWins">0</div>
-                    <div class="stat-total">out of <span id="stayTotal">0</span></div>
-                    <div class="stat-theory">Theory: 33.3%</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Switch Strategy</div>
-                    <div class="stat-value" id="switchWins">0</div>
-                    <div class="stat-total">out of <span id="switchTotal">0</span></div>
-                    <div class="stat-theory">Theory: 66.7%</div>
+            <div class="stats-visualization">
+                <div class="chart-container">
+                    <div class="chart-title">Win Rate Comparison</div>
+                    <div class="bar-chart">
+                        <div class="bar-group">
+                            <div class="bar-label">Stay</div>
+                            <div class="bar-wrapper">
+                                <div class="bar stay-bar" id="stayBar">
+                                    <span class="bar-percentage" id="stayPercentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="bar-count" id="stayCount">0/0</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar-label">Switch</div>
+                            <div class="bar-wrapper">
+                                <div class="bar switch-bar" id="switchBar">
+                                    <span class="bar-percentage" id="switchPercentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="bar-count" id="switchCount">0/0</div>
+                        </div>
+                    </div>
+                    <div class="theory-line">
+                        <span class="theory-marker stay-theory">33.3%</span>
+                        <span class="theory-marker switch-theory">66.7%</span>
+                    </div>
                 </div>
             </div>
             <div class="math-explanation">
@@ -86,10 +101,35 @@
                     That's why switching gives you 2/3 (66.7%) chance of winning!
                 </p>
             </div>
-            <div class="modal-buttons">
-                <button class="modal-btn btn-primary" id="modalPlayAgain"></button>
-                <button class="modal-btn btn-secondary" id="modalSimulate">Run 100 Sims</button>
-                <button class="modal-btn btn-secondary" id="modalClear">Clear Stats</button>
+            <div class="modal-buttons-grid">
+                <button class="modal-action-btn btn-play-again-modal" id="modalPlayAgain">
+                    Play Again
+                </button>
+                <button class="modal-action-btn btn-simulate" id="modalSimulate">
+                    Run 100 Sims
+                </button>
+                <button class="modal-action-btn btn-clear" id="modalClear">
+                    Clear Stats
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="confirmModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title" id="confirmTitle">Are you sure?</h2>
+            <p class="custom-modal-text" id="confirmText">This action cannot be undone!</p>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-yes" id="confirmYes">Yes, do it!</button>
+                <button class="modal-action-btn btn-no" id="confirmNo">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="alertModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title" id="alertTitle">Results!</h2>
+            <div class="custom-modal-text" id="alertText"></div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="alertOk">Got it!</button>
             </div>
         </div>
     </div>
