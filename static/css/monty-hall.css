@@ -1,0 +1,586 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Patrick Hand', cursive;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%238B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>') 0 24, auto !important;
+    overflow: hidden;
+}
+
+.game-screen {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.stage-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/static/assets/monty-hall/stage-background.png') center/cover;
+    z-index: 1;
+}
+
+.host-character {
+    position: absolute;
+    left: 80px;
+    bottom: 200px;
+    width: 300px;
+    height: 400px;
+    z-index: 10;
+    animation: hostFloat 3s ease-in-out infinite;
+}
+
+@keyframes hostFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.host-character img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.4));
+}
+
+.doors-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    display: flex;
+    gap: 50px;
+    z-index: 5;
+}
+
+.door-container {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.door-container:hover:not(.open):not(.disabled) {
+    transform: scale(1.08) translateY(-15px);
+}
+
+.door-container.chosen:not(.open) {
+    animation: doorPulse 1s ease-in-out infinite;
+}
+
+@keyframes doorPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+
+.door-container.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.door-image {
+    width: 200px;
+    height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(5px 5px 12px rgba(0,0,0,0.5));
+    transition: all 0.5s ease;
+}
+
+.door-container.open .door-image {
+    content: url('/static/assets/monty-hall/door-open.png');
+}
+
+.door-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 90px;
+    color: #654321;
+    text-shadow: 3px 3px 0 rgba(255,255,255,0.6);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.door-container.open .door-number {
+    opacity: 0;
+}
+
+.door-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease 0.3s;
+    pointer-events: none;
+}
+
+.door-container.open .door-content {
+    opacity: 1;
+}
+
+.door-content img {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.3));
+}
+
+.dialogue-box {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 180px;
+    background: url('/static/assets/monty-hall/dialogue-box.png') center/contain no-repeat;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 35px 50px 45px 50px;
+}
+
+.dialogue-text {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 26px;
+    color: #654321;
+    line-height: 1.7;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dialogue-continue {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-size: 20px;
+    color: #999;
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+.choice-buttons {
+    position: absolute;
+    bottom: 240px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.choice-buttons.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.choice-btn {
+    width: 200px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.4));
+}
+
+.choice-btn:hover {
+    transform: scale(1.12) translateY(-8px);
+    filter: drop-shadow(6px 6px 12px rgba(0,0,0,0.6));
+}
+
+.choice-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-stay {
+    background-image: url('/static/assets/monty-hall/button-stay.png');
+}
+
+.btn-switch {
+    background-image: url('/static/assets/monty-hall/button-switch.png');
+}
+
+.btn-play-again {
+    width: 220px;
+    height: 90px;
+    background-image: url('/static/assets/monty-hall/button-play.png');
+    position: absolute;
+    bottom: 240px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.btn-play-again.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.stats-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.stats-modal.visible {
+    display: flex;
+}
+
+.modal-content {
+    width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #FFF8E7;
+    border: 6px solid #8B4513;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 60px rgba(0,0,0,0.7);
+    position: relative;
+    animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes modalPop {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        rgba(139, 69, 19, 0.08) 31px,
+        rgba(139, 69, 19, 0.08) 32px
+    );
+    pointer-events: none;
+    border-radius: 15px;
+}
+
+.modal-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 52px;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 4px 4px 0 rgba(210,105,30,0.3);
+    position: relative;
+}
+
+.modal-result {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 34px;
+    color: #654321;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.modal-result.won {
+    color: #16a34a;
+    animation: celebrate 0.6s ease-out;
+}
+
+.modal-result.lost {
+    color: #dc2626;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    75% { transform: scale(1.1) rotate(5deg); }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.stat-box {
+    background: rgba(255,255,255,0.8);
+    border: 4px solid #8B4513;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 3px 3px 0 rgba(139, 69, 19, 0.2);
+}
+
+.stat-label {
+    font-family: 'Architects Daughter', cursive;
+    font-size: 19px;
+    color: #999;
+    margin-bottom: 12px;
+}
+
+.stat-value {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 42px;
+    color: #8B4513;
+    margin-bottom: 5px;
+}
+
+.stat-total {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+    color: #654321;
+    margin-bottom: 8px;
+}
+
+.stat-theory {
+    font-size: 15px;
+    color: #999;
+    font-style: italic;
+}
+
+.math-explanation {
+    background: #FFE66D;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-left: 6px solid #FFD700;
+    box-shadow: 3px 3px 0 rgba(255, 215, 0, 0.3);
+    position: relative;
+}
+
+.math-explanation h4 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 26px;
+    color: #654321;
+    margin-bottom: 12px;
+}
+
+.math-explanation p {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 19px;
+    color: #654321;
+    line-height: 1.7;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.modal-btn {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    padding: 14px 28px;
+    border: 4px solid #8B4513;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 0 #D2691E;
+}
+
+.modal-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 #D2691E;
+}
+
+.modal-btn:active {
+    transform: translateY(0);
+    box-shadow: 2px 2px 0 #D2691E;
+}
+
+.btn-primary {
+    background: #FF6B6B;
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: #8B4513;
+}
+
+.music-indicator {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    background: rgba(255,255,255,0.95);
+    border: 4px solid #8B4513;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 200;
+    transition: all 0.3s ease;
+    color: #8B4513;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+}
+
+.music-indicator:hover {
+    transform: scale(1.2) rotate(10deg);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+}
+
+.music-indicator.playing {
+    animation: musicBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes musicBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.home-link {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    width: 55px;
+    height: 55px;
+    background: rgba(255,255,255,0.95);
+    border: 4px solid #8B4513;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #8B4513;
+    z-index: 200;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+}
+
+.home-link:hover {
+    transform: scale(1.2) translateY(-3px);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 1200px) {
+    .host-character {
+        width: 250px;
+        height: 350px;
+        left: 40px;
+        bottom: 180px;
+    }
+    
+    .doors-area {
+        gap: 30px;
+    }
+    
+    .door-image {
+        width: 170px;
+        height: 255px;
+    }
+    
+    .door-number {
+        font-size: 75px;
+    }
+}
+
+@media (max-width: 900px) {
+    .host-character {
+        width: 180px;
+        height: 280px;
+        left: 20px;
+        bottom: 160px;
+    }
+    
+    .doors-area {
+        gap: 20px;
+    }
+    
+    .door-image {
+        width: 140px;
+        height: 210px;
+    }
+    
+    .door-number {
+        font-size: 60px;
+    }
+    
+    .dialogue-box {
+        width: 90%;
+        height: 150px;
+    }
+    
+    .dialogue-text {
+        font-size: 22px;
+    }
+    
+    .modal-content {
+        width: 90%;
+        padding: 30px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .host-character {
+        display: none;
+    }
+    
+    .doors-area {
+        flex-direction: column;
+        gap: 15px;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+    
+    .door-image {
+        width: 160px;
+        height: 240px;
+    }
+    
+    .choice-buttons {
+        flex-direction: column;
+        gap: 15px;
+        bottom: 200px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .modal-btn {
+        width: 100%;
+    }
+}
+
