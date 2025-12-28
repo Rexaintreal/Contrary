@@ -7,6 +7,7 @@ let totalSimulations = 0;
 let totalMatches = 0;
 let autoAddInterval = null;
 let musicPlaying = false;
+let currentPartyCountedAt23 = false;
 const bgMusic = document.getElementById('bgMusic');
 const clickSfx = document.getElementById('clickSfx');
 const popSfx = document.getElementById('popSfx');
@@ -263,8 +264,25 @@ function addPerson() {
     const oldMatchCount = matches.length;
     matches = findMatches();
     
+    if (people.length === 23 && !currentPartyCountedAt23) {
+        currentPartyCountedAt23 = true;
+        totalSimulations++;
+        if (matches.length > 0) {
+            totalMatches++;
+        }
+        updateStatsDisplay();
+    }
+    if (people.length > 23 && currentPartyCountedAt23 && matches.length > oldMatchCount) {
+        totalMatches++;
+        updateStatsDisplay();
+    }
+    
     renderPeople();
     updateDisplay();
+    if (resultsModal.classList.contains('visible')) {
+        updateResultsModalContent();
+    }
+    
     if (matches.length > oldMatchCount) {
         if (autoAddInterval) {
             stopAutoAdd();
@@ -333,8 +351,7 @@ function resetParty() {
     stopAutoAdd();
     people = [];
     matches = [];
-    totalSimulations = 0;
-    totalMatches = 0;
+    currentPartyCountedAt23 = false;
     peopleArea.innerHTML = '';
     confettiContainer.innerHTML = '';
     updateDisplay();
@@ -402,16 +419,27 @@ function updateStatsDisplay() {
     matchBarCount.textContent = `${totalMatches}/${totalSimulations}`;
 }
 
-function showResultsModal() {
+function updateResultsModalContent() {
     const modalResult = document.getElementById('modalResult');
     
+    let resultText = '';
     if (matches.length > 0) {
-        modalResult.textContent = `Found ${matches.length} birthday match${matches.length > 1 ? 'es' : ''} with ${people.length} guests! The paradox works!`;
+        resultText = `Found ${matches.length} birthday match${matches.length > 1 ? 'es' : ''} with ${people.length} guests! The paradox works!`;
     } else {
-        modalResult.textContent = `No matches yet with ${people.length} guests (${calculateProbability(people.length).toFixed(1)}% probability). Try adding more!`;
+        resultText = `No matches yet with ${people.length} guests (${calculateProbability(people.length).toFixed(1)}% probability). Try adding more!`;
     }
     
+    if (totalSimulations > 0) {
+        const matchRate = ((totalMatches / totalSimulations) * 100).toFixed(1);
+        resultText += `<br><br><strong>Overall Statistics:</strong><br>${totalMatches} matches found in ${totalSimulations} ${totalSimulations === 1 ? 'party' : 'parties'} (${matchRate}%)`;
+    }
+    
+    modalResult.innerHTML = resultText;
     updateStatsDisplay();
+}
+
+function showResultsModal() {
+    updateResultsModalContent();
     resultsModal.classList.add('visible');
 }
 
