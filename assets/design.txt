@@ -78,4 +78,9 @@ TODO- create last 3 paradoxes art (if time is left)
 
 Monty Hall Page - Better Spacing, music change , enhanced assets, add modal, buttons same size 
 
-Done - responsive html css text box instead of assets and layout fixed for the hsot and text box
+Done - responsive html css text box instead of assets and layout fixed for the hsot and text 
+
+
+monty hall music - https://www.youtube.com/watch?v=Bj_4Dr40_Zc (Werehog Battle Theme - Sonic Unleashed [OST])
+
+birhtdya music - https://www.youtube.com/watch?v=3CS93CdMv_E (Kirby dream land theme song)
