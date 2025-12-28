@@ -28,6 +28,15 @@ const meterFill = document.getElementById('meterFill');
 const matchModal = document.getElementById('matchModal');
 const matchText = document.getElementById('matchText');
 const matchOk = document.getElementById('matchOk');
+const resetModal = document.getElementById('resetModal');
+const resetConfirm = document.getElementById('resetConfirm');
+const resetCancel = document.getElementById('resetCancel');
+const simCompleteModal = document.getElementById('simCompleteModal');
+const simCompleteText = document.getElementById('simCompleteText');
+const simCompleteOk = document.getElementById('simCompleteOk');
+const newPartyModal = document.getElementById('newPartyModal');
+const newPartyConfirm = document.getElementById('newPartyConfirm');
+const newPartyCancel = document.getElementById('newPartyCancel');
 const resultsModal = document.getElementById('resultsModal');
 const confettiContainer = document.getElementById('confettiContainer');
 const statsBtn = document.getElementById('statsBtn');
@@ -278,7 +287,7 @@ function showMatchModal() {
         <strong>Guest ${latestMatch[0] + 1}</strong> and <strong>Guest ${latestMatch[1] + 1}</strong> 
         both celebrate on <strong>${monthNames[month1]} ${day1}</strong>!
         <br><br>
-        ${matches.length === 1 ? 'First match of the party!' : `That's ${matches.length} match${matches.length > 1 ? 'es' : ''} total! 🎉`}
+        ${matches.length === 1 ? 'First match of the party!' : `That's ${matches.length} match${matches.length > 1 ? 'es' : ''} total!`}
     `;
     
     matchModal.classList.add('visible');
@@ -328,6 +337,8 @@ function resetParty() {
     updateDisplay();
     resultsModal.classList.remove('visible');
     matchModal.classList.remove('visible');
+    resetModal.classList.remove('visible');
+    newPartyModal.classList.remove('visible');
 }
 
 //runSims 100 parties with 23 guests each
@@ -367,12 +378,12 @@ async function runSimulation() {
     btn.disabled = false;
     
     const matchRate = ((totalMatches / totalSimulations) * 100).toFixed(1);
-    const resultDiv = document.createElement('div');
-    resultDiv.style.cssText = 'background: #FFE66D; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 18px; text-align: center;';
-    resultDiv.innerHTML = `<strong>Simulation Complete!</strong><br>Out of ${totalSimulations} parties with 23 guests each:<br><strong>${totalMatches} had matches (${matchRate}%)</strong><br>Theory predicts ~50.7%!`;
-    
-    document.querySelector('.stats-visualization').appendChild(resultDiv);
-    setTimeout(() => resultDiv.remove(), 8000);
+    simCompleteText.innerHTML = `
+        Out of <strong>${totalSimulations}</strong> parties with 23 guests each:<br><br>
+        <strong>${totalMatches} had matches (${matchRate}%)</strong><br><br>
+        Theory predicts ~50.7%!
+    `;
+    simCompleteModal.classList.add('visible');
 }
 
 
@@ -418,9 +429,7 @@ partyBtn.addEventListener('click', () => {
 
 resetBtn.addEventListener('click', () => {
     playSound(clickSfx);
-    if (confirm('Reset the entire party? This will clear all guests and stats.')) {
-        resetParty();
-    }
+    resetModal.classList.add('visible');
 });
 
 matchOk.addEventListener('click', () => {
@@ -428,6 +437,31 @@ matchOk.addEventListener('click', () => {
     matchModal.classList.remove('visible');
 });
 
+resetConfirm.addEventListener('click', () => {
+    playSound(clickSfx);
+    resetParty();
+});
+
+resetCancel.addEventListener('click', () => {
+    playSound(clickSfx);
+    resetModal.classList.remove('visible');
+});
+
+simCompleteOk.addEventListener('click', () => {
+    playSound(clickSfx);
+    simCompleteModal.classList.remove('visible');
+});
+
+newPartyConfirm.addEventListener('click', () => {
+    playSound(clickSfx);
+    resultsModal.classList.remove('visible');
+    resetParty();
+});
+
+newPartyCancel.addEventListener('click', () => {
+    playSound(clickSfx);
+    newPartyModal.classList.remove('visible');
+});
 
 statsBtn.addEventListener('click', () => {
     playSound(clickSfx);
@@ -444,24 +478,37 @@ document.getElementById('modalSimulate').addEventListener('click', () => {
 });
 document.getElementById('modalReset').addEventListener('click', () => {
     playSound(clickSfx);
-    resultsModal.classList.remove('visible');
-    resetParty();
+    newPartyModal.classList.add('visible');
 });
 
-//keyboard shortcuts (DOT IT: ADD INSTRUCTIONS TO SHOW SHORTCUTS)
+//keyboard shortcuts
 document.addEventListener('keydown', (e) => {
     if (e.key === 's' || e.key === 'S') {
         showResultsModal();
     }
     if (e.key === 'r' || e.key === 'R') {
-        if (confirm('Reset the party?')) {
-            resetParty();
-        }
+        resetModal.classList.add('visible');
     }
     if (e.key === ' ' && !autoAddInterval) {
         e.preventDefault();
         addPerson();
     }
+    if (e.key === 'Escape') {
+        matchModal.classList.remove('visible');
+        resetModal.classList.remove('visible');
+        simCompleteModal.classList.remove('visible');
+        newPartyModal.classList.remove('visible');
+        resultsModal.classList.remove('visible');
+    }
+});
+
+[matchModal, resetModal, simCompleteModal, newPartyModal, resultsModal].forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            playSound(clickSfx);
+            modal.classList.remove('visible');
+        }
+    });
 });
 
 

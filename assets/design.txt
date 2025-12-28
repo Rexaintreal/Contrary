@@ -86,6 +86,6 @@ monty hall music - https://www.youtube.com/watch?v=Bj_4Dr40_Zc (Werehog Battle T
 birhtdya music - https://www.youtube.com/watch?v=3CS93CdMv_E (Kirby dream land theme song)
 
 todo - fix random person spawning (no scroll bar)
-- add buttons instaed of shortcuts 
-- add reset modal 
+- add buttons instaed of shortcuts - done 
+- add reset modal - done
 - stop auto add after finding one match
