@@ -196,6 +196,8 @@ function renderPeople() {
         const wrapper = document.createElement('div');
         wrapper.className = 'person-wrapper';
         wrapper.dataset.index = index;
+        wrapper.style.left = person.x + 'px';
+        wrapper.style.top = person.y + 'px';
         
         const sprite = document.createElement('img');
         sprite.className = 'person-sprite';
@@ -225,10 +227,23 @@ function addPerson() {
         stopAutoAdd();
         return;
     }
+    const cols = 6;
+    const startX = 30;
+    const startY = 15;
+    const spacingX = 115;
+    const spacingY = 125;
+    const index = people.length;
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+    
+    const left = startX + (col * spacingX);
+    const top = startY + (row * spacingY);
     
     const person = {
         birthday: generateBirthday(),
-        sprite: Math.floor(Math.random() * personSprites.length)
+        sprite: Math.floor(Math.random() * personSprites.length),
+        x: left,  
+        y: top 
     };
     
     people.push(person);

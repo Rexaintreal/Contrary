@@ -126,20 +126,14 @@ body {
 
 .people-area {
     position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1200px;
-    height: 50%;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-auto-rows: 140px;
-    gap: 20px;
+    top: 5%;
+    left: 0;
+    width: 750px;
+    height: 65%;
     z-index: 10;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 40px 20px 20px 20px;
+    padding: 20px;
 }
 
 .people-area::-webkit-scrollbar {
@@ -156,55 +150,41 @@ body {
     border-radius: 5px;
 }
 
+.people-area::-webkit-scrollbar-thumb:hover {
+    background: #8B4513;
+}
+
 .person-wrapper {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    animation: personEnter 0.5s ease-out;
-}
-
-@keyframes personEnter {
-    from {
-        opacity: 0;
-        transform: translateX(100px) scale(0.5);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
 }
 
 .person-sprite {
-    width: 100px;
-    height: 120px;
+    width: 110px;
+    height: 130px;
     object-fit: contain;
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
 }
 
 .balloon {
     position: absolute;
-    top: -30px;
-    width: 50px;
-    height: 65px;
+    top: -28px;
+    width: 48px;
+    height: 60px;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cabin Sketch', cursive;
-    font-size: 13px;
+    font-size: 12px;
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     box-shadow: 
         inset -5px -5px 10px rgba(0, 0, 0, 0.2),
         3px 3px 8px rgba(0, 0, 0, 0.3);
-    animation: balloonFloat 3s ease-in-out infinite;
-}
-
-@keyframes balloonFloat {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50% { transform: translateY(-8px) rotate(2deg); }
 }
 
 .balloon::after {
@@ -219,16 +199,11 @@ body {
 }
 
 .balloon.match {
-    animation: matchPulse 0.8s ease-in-out infinite;
     box-shadow: 
         0 0 20px currentColor,
         inset -5px -5px 10px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes matchPulse {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-10px) scale(1.15); }
-}
 
 /*BALOOONSSS*/
 .balloon[data-month="0"] { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
@@ -711,13 +686,13 @@ body {
 
 @media (max-width: 1200px) {
     .people-area {
-        grid-template-columns: repeat(8, 1fr);
+        top: 12%;
+        height: 48%;
     }
 }
 
 @media (max-width: 900px) {
     .people-area {
-        grid-template-columns: repeat(6, 1fr);
         top: 12%;
         height: 48%;
     }
@@ -731,9 +706,8 @@ body {
 
 @media (max-width: 768px) {
     .people-area {
-        grid-template-columns: repeat(5, 1fr);
-        grid-auto-rows: 120px;
-        gap: 15px;
+        top: 12%;
+        height: 48%;
     }
     
     .person-sprite {
@@ -766,8 +740,8 @@ body {
 
 @media (max-width: 480px) {
     .people-area {
-        grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: 110px;
+        top: 12%;
+        height: 48%;
     }
     
     .person-sprite {
