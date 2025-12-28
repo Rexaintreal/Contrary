@@ -30,9 +30,11 @@ const matchText = document.getElementById('matchText');
 const matchOk = document.getElementById('matchOk');
 const resultsModal = document.getElementById('resultsModal');
 const confettiContainer = document.getElementById('confettiContainer');
+const statsBtn = document.getElementById('statsBtn');
 inviteBtn.setAttribute('data-label', 'Add 1 Guest');
 partyBtn.setAttribute('data-label', 'Auto-Add Guests');
 resetBtn.setAttribute('data-label', 'Reset Party');
+statsBtn.setAttribute('data-label', 'Show Stats (S)');
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -425,6 +427,13 @@ matchOk.addEventListener('click', () => {
     playSound(clickSfx);
     matchModal.classList.remove('visible');
 });
+
+
+statsBtn.addEventListener('click', () => {
+    playSound(clickSfx);
+    showResultsModal();
+});
+
 document.getElementById('modalContinue').addEventListener('click', () => {
     playSound(clickSfx);
     resultsModal.classList.remove('visible');

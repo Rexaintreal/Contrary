@@ -10,44 +10,67 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/birthday.css') }}">
  </head>
  <body>
-    <div class="music-indicator" id="musicToggle">
-        <span id="wrapperSound">
-            <i data-lucide="volume-2"></i>
-        </span>
-        <span id="wrapperMute" style="display: none;">
-            <i data-lucide="volume-x"></i>
-        </span>
-    </div>
-    <a href="/settings" class="settings-link">
-        <i data-lucide="settings"></i>
-    </a>
     <a href="/paradoxes" class="home-link">
         <i data-lucide="arrow-left"></i>
-    </a>
+    </a> 
     <div class="game-screen">
         <div class="party-bg"></div>
-        <div class="stats-panel">
-            <h3 class="stats-title">Party Stats</h3>
-            <div class="stat-item">
-                <i data-lucide="users"></i>
-                <span>Guests: <strong id="guestCount">0</strong>/100</span>
+        <div class="stats-container">
+            <div class="music-indicator" id="musicToggle">
+                <span id="wrapperSound"><i data-lucide="volume-2"></i></span>
+                <span id="wrapperMute" style="display: none;"><i data-lucide="volume-x"></i></span>
             </div>
-            <div class="stat-item">
-                <i data-lucide="percent"></i>
-                <span>Probability: <strong id="probability">0%</strong></span>
-            </div>
-            <div class="stat-item">
-                <i data-lucide="zap"></i>
-                <span>Matches: <strong id="matchCount">0</strong></span>
-            </div>
-            <div class="probability-meter">
-                <div class="meter-label">Match Chance</div>
-                <div class="meter-bar">
-                    <div class="meter-fill" id="meterFill"></div>
-                    <div class="meter-50-mark">50%</div>
+            <a href="/settings" class="settings-link">
+                <i data-lucide="settings"></i>
+            </a>
+            <div class="stats-panel">
+                <h3 class="stats-title">Party Stats</h3>
+                <div class="stat-item">
+                    <i data-lucide="users"></i>
+                    <span>Guests: <strong id="guestCount">0</strong>/100</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="percent"></i>
+                    <span>Probability: <strong id="probability">0%</strong></span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="zap"></i>
+                    <span>Matches: <strong id="matchCount">0</strong></span>
                 </div>
             </div>
+
+            <div class="match-panel">
+                <div class="probability-meter">
+                    <div class="meter-label">Match Chance</div>
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="meterFill"></div>
+                        <div class="meter-50-mark">50%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="shortcuts-panel">
+                <div class="shortcuts-title">Shortcuts</div>
+                <div class="shortcut-item">
+                    <kbd>Space</kbd>
+                    <span>Add Guest</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>S</kbd>
+                    <span>Show Stats</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Reset Party</span>
+                </div>
+            </div>
+
+            <button class="stats-button-side" id="statsBtn">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Show Stats</span>
+            </button>
         </div>
+        
         <div class="people-area" id="peopleArea"></div>
         <div class="control-buttons" id="controlButtons">
             <button class="game-btn btn-invite" id="inviteBtn" data-label="Add 1 Guest">
