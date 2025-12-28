@@ -19,6 +19,7 @@ const wrapperMute = document.getElementById('wrapperMute');
 const peopleArea = document.getElementById('peopleArea');
 const inviteBtn = document.getElementById('inviteBtn');
 const partyBtn = document.getElementById('partyBtn');
+const stopBtn = document.getElementById('stopBtn');
 const resetBtn = document.getElementById('resetBtn');
 const dialogueText = document.getElementById('dialogueText');
 const guestCount = document.getElementById('guestCount');
@@ -265,6 +266,9 @@ function addPerson() {
     renderPeople();
     updateDisplay();
     if (matches.length > oldMatchCount) {
+        if (autoAddInterval) {
+            stopAutoAdd();
+        }
         setTimeout(() => {
             playSound(partyHornSfx);
             playSound(confettiSfx);
@@ -293,16 +297,17 @@ function showMatchModal() {
     matchModal.classList.add('visible');
 }
 
-//auto mode (fix non stop adding even after finding a match)
+//auto mode 
 function startAutoAdd() {
     if (autoAddInterval) {
         stopAutoAdd();
         return;
     }
-    partyBtn.disabled = true;
+    partyBtn.classList.add('hidden');
+    stopBtn.classList.add('active');
     inviteBtn.disabled = true;
-    partyBtn.setAttribute('data-label', 'Stop Auto-Add');
-    dialogueText.textContent = "PARTY MODE! Guests are arriving automatically!";
+    
+    dialogueText.textContent = "PARTY MODE! Guests are arriving automatically! Click STOP to pause.";
     
     autoAddInterval = setInterval(() => {
         if (people.length >= 100) {
@@ -311,9 +316,6 @@ function startAutoAdd() {
         }
         addPerson();
     }, 600);
-    setTimeout(() => {
-        partyBtn.disabled = false;
-    }, 100);
 }
 
 function stopAutoAdd() {
@@ -321,10 +323,11 @@ function stopAutoAdd() {
         clearInterval(autoAddInterval);
         autoAddInterval = null;
     }
-    partyBtn.disabled = false;
+    partyBtn.classList.remove('hidden');
+    stopBtn.classList.remove('active');
     inviteBtn.disabled = false;
-    partyBtn.setAttribute('data-label', 'Auto-Add Guests');
 }
+
 function resetParty() {
     playSound(sweepSfx);
     stopAutoAdd();
@@ -420,11 +423,12 @@ inviteBtn.addEventListener('click', () => {
 });
 partyBtn.addEventListener('click', () => {
     playSound(clickSfx);
-    if (autoAddInterval) {
-        stopAutoAdd();
-    } else {
-        startAutoAdd();
-    }
+    startAutoAdd();
+});
+
+stopBtn.addEventListener('click', () => {
+    playSound(clickSfx);
+    stopAutoAdd();
 });
 
 resetBtn.addEventListener('click', () => {
