@@ -7,14 +7,19 @@ const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
 
-function getMasterVolume() {
-    const savedVolume = localStorage.getItem('contraryMasterVolume');
-    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+function getMusicVolume() {
+    const saved = localStorage.getItem('contraryMusicVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
+}
+
+function getSFXVolume() {
+    const saved = localStorage.getItem('contrarySFXVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
 }
 
 function playClickSound() {
     clickSfx.currentTime = 0; 
-    clickSfx.volume = 0.4 * getMasterVolume();
+    clickSfx.volume = 0.4 * getSFXVolume();
     clickSfx.play().catch(err => console.log("Sound play delayed until user interaction"));
 }
 
@@ -40,8 +45,8 @@ function updateMusicIcon(isPlaying) {
     }
 }
 
-function tryPlayMusic() {
-    bgMusic.volume = 0.3 * getMasterVolume();
+function tryPlayMusic() { 
+    bgMusic.volume = 0.3 * getMusicVolume();
     const playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
@@ -66,6 +71,9 @@ function tryPlayMusic() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('contrarySystemCursor') === 'true') {
+        document.body.classList.add('system-cursor');
+    }
     tryPlayMusic();
 });
 
@@ -78,7 +86,7 @@ musicToggle.addEventListener('click', (e) => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.3 * getMasterVolume();
+        bgMusic.volume = 0.3 * getMusicVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

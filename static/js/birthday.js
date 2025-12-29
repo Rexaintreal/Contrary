@@ -56,15 +56,20 @@ const personSprites = [
     '/static/assets/birthday/person-3.png'
 ];
 
-function getMasterVolume() {
-    const savedVolume = localStorage.getItem('contraryMasterVolume');
-    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+function getMusicVolume() {
+    const saved = localStorage.getItem('contraryMusicVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
+}
+
+function getSFXVolume() {
+    const saved = localStorage.getItem('contrarySFXVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
 }
 
 function playSound(sound) {
     if (!sound) return;
     sound.currentTime = 0;
-    sound.volume = 0.5 * getMasterVolume();
+    sound.volume = 0.5 * getSFXVolume();
     sound.play().catch(() => {});
 }
 
@@ -80,7 +85,7 @@ function updateMusicIcon(isPlaying) {
     }
 }
 function tryPlayMusic() {
-    bgMusic.volume = 0.25 * getMasterVolume();
+    bgMusic.volume = 0.25 * getMusicVolume();
     bgMusic.play().then(() => {
         musicPlaying = true;
         updateMusicIcon(true);
@@ -97,7 +102,7 @@ musicToggle.addEventListener('click', () => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.25 * getMasterVolume();
+        bgMusic.volume = 0.25 * getMusicVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }
@@ -546,6 +551,9 @@ document.addEventListener('keydown', (e) => {
 
 //init
 document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('contrarySystemCursor') === 'true') {
+        document.body.classList.add('system-cursor');
+    }
     tryPlayMusic();
     updateDisplay();
 });

@@ -23,9 +23,15 @@ const wrapperSound = document.getElementById('wrapperSound');
 const wrapperMute = document.getElementById('wrapperMute');
 
 let musicPlaying = false;
-function getMasterVolume() {
-    const savedVolume = localStorage.getItem('contraryMasterVolume');
-    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+
+function getMusicVolume() {
+    const saved = localStorage.getItem('contraryMusicVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
+}
+
+function getSFXVolume() {
+    const saved = localStorage.getItem('contrarySFXVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
 }
 
 async function loadParadoxData() {
@@ -40,13 +46,13 @@ async function loadParadoxData() {
 
 function playClickSound() {
     clickSfx.currentTime = 0;
-    clickSfx.volume = 0.4 * getMasterVolume();
+    clickSfx.volume = 0.4 * getSFXVolume();
     clickSfx.play().catch(err => console.log("Sound play delayed"));
 }
 
 function playPageFlipSound() {
     pageFlipSfx.currentTime = 0;
-    pageFlipSfx.volume = 0.5 * getMasterVolume();
+    pageFlipSfx.volume = 0.5 * getSFXVolume();
     pageFlipSfx.play().catch(err => console.log("Sound play delayed"));
 }
 
@@ -70,7 +76,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.25 * getMasterVolume();
+    bgMusic.volume = 0.25 * getMusicVolume();
     const playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
@@ -79,7 +85,7 @@ function tryPlayMusic() {
             updateMusicIcon(true);
         })
         .catch(error => {
-            console.log("Autoplay prevented. Waiting for user interaction."); // debug statement
+            console.log("Autoplay prevented. Waiting for user interaction.");
             musicPlaying = false;
             updateMusicIcon(false);
             
@@ -95,6 +101,9 @@ function tryPlayMusic() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('contrarySystemCursor') === 'true') {
+        document.body.classList.add('system-cursor');
+    }
     tryPlayMusic();
     loadParadoxData();
 });
@@ -108,7 +117,7 @@ musicToggle.addEventListener('click', (e) => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.25 * getMasterVolume();
+        bgMusic.volume = 0.25 * getMusicVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

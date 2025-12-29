@@ -29,58 +29,59 @@
                 <div class="settings-subtitle">Tune your experience!</div>
                 <div class="setting-group">
                     <div class="setting-header">
-                        <i data-lucide="volume-2" class="setting-icon"></i>
-                        <h2 class="setting-label">Master Volume</h2>
+                        <i data-lucide="music" class="setting-icon"></i>
+                        <h2 class="setting-label">Music Volume</h2>
                     </div>
-                    <div class="setting-description">
-                        Controls music and sound effects across all pages
-                    </div>
-                    <div class="volume-control">
+                    <div class="volume-control" id="musicControl">
                         <div class="volume-slider-container">
-                            <input 
-                                type="range" 
-                                id="masterVolume" 
-                                class="volume-slider" 
-                                min="0" 
-                                max="100" 
-                                value="50"
-                            >
-                            <div class="slider-track-fill" id="sliderFill"></div>
+                            <input type="range" id="musicVolume" class="volume-slider" min="0" max="100" value="50">
+                            <div class="slider-track-fill" id="musicFill"></div>
                         </div>
-                        <div class="volume-value" id="volumeValue">50%</div>
+                        <div class="volume-value" id="musicValue">50%</div>
                     </div>
-                    <div class="volume-presets">
-                        <button class="preset-btn" data-volume="0">
-                            <i data-lucide="volume-x"></i>
-                            <span>Mute</span>
-                        </button>
-                        <button class="preset-btn" data-volume="25">
-                            <i data-lucide="volume-1"></i>
-                            <span>Low</span>
-                        </button>
-                        <button class="preset-btn" data-volume="50">
-                            <i data-lucide="volume-2"></i>
-                            <span>Medium</span>
-                        </button>
-                        <button class="preset-btn" data-volume="100">
-                            <i data-lucide="volume-2"></i>
-                            <span>Max</span>
-                        </button>
+                    <div class="volume-presets" data-target="musicVolume">
+                        <button class="preset-btn" data-volume="0"><i data-lucide="volume-x"></i><span>Mute</span></button>
+                        <button class="preset-btn" data-volume="25"><i data-lucide="volume-1"></i><span>Low</span></button>
+                        <button class="preset-btn" data-volume="50"><i data-lucide="volume-2"></i><span>Med</span></button>
+                        <button class="preset-btn" data-volume="100"><i data-lucide="volume-2"></i><span>Max</span></button>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <div class="setting-header">
+                        <i data-lucide="speaker" class="setting-icon"></i>
+                        <h2 class="setting-label">SFX Volume</h2>
+                    </div>
+                    <div class="volume-control" id="sfxControl">
+                        <div class="volume-slider-container">
+                            <input type="range" id="sfxVolume" class="volume-slider" min="0" max="100" value="50">
+                            <div class="slider-track-fill" id="sfxFill"></div>
+                        </div>
+                        <div class="volume-value" id="sfxValue">50%</div>
+                    </div>
+                    <div class="volume-presets" data-target="sfxVolume">
+                        <button class="preset-btn" data-volume="0"><i data-lucide="volume-x"></i><span>Mute</span></button>
+                        <button class="preset-btn" data-volume="25"><i data-lucide="volume-1"></i><span>Low</span></button>
+                        <button class="preset-btn" data-volume="50"><i data-lucide="volume-2"></i><span>Med</span></button>
+                        <button class="preset-btn" data-volume="100"><i data-lucide="volume-2"></i><span>Max</span></button>
                     </div>
                 </div>
                 <div class="setting-group">
                     <div class="setting-header">
-                        <i data-lucide="info" class="setting-icon"></i>
-                        <h2 class="setting-label">About</h2>
+                        <i data-lucide="monitor" class="setting-icon"></i>
+                        <h2 class="setting-label">Display</h2>
                     </div>
-                    <div class="about-text">
-                        Your settings are saved automatically and will apply across all pages.
+                    <div class="toggle-row">
+                        <div class="setting-description" style="margin-bottom: 0;">Use System Cursor</div>
+                        <label class="switch">
+                            <input type="checkbox" id="systemCursor">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
                 </div>
                 <div class="reset-section">
                     <button class="reset-btn" id="resetBtn">
-                        <i data-lucide="rotate-ccw"></i>
-                        Reset to Defaults
+                        <i data-lucide="rotate-ccw"></i> Reset to Defaults
                     </button>
                 </div>
             </div>
@@ -89,6 +90,9 @@
     </div>
     <audio id="clickSfx" preload="auto">
         <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/settings.mp3') }}" type="audio/mpeg">
     </audio>
     <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
     <script>

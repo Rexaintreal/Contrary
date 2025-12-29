@@ -44,10 +44,23 @@ const dialogues = {
     switchLose: "You switched but... it's a goat! Your first pick was actually correct!",
 };
 
-function getMasterVolume() {
-    const savedVolume = localStorage.getItem('contraryMasterVolume');
-    return savedVolume !== null ? parseInt(savedVolume) / 100 : 0.5;
+function getMusicVolume() {
+    const saved = localStorage.getItem('contraryMusicVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
 }
+
+function getSFXVolume() {
+    const saved = localStorage.getItem('contrarySFXVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
+}
+
+function applyCursorSetting() {
+    const useSystemCursor = localStorage.getItem('contrarySystemCursor') === 'true';
+    if (useSystemCursor) {
+        document.body.classList.add('system-cursor');
+    }
+}
+
 
 //modal 
 function showConfirmModal(title, text, onConfirm) {
@@ -95,6 +108,7 @@ function showAlertModal(title, htmlContent) {
 //init
 function init() {
     loadStats();
+    applyCursorSetting();
     tryPlayMusic();
     resetGame();
 }
@@ -130,7 +144,7 @@ function updateDialogue(text) {
 function playSound(sound) {
     if (!sound) return;
     sound.currentTime = 0;
-    sound.volume = 0.5 * getMasterVolume();
+    sound.volume = 0.5 * getSFXVolume();
     sound.play().catch(() => {});
 }
 
@@ -148,7 +162,7 @@ function updateMusicIcon(isPlaying) {
 }
 
 function tryPlayMusic() {
-    bgMusic.volume = 0.25 * getMasterVolume();
+    bgMusic.volume = 0.25 * getMusicVolume();
     bgMusic.play().then(() => {
         musicPlaying = true;
         updateMusicIcon(true);
@@ -166,7 +180,7 @@ musicToggle.addEventListener('click', () => {
         updateMusicIcon(false);
     } else {
         bgMusic.play();
-        bgMusic.volume = 0.25 * getMasterVolume();
+        bgMusic.volume = 0.25 * getMusicVolume();
         musicPlaying = true;
         updateMusicIcon(true);
     }

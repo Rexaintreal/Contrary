@@ -803,4 +803,8 @@ body {
     background: white;
 }
 
+#modalReset {
+    grid-column: 1 / -1;
+}
+
 
