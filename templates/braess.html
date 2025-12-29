@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braess Paradox - Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/braess.css') }}">
+ </head>
+ <body>
+    <div class="music-indicator" id="musicToggle">
+        <span id="wrapperSound">
+            <i data-lucide="volume-2"></i>
+        </span>
+        <span id="wrapperMute" style="display: none;">
+            <i data-lucide="volume-x"></i>
+        </span>
+    </div>    
+    <a href="/settings" class="settings-link">
+        <i data-lucide="settings"></i>
+    </a>
+    <a href="/paradoxes" class="home-link">
+        <i data-lucide="arrow-left"></i>
+    </a>
+    <div class="game-screen">
+        <div class="stats-container">
+            <div class="stats-panel">
+                <h3 class="stats-title">Traffic Stats</h3>
+                <div class="stat-item">
+                    <i data-lucide="car"></i>
+                    <span>Cars: <strong id="carCount">0</strong></span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="clock"></i>
+                    <span>Avg Time: <strong id="avgTime">0</strong>min</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="trending-up"></i>
+                    <span>Shortcut: <strong id="shortcutStatus">OFF</strong></span>
+                </div>
+            </div>
+            <div class="shortcuts-panel">
+                <div class="shortcuts-title">Shortcuts</div>
+                <div class="shortcut-item">
+                    <kbd>Space</kbd>
+                    <span>Run 20 Cars</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>S</kbd>
+                    <span>Add Shortcut</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Reset</span>
+                </div>
+            </div>
+            <button class="stats-button-side" id="statsBtn">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Show Stats</span>
+            </button>
+        </div>
+        <div class="traffic-network" id="trafficNetwork">
+            <div class="network-node start-node" id="startNode">
+                <img src="{{ url_for('static', filename='assets/braess/start-point.png') }}" alt="Start">
+            </div>
+            <div class="network-node intersection-node top-intersection" id="topNode">
+                <img src="{{ url_for('static', filename='assets/braess/intersection.png') }}" alt="Intersection">
+            </div>
+            <div class="network-node intersection-node bottom-intersection" id="bottomNode">
+                <img src="{{ url_for('static', filename='assets/braess/intersection.png') }}" alt="Intersection">
+            </div>
+            <div class="network-node end-node" id="endNode">
+                <img src="{{ url_for('static', filename='assets/braess/end-point.png') }}" alt="End">
+            </div>
+            <div class="road road-1" data-road="start-top"></div>
+            <div class="road road-2" data-road="start-bottom"></div>
+            <div class="road road-3" data-road="top-end"></div>
+            <div class="road road-4" data-road="bottom-end"></div>
+            <div class="road road-shortcut" data-road="shortcut" id="shortcutRoad"></div>
+            <div class="cars-container" id="carsContainer"></div>
+        </div>
+        <div class="control-buttons">
+            <button class="game-btn btn-add-car" id="addCarBtn">
+                <img src="{{ url_for('static', filename='assets/braess/button-simulate.png') }}" alt="Add Car">
+            </button>
+            <button class="game-btn btn-shortcut" id="shortcutBtn">
+                <img src="{{ url_for('static', filename='assets/braess/button-add-road.png') }}" alt="Add Shortcut">
+            </button>
+            <button class="game-btn btn-reset" id="resetBtn">
+                <img src="{{ url_for('static', filename='assets/braess/button-reset.png') }}" alt="Reset">
+            </button>
+        </div>
+        <div class="dialogue-box">
+            <div class="dialogue-text" id="dialogueText">
+                Welcome to the traffic network! Cars travel from START to END. Click "RUN CARS" to add vehicles. Notice something strange when you add the shortcut...
+            </div>
+        </div>
+    </div>
+    <div class="stats-modal" id="statsModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Traffic Analysis</h2>
+            <p class="modal-result" id="modalResult"></p>
+            <div class="stats-visualization">
+                <div class="chart-container">
+                    <div class="chart-title">Average Travel Time</div>
+                    <div class="bar-chart">
+                        <div class="bar-group">
+                            <div class="bar-label">Without Shortcut</div>
+                            <div class="bar-wrapper">
+                                <div class="bar without-bar" id="withoutBar">
+                                    <span class="bar-percentage" id="withoutTime">0 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar-label">With Shortcut</div>
+                            <div class="bar-wrapper">
+                                <div class="bar with-bar" id="withBar">
+                                    <span class="bar-percentage" id="withTime">0 min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theory-line">
+                        <span class="theory-marker">Adding a road can make traffic WORSE!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="math-explanation">
+                <h4>Why Does This Happen?</h4>
+                <p>
+                    Without the shortcut, cars naturally split between two routes, keeping traffic balanced.
+                    <br><br>
+                    When you add the shortcut, it looks like a faster option, so EVERYONE tries to use it!
+                    <br><br>
+                    This creates a bottleneck. The "shortcut" becomes congested, and paradoxically, everyone's travel time increases.
+                    <br><br>
+                    <strong>The lesson:</strong> Individual rational choices (taking the shortcut) can lead to worse outcomes for everyone. This happens in real cities when new roads are built!
+                </p>
+            </div>
+            <div class="modal-buttons-grid">
+                <button class="modal-action-btn btn-continue" id="modalContinue">
+                    Continue
+                </button>
+                <button class="modal-action-btn btn-clear" id="modalReset">
+                    Reset Network
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="resetModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">Reset Traffic Network?</h2>
+            <div class="custom-modal-text">This will clear all cars and statistics. Continue?</div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="resetConfirm">Yes, Reset!</button>
+                <button class="modal-action-btn btn-clear" id="resetCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/braess-music.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="carSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/pop.mp3') }}" type="audio/mpeg">
+    </audio>
+    <script src="{{ url_for('static', filename='js/braess.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+ </body>
+</html>
+
