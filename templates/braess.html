@@ -10,22 +10,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/braess.css') }}">
  </head>
  <body>
-    <div class="music-indicator" id="musicToggle">
-        <span id="wrapperSound">
-            <i data-lucide="volume-2"></i>
-        </span>
-        <span id="wrapperMute" style="display: none;">
-            <i data-lucide="volume-x"></i>
-        </span>
-    </div>    
-    <a href="/settings" class="settings-link">
-        <i data-lucide="settings"></i>
-    </a>
     <a href="/paradoxes" class="home-link">
         <i data-lucide="arrow-left"></i>
     </a>
     <div class="game-screen">
         <div class="stats-container">
+            <div class="music-indicator" id="musicToggle">
+                <span id="wrapperSound">
+                    <i data-lucide="volume-2"></i>
+                </span>
+                <span id="wrapperMute" style="display: none;">
+                    <i data-lucide="volume-x"></i>
+                </span>
+            </div>
+            <a href="/settings" class="settings-link">
+                <i data-lucide="settings"></i>
+            </a>
             <div class="stats-panel">
                 <h3 class="stats-title">Traffic Stats</h3>
                 <div class="stat-item">
