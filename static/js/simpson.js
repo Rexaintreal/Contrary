@@ -7,6 +7,7 @@ let paradoxDeck = [];
 let autoRunInterval = null;
 let musicPlaying = false;
 let simulationSpeed = 5;
+let isAssigning = false;
 let isAutoRunning = false;
 let stats = {
     hospitalA: {
@@ -170,6 +171,7 @@ function openAssignmentModal(patient) {
     currentPatient = patient;
     selectedHospital = null;
     selectedDrug = null;
+    isAssigning = false;
     document.querySelectorAll('.hospital-choice').forEach(btn => {
         btn.classList.remove('selected');
     });
@@ -248,6 +250,7 @@ document.getElementById('confirmBtn').addEventListener('click', () => {
     currentPatient = null;
     selectedHospital = null;
     selectedDrug = null;
+    isAssigning = false;
 });
 
 //add patient
@@ -337,6 +340,8 @@ function updateDialogue() {
 }
 
 assignBtn.addEventListener('click', () => {
+    if (isAssigning) return;
+    isAssigning = true;
     playSound(clickSfx);
     const patient = generatePatient();
     showPatientInQueue(patient);
@@ -368,15 +373,16 @@ function startAutoRun() {
     stopBtn.classList.add('active');
     assignBtn.disabled = true;
     
-    dialogueText.textContent = "AUTO MODE! Patients are being assigned automatically based on severity. Watch the paradox unfold!";
+    dialogueText.textContent = "AUTO MODE! Patients are being assigned automatically. Watch the paradox unfold!";
     
     const intervalTime = Math.max(50, 400 / simulationSpeed);
+    let autoCounter = 0;
+    const TARGET_PATIENTS = 20;
     
     autoRunInterval = setInterval(() => {
-        if (patients.length >= 100) {
+        if (autoCounter >= TARGET_PATIENTS) {
             stopAutoRun();
-            dialogueText.textContent = "100 patients reached! Press 'S' to see the full statistical breakdown of Simpson's Paradox!";
-            setTimeout(() => showStatsModal(), 500);
+            dialogueText.textContent = `Added ${TARGET_PATIENTS} patients! Total: ${patients.length}. Press Auto again to add more, or 'S' to view stats.`;
             return;
         }
 
@@ -398,6 +404,7 @@ function startAutoRun() {
         
         addPatientToHospital(patient);
         updateStatsDisplay();
+        autoCounter++;
         
     }, intervalTime);
 }
@@ -535,6 +542,7 @@ function resetGame() {
     
     patients = [];
     patientIdCounter = 0;
+    paradoxDeck = [];
     
     stats = {
         hospitalA: {
