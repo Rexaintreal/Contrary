@@ -13,6 +13,15 @@
     <a href="/paradoxes" class="home-link">
         <i data-lucide="arrow-left"></i>
     </a>
+    <div class="speed-control-container">
+        <div class="speed-control-panel">
+            <div class="speed-control-title">Auto Speed</div>
+            <div class="speed-slider-container">
+                <input type="range" min="1" max="10" value="5" class="speed-slider" id="speedSlider">
+                <div class="speed-value" id="speedValue">Speed: 5x</div>
+            </div>
+        </div>
+    </div>
     <div class="game-screen">
         <div class="stats-container">
             <div class="music-indicator" id="musicToggle">
@@ -78,13 +87,6 @@
                 <div class="shortcut-item">
                     <kbd>R</kbd>
                     <span>Reset</span>
-                </div>
-            </div>
-            <div class="speed-control-panel">
-                <div class="speed-control-title">Auto Speed</div>
-                <div class="speed-slider-container">
-                    <input type="range" min="1" max="10" value="5" class="speed-slider" id="speedSlider">
-                    <div class="speed-value" id="speedValue">Speed: 5x</div>
                 </div>
             </div>
             <button class="stats-button-side" id="statsBtn">

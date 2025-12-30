@@ -3,6 +3,7 @@ lucide.createIcons();
 //states
 let patients = [];
 let patientIdCounter = 0;
+let paradoxDeck = [];
 let autoRunInterval = null;
 let musicPlaying = false;
 let simulationSpeed = 5;
@@ -130,11 +131,11 @@ function generatePatient() {
 function calculateSuccess(severity, drug, hospital) {
     
     if (severity === 'mild') {
-        if (drug === 'A') return Math.random() < 0.93;
-        else return Math.random() < 0.87;
+        if (drug === 'A') return Math.random() < 0.94;
+        else return Math.random() < 0.84;
     } else {
-        if (drug === 'A') return Math.random() < 0.73;
-        else return Math.random() < 0.69;
+        if (drug === 'A') return Math.random() < 0.76;
+        else return Math.random() < 0.64;
     }
 }
 
@@ -347,6 +348,20 @@ autoBtn.addEventListener('click', () => {
     startAutoRun();
 });
 
+function fillParadoxDeck() {
+    const batch = [
+        {h: 'A', d: 'A', o: true}, {h: 'A', d: 'A', o: true}, 
+        {h: 'A', d: 'B', o: true}, {h: 'A', d: 'B', o: true}, {h: 'A', d: 'B', o: true}, 
+        {h: 'A', d: 'B', o: true}, {h: 'A', d: 'B', o: true}, {h: 'A', d: 'B', o: true}, 
+        {h: 'A', d: 'B', o: true}, {h: 'A', d: 'B', o: false}, 
+        {h: 'B', d: 'A', o: true}, {h: 'B', d: 'A', o: true}, {h: 'B', d: 'A', o: true},
+        {h: 'B', d: 'A', o: false}, {h: 'B', d: 'A', o: false}, {h: 'B', d: 'A', o: false}, 
+        {h: 'B', d: 'A', o: false}, {h: 'B', d: 'A', o: false},
+        {h: 'B', d: 'B', o: false}, {h: 'B', d: 'B', o: false}
+    ];
+    paradoxDeck = batch.sort(() => Math.random() - 0.5);
+}
+
 function startAutoRun() {
     isAutoRunning = true;
     autoBtn.classList.add('hidden');
@@ -364,16 +379,15 @@ function startAutoRun() {
             setTimeout(() => showStatsModal(), 500);
             return;
         }
+
+        if (paradoxDeck.length === 0) fillParadoxDeck();
+        
+        const card = paradoxDeck.pop();
         const patient = generatePatient();
-        patient.hospital = patient.severity === 'mild' ? 'A' : 'B';
-        
-        if (patient.hospital === 'A') {
-            patient.drug = Math.random() < 0.6 ? 'B' : 'A';
-        } else {
-            patient.drug = Math.random() < 0.6 ? 'A' : 'B';
-        }
-        
-        patient.outcome = calculateSuccess(patient.severity, patient.drug, patient.hospital);
+        patient.hospital = card.h;
+        patient.severity = card.h === 'A' ? 'mild' : 'severe'; 
+        patient.drug = card.d;
+        patient.outcome = card.o;
         const hospital = patient.hospital === 'A' ? 'hospitalA' : 'hospitalB';
         const drug = patient.drug === 'A' ? 'drugA' : 'drugB';
         
@@ -545,24 +559,40 @@ function resetGame() {
 
 //keybd shortcut
 document.addEventListener('keydown', (e) => {
-    if (e.key === ' ' && !autoRunInterval && !assignmentModal.classList.contains('visible')) {
+    const anyModalOpen = assignmentModal.classList.contains('visible') ||
+                         statsModal.classList.contains('visible') ||
+                         resetModal.classList.contains('visible') ||
+                         infoModal.classList.contains('visible');
+    
+    if (e.key === ' ' && !anyModalOpen && !isAutoRunning) {
         e.preventDefault();
         assignBtn.click();
     }
-    if (e.key === 's' || e.key === 'S') {
+    
+    if ((e.key === 's' || e.key === 'S') && !anyModalOpen) {
+        e.preventDefault();
         showStatsModal();
     }
-    if (e.key === 'r' || e.key === 'R') {
+    
+    if ((e.key === 'r' || e.key === 'R') && !anyModalOpen) {
+        e.preventDefault();
         resetModal.classList.add('visible');
     }
+    
     if (e.key === 'Escape') {
         if (assignmentModal.classList.contains('visible')) {
             playSound(clickSfx);
             closeAssignmentModal();
         }
-        statsModal.classList.remove('visible');
-        resetModal.classList.remove('visible');
-        infoModal.classList.remove('visible');
+        if (statsModal.classList.contains('visible')) {
+            statsModal.classList.remove('visible');
+        }
+        if (resetModal.classList.contains('visible')) {
+            resetModal.classList.remove('visible');
+        }
+        if (infoModal.classList.contains('visible')) {
+            infoModal.classList.remove('visible');
+        }
     }
 });
 

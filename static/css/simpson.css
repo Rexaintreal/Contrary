@@ -36,6 +36,21 @@ body {
     pointer-events: auto;
 }
 
+.speed-control-container {
+    position: fixed;
+    top: 100px;
+    left: 30px;
+    width: 300px;
+    z-index: 50;
+    pointer-events: none;
+    transform-origin: top left;
+    transition: transform 0.3s ease;
+}
+
+.speed-control-container > * {
+    pointer-events: auto;
+}
+
 .stats-panel,
 .shortcuts-panel {
     position: relative;
@@ -412,6 +427,275 @@ body {
     animation: fadeIn 0.3s ease-out;
 }
 
+.stats-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.stats-modal.visible {
+    display: flex;
+}
+
+.stats-modal .modal-content {
+    width: 900px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #FFF8E7;
+    border: 6px solid #8B4513;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.7);
+    position: relative;
+    animation: modalPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.modal-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 36px;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 20px;
+    transform: rotate(-1deg);
+}
+
+.modal-result {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 20px;
+    color: #654321;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    background: rgba(255, 230, 109, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.stats-visualization {
+    margin-bottom: 25px;
+}
+
+.chart-container {
+    background: white;
+    border: 4px solid #8B4513;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.chart-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hospital-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.hospital-chart {
+    background: rgba(255, 230, 109, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.chart-label {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.drug-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.drug-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bar-label {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+    color: #654321;
+    min-width: 60px;
+}
+
+.bar-wrapper {
+    flex: 1;
+    height: 30px;
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 6px;
+}
+
+.drug-a-bar {
+    background: linear-gradient(90deg, #FF6B6B 0%, #FF8E8E 100%);
+}
+
+.drug-b-bar {
+    background: linear-gradient(90deg, #4ECDC4 0%, #6FE7DD 100%);
+}
+
+.bar-value {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+    color: #654321;
+    min-width: 50px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.combined-chart {
+    background: rgba(255, 215, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    border: 3px dashed #D4A028;
+}
+
+.math-explanation {
+    background: rgba(255, 230, 109, 0.2);
+    border: 3px solid #8B4513;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.math-explanation h4 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: #8B4513;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.math-explanation p {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: #654321;
+    line-height: 1.7;
+}
+
+.modal-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.modal-action-btn {
+    padding: 18px;
+    border: 5px solid;
+    border-radius: 15px;
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-continue {
+    background: linear-gradient(135deg, #4ECDC4 0%, #6FE7DD 100%);
+    border-color: #3BA39D;
+}
+
+.btn-clear {
+    background: linear-gradient(135deg, #FFD93D 0%, #FFF176 100%);
+    border-color: #D4A028;
+    color: #654321;
+}
+
+.btn-ok {
+    background: linear-gradient(135deg, #4ECDC4 0%, #6FE7DD 100%);
+    border-color: #3BA39D;
+}
+
+.modal-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.custom-modal.visible {
+    display: flex;
+}
+
+.custom-modal-content {
+    width: 700px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #FFF8E7;
+    border: 6px solid #8B4513;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.7);
+    position: relative;
+    animation: modalPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.custom-modal-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 36px;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 20px;
+    transform: rotate(-1deg);
+}
+
+.custom-modal-text {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 20px;
+    color: #654321;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.custom-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
 .assignment-modal.visible {
     display: flex;
 }
@@ -712,268 +996,6 @@ body {
     50% { transform: scale(1.1); }
 }
 
-@media (max-width: 768px) {
-    .music-indicator,
-    .settings-link,
-    .info-button {
-        position: fixed;
-        top: 20px;
-    }
-    .music-indicator { right: 20px; }
-    .settings-link { right: 80px; }
-    .info-button { right: 140px; }
-}
-
-.stats-modal,
-.custom-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 150;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.stats-modal.visible,
-.custom-modal.visible {
-    display: flex;
-}
-
-.modal-content,
-.custom-modal-content {
-    width: 900px;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow-y: auto;
-    background: #FFF8E7;
-    border: 6px solid #8B4513;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.7);
-    position: relative;
-}
-
-.modal-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: repeating-linear-gradient(
-        transparent,
-        transparent 31px,
-        rgba(139, 69, 19, 0.08) 31px,
-        rgba(139, 69, 19, 0.08) 32px
-    );
-    pointer-events: none;
-    border-radius: 15px;
-}
-
-.modal-title,
-.custom-modal-title {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 48px;
-    color: #8B4513;
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 0 rgba(210, 105, 30, 0.3);
-    position: relative;
-    transform: rotate(-1deg);
-}
-
-.modal-result,
-.custom-modal-text {
-    font-family: 'Patrick Hand', cursive;
-    font-size: 22px;
-    color: #654321;
-    text-align: center;
-    line-height: 1.7;
-    margin-bottom: 30px;
-    position: relative;
-}
-
-.chart-container {
-    background: rgba(255, 255, 255, 0.9);
-    border: 5px solid #8B4513;
-    border-radius: 15px;
-    padding: 25px;
-    position: relative;
-    box-shadow: 5px 5px 0 rgba(139, 69, 19, 0.2);
-    margin-bottom: 25px;
-}
-
-.chart-title {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 28px;
-    color: #8B4513;
-    text-align: center;
-    margin-bottom: 20px;
-    transform: rotate(-1deg);
-}
-
-.hospital-comparison {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.hospital-chart {
-    background: rgba(255, 230, 109, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.chart-label {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 22px;
-    color: #8B4513;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-.drug-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.drug-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.drug-bar-row .bar-label {
-    font-family: 'Patrick Hand', cursive;
-    font-size: 16px;
-    width: 60px;
-    text-align: right;
-}
-
-.bar-wrapper {
-    flex: 1;
-    height: 30px;
-    background: rgba(139, 69, 19, 0.1);
-    border: 3px solid #8B4513;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    border-radius: 12px;
-    transition: width 0.8s ease;
-    position: relative;
-}
-
-.drug-a-bar {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
-}
-
-.drug-b-bar {
-    background: linear-gradient(135deg, #4ECDC4 0%, #6FE7DD 100%);
-}
-
-.bar-value {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 16px;
-    color: #654321;
-    width: 50px;
-    text-align: center;
-}
-
-.combined-chart {
-    background: rgba(255, 215, 0, 0.3);
-    padding: 15px;
-    border-radius: 10px;
-    border: 3px dashed #D4A028;
-}
-
-.math-explanation {
-    background: #FFE66D;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 25px;
-    border-left: 6px solid #FFD700;
-    box-shadow: 3px 3px 0 rgba(255, 215, 0, 0.3);
-    position: relative;
-}
-
-.math-explanation h4 {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 26px;
-    color: #654321;
-    margin-bottom: 12px;
-}
-
-.math-explanation p {
-    font-family: 'Patrick Hand', cursive;
-    font-size: 18px;
-    color: #654321;
-    line-height: 1.7;
-}
-
-.modal-buttons-grid,
-.custom-modal-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    position: relative;
-}
-
-.modal-action-btn {
-    font-family: 'Cabin Sketch', cursive;
-    font-size: 20px;
-    padding: 16px 24px;
-    border: 4px solid #8B4513;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 4px 4px 0 rgba(139, 69, 19, 0.3);
-    background: white;
-    color: #8B4513;
-    position: relative;
-    transform: rotate(-0.5deg);
-}
-
-.modal-action-btn:hover {
-    transform: rotate(-0.5deg) translateY(-3px);
-    box-shadow: 6px 6px 0 rgba(139, 69, 19, 0.3);
-}
-
-.modal-action-btn:active {
-    transform: rotate(-0.5deg) translateY(0);
-    box-shadow: 2px 2px 0 rgba(139, 69, 19, 0.3);
-}
-
-.btn-continue {
-    background: linear-gradient(135deg, #9370DB 0%, #B19CD9 100%);
-    border-color: #7B5DB8;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    transform: rotate(0deg);
-}
-
-.btn-ok {
-    background: linear-gradient(135deg, #FFD93D 0%, #FFF176 100%);
-    border-color: #D4A028;
-    color: #654321;
-}
-
-.btn-clear {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
-    border-color: #CC5555;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
 .home-link {
     position: fixed;
     top: 20px;
@@ -1089,6 +1111,11 @@ body.system-cursor * {
         transform: scale(0.9);
         right: 20px;
     }
+    
+    .speed-control-container {
+        transform: scale(0.9);
+        left: 20px;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1096,6 +1123,12 @@ body.system-cursor * {
         transform: scale(0.8);
         top: 80px;
         right: 15px;
+    }
+    
+    .speed-control-container {
+        transform: scale(0.8);
+        top: 90px;
+        left: 15px;
     }
     
     .hospitals-area {
@@ -1122,8 +1155,13 @@ body.system-cursor * {
         right: 10px;
     }
 
-    .shortcuts-panel,
-    .speed-control-panel {
+    .speed-control-container {
+        transform: scale(0.7);
+        top: 90px;
+        left: 10px;
+    }
+
+    .shortcuts-panel {
         display: none;
     }
     
@@ -1152,6 +1190,11 @@ body.system-cursor * {
         transform: scale(0.75);
         top: 50px;
     }
+
+    .speed-control-container {
+        transform: scale(0.75);
+        top: 90px;
+    }
     
     .hospitals-area {
         top: 6%;
@@ -1166,12 +1209,25 @@ body.system-cursor * {
     .stats-container {
         display: none;
     }
+
+    .speed-control-container {
+        transform: scale(0.7); 
+        top: 90px;
+        left: 10px;
+    }
     
     .music-indicator,
     .settings-link,
     .info-button {
         position: fixed;
         top: 15px;
+        transform: scale(0.8);
+        z-index: 100;
+    }
+    
+    .home-link {
+        top: 15px;
+        left: 15px;
         transform: scale(0.8);
         z-index: 100;
     }
