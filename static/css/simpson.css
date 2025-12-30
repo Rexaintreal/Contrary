@@ -177,7 +177,7 @@ body {
 
 .hospitals-area {
     position: absolute;
-    top: 20%;
+    top: 12%; 
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -228,7 +228,9 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     width: 300px;
+    max-height: 220px;
     justify-content: center;
+    overflow-y: auto;
 }
 
 .patient-in-hospital {
@@ -287,7 +289,7 @@ body {
 
 .patient-queue {
     position: absolute;
-    bottom: 180px;
+    bottom: 280px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -968,4 +970,74 @@ body.system-cursor * {
         grid-template-columns: 1fr;
     }
 }
+
+.patients-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.patients-container::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 3px;
+}
+
+.patients-container::-webkit-scrollbar-thumb {
+    background: #D2691E;
+    border-radius: 3px;
+}
+@media (max-width: 1200px) {
+    .hospitals-area {
+        gap: 60px;
+        top: 10%;
+    }
+    
+    .hospital img {
+        width: 300px;
+        height: 260px;
+    }
+    
+    .hospital-b img {
+        width: 380px;
+        height: 310px;
+    }
+    
+    .patient-queue {
+        bottom: 260px;
+    }
+}
+
+@media (max-width: 900px) {
+    .hospitals-area {
+        gap: 40px;
+        top: 8%;
+    }
+    
+    .patients-container {
+        max-height: 180px;
+    }
+    
+    .patient-queue {
+        bottom: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hospitals-area {
+        flex-direction: column;
+        gap: 20px;
+        top: 5%;
+    }
+    
+    .patient-queue {
+        bottom: 220px;
+        flex-wrap: wrap;
+        max-width: 400px;
+        justify-content: center;
+    }
+    
+    .control-buttons {
+        bottom: 160px;
+        gap: 15px;
+    }
+}
+
 
