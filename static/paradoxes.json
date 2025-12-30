@@ -34,5 +34,17 @@
         "videoTitle": "Watch Up and Atom explain it",
         "artSrc": "/static/assets/paradoxes/braess-art.png",
         "polaroidCaption": "More roads, more problems"
+    },
+    {
+        "id": "simpson",
+        "title": "Simpson's Paradox",
+        "date": "Statistical Paradox",
+        "description": "A treatment works better than another in every single hospital. But when you combine all the data, it suddenly looks worse. The trend reverses! This happens when lurking variables hide in your data. Statistics can show opposite conclusions from the same numbers. Truth depends on how you slice it.",
+        "funFact": "Berkeley was sued for gender discrimination in 1973. Overall, men had higher admission rates. But when broken down by department, women had equal or better rates. The paradox? Women applied to more competitive departments.",
+        "wikiLink": "https://en.wikipedia.org/wiki/Simpson%27s_paradox",
+        "videoLink": "https://www.youtube.com/watch?v=sxYrzzy3cq8",
+        "videoTitle": "Watch TED Ed explain it",
+        "artSrc": "/static/assets/paradoxes/simpson-art.png",
+        "polaroidCaption": "Data can lie both ways"
     }
 ]

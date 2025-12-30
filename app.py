@@ -22,9 +22,9 @@ def birthday():
 def braess():
     return render_template('braess.html')
 
-# @app.route('/paradox/simpson')
-# def simpson():
-#     return render_template('simpson.html')
+@app.route('/paradox/simpson')
+def simpson():
+    return render_template('simpson.html')
 
 # @app.route('/paradox/parrondo')
 # def parrondo():

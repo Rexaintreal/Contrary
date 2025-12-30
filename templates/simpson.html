@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simpson's Paradox - Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/simpson.css') }}">
+ </head>
+ <body>
+    <a href="/paradoxes" class="home-link">
+        <i data-lucide="arrow-left"></i>
+    </a>
+    <div class="game-screen">
+        <div class="stats-container">
+            <div class="music-indicator" id="musicToggle">
+                <span id="wrapperSound">
+                    <i data-lucide="volume-2"></i>
+                </span>
+                <span id="wrapperMute" style="display: none;">
+                    <i data-lucide="volume-x"></i>
+                </span>
+            </div>
+            <a href="/settings" class="settings-link">
+                <i data-lucide="settings"></i>
+            </a>
+            <div class="stats-panel">
+                <h3 class="stats-title">Treatment Stats</h3>
+                <div class="hospital-stats">
+                    <div class="hospital-label">Hospital A</div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-a">Drug A:</span>
+                        <span class="stat-value" id="hospA-drugA">0/0 (0%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-b">Drug B:</span>
+                        <span class="stat-value" id="hospA-drugB">0/0 (0%)</span>
+                    </div>
+                </div>
+                <div class="hospital-stats">
+                    <div class="hospital-label">Hospital B</div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-a">Drug A:</span>
+                        <span class="stat-value" id="hospB-drugA">0/0 (0%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-b">Drug B:</span>
+                        <span class="stat-value" id="hospB-drugB">0/0 (0%)</span>
+                    </div>
+                </div>
+                <div class="combined-stats">
+                    <div class="hospital-label paradox-label">COMBINED</div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-a">Drug A:</span>
+                        <span class="stat-value" id="combined-drugA">0/0 (0%)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="drug-label drug-b">Drug B:</span>
+                        <span class="stat-value" id="combined-drugB">0/0 (0%)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shortcuts-panel">
+                <div class="shortcuts-title">Shortcuts</div>
+                <div class="shortcut-item">
+                    <kbd>Space</kbd>
+                    <span>Assign Patient</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>S</kbd>
+                    <span>Show Stats</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Reset</span>
+                </div>
+            </div>
+            <button class="stats-button-side" id="statsBtn">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Show Stats</span>
+            </button>
+        </div>
+        <div class="hospitals-area">
+            <div class="hospital hospital-a" id="hospitalA">
+                <img src="{{ url_for('static', filename='assets/simpson/hospital-small.png') }}" alt="Hospital A">
+                <div class="hospital-name">Hospital A<br><span>General Care</span></div>
+                <div class="patients-container" id="patientsA"></div>
+            </div>
+            <div class="hospital hospital-b" id="hospitalB">
+                <img src="{{ url_for('static', filename='assets/simpson/hospital-large.png') }}" alt="Hospital B">
+                <div class="hospital-name">Hospital B<br><span>Specialized Care</span></div>
+                <div class="patients-container" id="patientsB"></div>
+            </div>
+        </div>
+        <div class="patient-queue" id="patientQueue"></div>
+        <div class="assignment-modal" id="assignmentModal">
+            <div class="modal-paper">
+                <h3>Assign Patient</h3>
+                <div class="modal-section">
+                    <div class="section-label">Choose Hospital:</div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn hospital-choice" data-hospital="A">
+                            <div class="btn-text">Hospital A<br><small>General Care</small></div>
+                        </button>
+                        <button class="choice-btn hospital-choice" data-hospital="B">
+                            <div class="btn-text">Hospital B<br><small>Specialized</small></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="section-label">Choose Treatment:</div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn drug-choice" data-drug="A">
+                            <div class="btn-text">Drug A</div>
+                        </button>
+                        <button class="choice-btn drug-choice" data-drug="B">
+                            <div class="btn-text">Drug B</div>
+                        </button>
+                    </div>
+                </div>
+                <button class="confirm-btn" id="confirmBtn" disabled>Assign Treatment</button>
+            </div>
+        </div>
+        <div class="control-buttons">
+            <button class="game-btn btn-assign" id="assignBtn" data-label="Assign 1 Patient">
+                <img src="{{ url_for('static', filename='assets/simpson/button-assign-patient.png') }}" alt="Assign">
+            </button>
+            <button class="game-btn btn-auto" id="autoBtn" data-label="Run 20 Patients">
+                <img src="{{ url_for('static', filename='assets/simpson/button-auto-run.png') }}" alt="Auto">
+            </button>
+            <button class="btn-stop" id="stopBtn">STOP AUTO</button>
+            <button class="game-btn btn-reset" id="resetBtn" data-label="Reset Everything">
+                <img src="{{ url_for('static', filename='assets/simpson/button-reset.png') }}" alt="Reset">
+            </button>
+        </div>
+        <div class="dialogue-box">
+            <div class="dialogue-text" id="dialogueText">
+                Welcome to the hospital treatment study! Assign patients to hospitals and choose treatments. Watch carefully: Drug A works better in BOTH hospitals, but which drug looks better overall? That's the paradox!
+            </div>
+        </div>
+    </div>
+    <div class="stats-modal" id="statsModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Simpson's Paradox Revealed!</h2>
+            <p class="modal-result" id="modalResult"></p>
+            <div class="stats-visualization">
+                <div class="chart-container">
+                    <div class="chart-title">Individual Hospital Success Rates</div>
+                    <div class="hospital-comparison">
+                        <div class="hospital-chart">
+                            <div class="chart-label">Hospital A</div>
+                            <div class="drug-bars">
+                                <div class="drug-bar-row">
+                                    <span class="bar-label">Drug A</span>
+                                    <div class="bar-wrapper">
+                                        <div class="bar drug-a-bar" id="chartA-drugA"></div>
+                                    </div>
+                                    <span class="bar-value" id="chartA-drugA-val">0%</span>
+                                </div>
+                                <div class="drug-bar-row">
+                                    <span class="bar-label">Drug B</span>
+                                    <div class="bar-wrapper">
+                                        <div class="bar drug-b-bar" id="chartA-drugB"></div>
+                                    </div>
+                                    <span class="bar-value" id="chartA-drugB-val">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hospital-chart">
+                            <div class="chart-label">Hospital B</div>
+                            <div class="drug-bars">
+                                <div class="drug-bar-row">
+                                    <span class="bar-label">Drug A</span>
+                                    <div class="bar-wrapper">
+                                        <div class="bar drug-a-bar" id="chartB-drugA"></div>
+                                    </div>
+                                    <span class="bar-value" id="chartB-drugA-val">0%</span>
+                                </div>
+                                <div class="drug-bar-row">
+                                    <span class="bar-label">Drug B</span>
+                                    <div class="bar-wrapper">
+                                        <div class="bar drug-b-bar" id="chartB-drugB"></div>
+                                    </div>
+                                    <span class="bar-value" id="chartB-drugB-val">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="combined-chart">
+                        <div class="chart-label paradox-label">Combined Results (THE PARADOX!)</div>
+                        <div class="drug-bars">
+                            <div class="drug-bar-row">
+                                <span class="bar-label">Drug A</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar drug-a-bar" id="chartCombined-drugA"></div>
+                                </div>
+                                <span class="bar-value" id="chartCombined-drugA-val">0%</span>
+                            </div>
+                            <div class="drug-bar-row">
+                                <span class="bar-label">Drug B</span>
+                                <div class="bar-wrapper">
+                                    <div class="bar drug-b-bar" id="chartCombined-drugB"></div>
+                                </div>
+                                <span class="bar-value" id="chartCombined-drugB-val">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="math-explanation">
+                <h4>Why Does This Happen?</h4>
+                <p>
+                    Hospital A treats mild cases (both drugs work well). Hospital B treats severe cases (both drugs struggle).
+                    <br><br>
+                    Drug A is better in BOTH hospitals individually! But if more patients receive Drug B at Hospital B (where success rates are lower), it drags down Drug B's overall average.
+                    <br><br>
+                    <strong>The paradox:</strong> A trend that appears in different groups can disappear or reverse when the groups are combined. This is called a "lurking variable" - patient severity hides in the combined data!
+                </p>
+            </div>
+            <div class="modal-buttons-grid">
+                <button class="modal-action-btn btn-continue" id="modalContinue">
+                    Continue
+                </button>
+                <button class="modal-action-btn btn-clear" id="modalReset">
+                    Reset Study
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="resetModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">Reset Treatment Study?</h2>
+            <div class="custom-modal-text">This will clear all patients and statistics. Continue?</div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="resetConfirm">Yes, Reset!</button>
+                <button class="modal-action-btn btn-clear" id="resetCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/simpson-music.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="popSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/pop.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="successSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/win.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="failSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/lose.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="hospitalDingSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/hospital-ding.mp3') }}" type="audio/mpeg">
+    </audio>
+    <script src="{{ url_for('static', filename='js/simpson.js') }}"></script>
+    <script>
+        lucide.createIcons();
+     </script>
+ </body>
+</html>
+
