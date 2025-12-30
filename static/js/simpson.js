@@ -545,12 +545,14 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-assignmentModal.addEventListener('click', (e) => {
-    if (e.target === assignmentModal) {
-        playSound(clickSfx);
-        closeAssignmentModal();
-    }
-});
+
+// MUST ASSIGN HOSPITAL AND CURE no stacking of people
+// assignmentModal.addEventListener('click', (e) => {
+//     if (e.target === assignmentModal) {
+//         playSound(clickSfx);
+//         closeAssignmentModal();
+//     }
+// });
 
 [statsModal, resetModal, infoModal].forEach(modal => {
     modal.addEventListener('click', (e) => {

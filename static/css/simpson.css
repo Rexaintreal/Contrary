@@ -28,6 +28,8 @@ body {
     gap: 15px;
     z-index: 50;
     pointer-events: none;
+    transform-origin: top right; 
+    transition: transform 0.3s ease;
 }
 
 .stats-container > * {
@@ -1001,10 +1003,39 @@ body.system-cursor * {
     line-height: 1.6;
     text-align: center;
 }
+
+.patients-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.patients-container::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 3px;
+}
+
+.patients-container::-webkit-scrollbar-thumb {
+    background: #D2691E;
+    border-radius: 3px;
+}
+
+@media (max-width: 1400px) {
+    .stats-container {
+        transform: scale(0.9);
+        right: 20px;
+    }
+}
+
 @media (max-width: 1200px) {
+    .stats-container {
+        transform: scale(0.8);
+        top: 80px;
+        right: 15px;
+    }
+    
     .hospitals-area {
         gap: 60px;
         top: 10%;
+        left: 45%; 
     }
     
     .hospital img {
@@ -1016,19 +1047,15 @@ body.system-cursor * {
         width: 380px;
         height: 310px;
     }
-    
-    .patient-queue {
-        bottom: 260px;
-    }
 }
 
 @media (max-width: 900px) {
     .stats-container {
-        width: 240px;
-        right: 15px;
-        top: 80px;
+        transform: scale(0.7);
+        top: 60px;
+        right: 10px;
     }
-    
+
     .shortcuts-panel {
         display: none;
     }
@@ -1036,14 +1063,35 @@ body.system-cursor * {
     .hospitals-area {
         gap: 40px;
         top: 8%;
+        left: 50%;
     }
     
     .patients-container {
         max-height: 180px;
     }
     
-    .patient-queue {
-        bottom: 240px;
+    .control-buttons {
+        gap: 20px;
+    }
+    
+    .game-btn img {
+        width: 180px;
+        height: 70px;
+    }
+}
+
+@media (max-height: 800px) {
+    .stats-container {
+        transform: scale(0.75);
+        top: 50px;
+    }
+    
+    .hospitals-area {
+        top: 6%;
+    }
+    
+    .control-buttons {
+        bottom: 150px;
     }
 }
 
@@ -1052,10 +1100,24 @@ body.system-cursor * {
         display: none;
     }
     
+    .music-indicator,
+    .settings-link,
+    .info-button {
+        position: fixed;
+        top: 15px;
+        transform: scale(0.8);
+        z-index: 100;
+    }
+    
+    .music-indicator { right: 15px; }
+    .settings-link { right: 70px; }
+    .info-button { right: 125px; }
+    
     .hospitals-area {
         flex-direction: column;
         gap: 20px;
         top: 5%;
+        left: 50%;
     }
     
     .hospital-comparison {
@@ -1073,20 +1135,24 @@ body.system-cursor * {
         bottom: 160px;
         gap: 15px;
     }
+    
+    .game-btn img {
+        width: 160px;
+        height: 65px;
+    }
 }
 
-.patients-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.patients-container::-webkit-scrollbar-track {
-    background: rgba(139, 69, 19, 0.1);
-    border-radius: 3px;
-}
-
-.patients-container::-webkit-scrollbar-thumb {
-    background: #D2691E;
-    border-radius: 3px;
+@media (max-width: 480px) {
+    .control-buttons {
+        flex-direction: column;
+        gap: 10px;
+        bottom: 180px;
+    }
+    
+    .game-btn img {
+        width: 180px;
+        height: 70px;
+    }
 }
 
 
