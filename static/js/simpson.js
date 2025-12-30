@@ -34,6 +34,7 @@ const dialogueText = document.getElementById('dialogueText');
 const assignmentModal = document.getElementById('assignmentModal');
 const statsModal = document.getElementById('statsModal');
 const resetModal = document.getElementById('resetModal');
+const infoModal = document.getElementById('infoModal');
 const patientQueue = document.getElementById('patientQueue');
 const patientsA = document.getElementById('patientsA');
 const patientsB = document.getElementById('patientsB');
@@ -473,6 +474,16 @@ resetBtn.addEventListener('click', () => {
     resetModal.classList.add('visible');
 });
 
+document.getElementById('infoBtn').addEventListener('click', () => {
+    playSound(clickSfx);
+    infoModal.classList.add('visible');
+});
+
+document.getElementById('infoClose').addEventListener('click', () => {
+    playSound(clickSfx);
+    infoModal.classList.remove('visible');
+});
+
 document.getElementById('resetConfirm').addEventListener('click', () => {
     playSound(clickSfx);
     resetGame();
@@ -530,6 +541,7 @@ document.addEventListener('keydown', (e) => {
         }
         statsModal.classList.remove('visible');
         resetModal.classList.remove('visible');
+        infoModal.classList.remove('visible');
     }
 });
 
@@ -540,7 +552,7 @@ assignmentModal.addEventListener('click', (e) => {
     }
 });
 
-[statsModal, resetModal].forEach(modal => {
+[statsModal, resetModal, infoModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             playSound(clickSfx);

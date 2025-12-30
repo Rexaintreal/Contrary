@@ -594,7 +594,8 @@ body {
 }
 
 .music-indicator,
-.settings-link {
+.settings-link,
+.info-button {
     position: absolute;
     top: -70px;
     width: 50px;
@@ -615,9 +616,11 @@ body {
 
 .music-indicator { right: 0px; }
 .settings-link { right: 60px; }
+.info-button { right: 120px; }
 
 .music-indicator:hover,
-.settings-link:hover {
+.settings-link:hover,
+.info-button:hover {
     transform: scale(1.1);
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
     background: white;
@@ -625,6 +628,10 @@ body {
 
 .settings-link:hover {
     transform: scale(1.1) rotate(45deg);
+}
+
+.info-button:hover {
+    transform: scale(1.1);
 }
 
 .music-indicator.playing {
@@ -638,12 +645,14 @@ body {
 
 @media (max-width: 768px) {
     .music-indicator,
-    .settings-link {
+    .settings-link,
+    .info-button {
         position: fixed;
         top: 20px;
     }
     .music-indicator { right: 20px; }
     .settings-link { right: 80px; }
+    .info-button { right: 140px; }
 }
 
 .stats-modal,
@@ -927,62 +936,70 @@ body.system-cursor * {
     cursor: auto !important;
 }
 
-@media (max-width: 1200px) {
-    .hospitals-area {
-        gap: 60px;
-    }
-    
-    .hospital img {
-        width: 300px;
-        height: 260px;
-    }
-    
-    .hospital-b img {
-        width: 380px;
-        height: 310px;
-    }
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+    position: relative;
 }
 
-@media (max-width: 900px) {
-    .stats-container {
-        width: 240px;
-        right: 15px;
-        top: 80px;
-    }
-    
-    .shortcuts-panel {
-        display: none;
-    }
+.info-item {
+    background: rgba(255, 230, 109, 0.2);
+    border: 3px solid #8B4513;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
-@media (max-width: 768px) {
-    .stats-container {
-        display: none;
-    }
-    
-    .hospitals-area {
-        flex-direction: column;
-        gap: 40px;
-        top: 10%;
-    }
-    
-    .hospital-comparison {
-        grid-template-columns: 1fr;
-    }
+.info-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.patients-container::-webkit-scrollbar {
-    width: 6px;
+.info-item-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    color: #8B4513;
+    text-align: center;
 }
 
-.patients-container::-webkit-scrollbar-track {
-    background: rgba(139, 69, 19, 0.1);
-    border-radius: 3px;
+.info-item-desc {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+    color: #654321;
+    text-align: center;
+    line-height: 1.5;
 }
 
-.patients-container::-webkit-scrollbar-thumb {
-    background: #D2691E;
-    border-radius: 3px;
+.info-warning {
+    background: #FFE66D;
+    border: 3px solid #FFD700;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.info-warning-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 22px;
+    color: #654321;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.info-warning-text {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: #654321;
+    line-height: 1.6;
+    text-align: center;
 }
 @media (max-width: 1200px) {
     .hospitals-area {
@@ -1006,6 +1023,16 @@ body.system-cursor * {
 }
 
 @media (max-width: 900px) {
+    .stats-container {
+        width: 240px;
+        right: 15px;
+        top: 80px;
+    }
+    
+    .shortcuts-panel {
+        display: none;
+    }
+    
     .hospitals-area {
         gap: 40px;
         top: 8%;
@@ -1021,10 +1048,18 @@ body.system-cursor * {
 }
 
 @media (max-width: 768px) {
+    .stats-container {
+        display: none;
+    }
+    
     .hospitals-area {
         flex-direction: column;
         gap: 20px;
         top: 5%;
+    }
+    
+    .hospital-comparison {
+        grid-template-columns: 1fr;
     }
     
     .patient-queue {
@@ -1038,6 +1073,20 @@ body.system-cursor * {
         bottom: 160px;
         gap: 15px;
     }
+}
+
+.patients-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.patients-container::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 3px;
+}
+
+.patients-container::-webkit-scrollbar-thumb {
+    background: #D2691E;
+    border-radius: 3px;
 }
 
 

@@ -26,6 +26,9 @@
             <a href="/settings" class="settings-link">
                 <i data-lucide="settings"></i>
             </a>
+            <button class="info-button" id="infoBtn">
+                <i data-lucide="info"></i>
+            </button>
             <div class="stats-panel">
                 <h3 class="stats-title">Treatment Stats</h3>
                 <div class="hospital-stats">
@@ -226,6 +229,56 @@
                 <button class="modal-action-btn btn-clear" id="modalReset">
                     Reset Study
                 </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="infoModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">Visual Guide</h2>
+            <div class="info-warning">
+                <div class="info-warning-title">Important Note</div>
+                <div class="info-warning-text">
+                    The badge colors (red/blue) show patient severity, NOT which drug is better!
+                    <br><br>
+                    <strong>Red badge = Severe case, Blue badge = Mild case</strong>
+                    <br><br>
+                    Don't be confused - both drugs work well on mild cases, and both struggle with severe cases. The paradox comes from WHERE patients are treated!
+                </div>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/severe-case-badge.png') }}" alt="Severe">
+                    <div class="info-item-title">Severe Case</div>
+                    <div class="info-item-desc">Red blood drop badge indicates a severe patient condition</div>
+                </div>
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/mild-case-badge.png') }}" alt="Mild">
+                    <div class="info-item-title">Mild Case</div>
+                    <div class="info-item-desc">Blue teardrop badge indicates a mild patient condition</div>
+                </div>
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/pill-a-red.png') }}" alt="Drug A">
+                    <div class="info-item-title">Drug A</div>
+                    <div class="info-item-desc">Red/pink pill - generally more effective in both hospitals</div>
+                </div>
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/pill-b-blue.png') }}" alt="Drug B">
+                    <div class="info-item-title">Drug B</div>
+                    <div class="info-item-desc">Blue/cyan pill - appears better overall due to patient distribution</div>
+                </div>
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/success-checkmark.png') }}" alt="Success">
+                    <div class="info-item-title">Treatment Success</div>
+                    <div class="info-item-desc">Green checkmark shows successful treatment</div>
+                </div>
+                <div class="info-item">
+                    <img class="info-item-img" src="{{ url_for('static', filename='assets/simpson/failure-x.png') }}" alt="Failure">
+                    <div class="info-item-title">Treatment Failure</div>
+                    <div class="info-item-desc">Red X shows unsuccessful treatment</div>
+                </div>
+            </div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="infoClose">Got it!</button>
             </div>
         </div>
     </div>
