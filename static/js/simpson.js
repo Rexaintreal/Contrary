@@ -5,6 +5,8 @@ let patients = [];
 let patientIdCounter = 0;
 let autoRunInterval = null;
 let musicPlaying = false;
+let simulationSpeed = 5;
+let isAutoRunning = false;
 let stats = {
     hospitalA: {
         drugA: { success: 0, total: 0 },
@@ -38,8 +40,19 @@ const infoModal = document.getElementById('infoModal');
 const patientQueue = document.getElementById('patientQueue');
 const patientsA = document.getElementById('patientsA');
 const patientsB = document.getElementById('patientsB');
+const speedSlider = document.getElementById('speedSlider');
+const speedValue = document.getElementById('speedValue');
 
+//speed control
+speedSlider.addEventListener('input', (e) => {
+    simulationSpeed = parseInt(e.target.value);
+    speedValue.textContent = `Speed: ${simulationSpeed}x`;
 
+    if (isAutoRunning) {
+        stopAutoRun();
+        startAutoRun();
+    }
+});
 
 let currentPatient = null;
 let selectedHospital = null;
@@ -268,9 +281,13 @@ function addPatientToHospital(patient) {
     patientEl.appendChild(resultIcon);
     
     container.appendChild(patientEl);
-    setTimeout(() => {
-        playSound(patient.outcome ? successSfx : failSfx);
-    }, 300);
+    
+    //no sound effect whe nauto
+    if (!isAutoRunning) {
+        setTimeout(() => {
+            playSound(patient.outcome ? successSfx : failSfx);
+        }, 300);
+    }
     
     patients.push(patient);
 }
@@ -331,11 +348,14 @@ autoBtn.addEventListener('click', () => {
 });
 
 function startAutoRun() {
+    isAutoRunning = true;
     autoBtn.classList.add('hidden');
     stopBtn.classList.add('active');
     assignBtn.disabled = true;
     
     dialogueText.textContent = "AUTO MODE! Patients are being assigned automatically based on severity. Watch the paradox unfold!";
+    
+    const intervalTime = Math.max(50, 400 / simulationSpeed);
     
     autoRunInterval = setInterval(() => {
         if (patients.length >= 100) {
@@ -365,10 +385,11 @@ function startAutoRun() {
         addPatientToHospital(patient);
         updateStatsDisplay();
         
-    }, 400);
+    }, intervalTime);
 }
 
 function stopAutoRun() {
+    isAutoRunning = false;
     if (autoRunInterval) {
         clearInterval(autoRunInterval);
         autoRunInterval = null;
