@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/404.css') }}">
+ </head>
+ <body>
+    <div class="background-doodles">
+        <img src="{{ url_for('static', filename='assets/landing/math-divide.png') }}" class="bg-doodle doodle-1" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-plus.png') }}" class="bg-doodle doodle-2" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-multiply.png') }}" class="bg-doodle doodle-3" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-integral.png') }}" class="bg-doodle doodle-4" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-pi.png') }}" class="bg-doodle doodle-5" alt="">
+        <img src="{{ url_for('static', filename='assets/landing/math-sqrt.png') }}" class="bg-doodle doodle-6" alt="">
+    </div>
+
+    <div class="music-indicator" id="musicToggle">
+        <span id="wrapperSound">
+            <i data-lucide="volume-2"></i>
+        </span>
+        <span id="wrapperMute" style="display: none;">
+            <i data-lucide="volume-x"></i>
+        </span>
+    </div>
+
+    <a href="/" class="home-link">
+        <i data-lucide="home"></i>
+    </a>
+
+    <main class="container">
+        <div class="error-paper">
+            <div class="paper-lines"></div>
+            <div class="paper-content">
+                <div class="error-code">404</div>
+                <h1 class="error-title">Page Not Found!</h1>
+                <div class="error-equation">
+                    <span class="equation-part">Your Page</span>
+                    <span class="operator">÷</span>
+                    <span class="equation-part">0</span>
+                    <span class="equals">=</span>
+                    <span class="result">Undefined!</span>
+                </div>
+                <p class="error-message">
+                    Oops! Looks like this page fell into a mathematical black hole. 
+                    It might be a paradox... or it just doesn't exist!
+                </p>
+                <div class="fun-facts">
+                    <div class="fact-title">Did You Know?</div>
+                    <p class="fact-text" id="factText">
+                        The number 404 can be expressed as the sum of 13 consecutive primes: 
+                        11 + 13 + 17 + 19 + 23 + 29 + 31 + 37 + 41 + 43 + 47 + 53 + 59
+                    </p>
+                </div>
+                <div class="button-group">
+                    <a href="/" class="btn-home">
+                        <i data-lucide="home"></i>
+                        Go Home
+                    </a>
+                    <a href="/paradoxes" class="btn-explore">
+                        <i data-lucide="compass"></i>
+                        Explore Paradoxes
+                    </a>
+                </div>
+            </div>
+            <div class="paper-clip"></div>
+        </div>
+    </main>
+
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/settings.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <script src="{{ url_for('static', filename='js/404.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+ </body>
+</html>
