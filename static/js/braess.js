@@ -246,10 +246,10 @@ function moveCar(car, carEl) {
         carEl.style.top = targetPos.y + 'px';
         carEl.style.transitionDuration = (segmentTime / 1000) + 's';
         
-        setTimeout(moveToNextSegment, segmentTime);
+        car.timeoutId = setTimeout(moveToNextSegment, segmentTime);
     }
     
-    setTimeout(moveToNextSegment, segmentTime);
+    car.timeoutId = setTimeout(moveToNextSegment, segmentTime);
 }
 
 function toggleShortcut() {
@@ -277,6 +277,8 @@ function resetTraffic() {
 
 function confirmReset() {
     cars.forEach(car => {
+        if (car.timeoutId) clearTimeout(car.timeoutId);
+
         const carEl = document.querySelector(`[data-car-id="${car.id}"]`);
         if (carEl) carEl.remove();
     });

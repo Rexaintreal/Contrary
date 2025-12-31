@@ -9,6 +9,7 @@ let musicPlaying = false;
 let simulationSpeed = 5;
 let isAssigning = false;
 let isAutoRunning = false;
+let autoCounter = 0;
 let stats = {
     hospitalA: {
         drugA: { success: 0, total: 0 },
@@ -376,7 +377,6 @@ function startAutoRun() {
     dialogueText.textContent = "AUTO MODE! Patients are being assigned automatically. Watch the paradox unfold!";
     
     const intervalTime = Math.max(50, 400 / simulationSpeed);
-    let autoCounter = 0;
     const TARGET_PATIENTS = 20;
     
     autoRunInterval = setInterval(() => {
@@ -407,6 +407,35 @@ function startAutoRun() {
         autoCounter++;
         
     }, intervalTime);
+}
+
+function resetGame() {
+    autoCounter = 0;
+    stopAutoRun();
+    
+    patients = [];
+    patientIdCounter = 0;
+    paradoxDeck = [];
+    
+    stats = {
+        hospitalA: {
+            drugA: { success: 0, total: 0 },
+            drugB: { success: 0, total: 0 }
+        },
+        hospitalB: {
+            drugA: { success: 0, total: 0 },
+            drugB: { success: 0, total: 0 }
+        }
+    };
+    
+    patientsA.innerHTML = '';
+    patientsB.innerHTML = '';
+    patientQueue.innerHTML = '';
+    
+    updateStatsDisplay();
+    updateDialogue();
+    statsModal.classList.remove('visible');
+    assignmentModal.classList.remove('visible');
 }
 
 function stopAutoRun() {
