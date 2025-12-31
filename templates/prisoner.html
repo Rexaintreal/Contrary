@@ -12,23 +12,25 @@
  <body>
     <a href="/paradoxes" class="home-link">
         <i data-lucide="arrow-left"></i>
+    </a>    
+    <div class="music-indicator" id="musicToggle">
+        <span id="wrapperSound">
+            <i data-lucide="volume-2"></i>
+        </span>
+        <span id="wrapperMute" style="display: none;">
+            <i data-lucide="volume-x"></i>
+        </span>
+    </div>
+    
+    <a href="/settings" class="settings-link">
+        <i data-lucide="settings"></i>
     </a>
+    
+    <button class="info-button" id="infoBtn">
+        <i data-lucide="info"></i>
+    </button>
     <div class="game-screen">
         <div class="stats-container">
-            <div class="music-indicator" id="musicToggle">
-                <span id="wrapperSound">
-                    <i data-lucide="volume-2"></i>
-                </span>
-                <span id="wrapperMute" style="display: none;">
-                    <i data-lucide="volume-x"></i>
-                </span>
-            </div>
-            <a href="/settings" class="settings-link">
-                <i data-lucide="settings"></i>
-            </a>
-            <button class="info-button" id="infoBtn">
-                <i data-lucide="info"></i>
-            </button>
             <div class="stats-panel">
                 <h3 class="stats-title">Game Stats</h3>
                 <div class="stat-item">
@@ -41,11 +43,11 @@
                 </div>
                 <div class="stat-item">
                     <i data-lucide="cpu"></i>
-                    <span>AI Score: <strong id="aiScore">0</strong> years</span>
+                    <span>Opponent: <strong id="opponentScore">0</strong> years</span>
                 </div>
                 <div class="stat-item strategy-display">
                     <i data-lucide="brain"></i>
-                    <span>AI Strategy: <strong id="aiStrategy">Random</strong></span>
+                    <span>Strategy: <strong id="opponentStrategy">Random</strong></span>
                 </div>
             </div>
             <div class="shortcuts-panel">
@@ -93,13 +95,13 @@
             <div class="player-section right-player">
                 <div class="player-card">
                     <div class="player-label">OPPONENT</div>
-                    <div class="prisoner-display" id="aiDisplay">
+                    <div class="prisoner-display" id="opponentDisplay">
                         <img src="{{ url_for('static', filename='assets/prisoner/prisoner-thinking.png') }}" alt="Opponent">
                     </div>
-                    <div class="choice-reveal" id="aiChoice">?</div>
+                    <div class="choice-reveal" id="opponentChoice">?</div>
                     <div class="score-display">
                         <span class="score-label">Total Sentence</span>
-                        <span class="score-value" id="aiScoreDisplay">0 years</span>
+                        <span class="score-value" id="opponentScoreDisplay">0 years</span>
                     </div>
                 </div>
             </div>
@@ -117,12 +119,14 @@
         </div>
         <button class="btn-next-round" id="nextRoundBtn">NEXT ROUND</button>
         <button class="btn-new-game" id="newGameBtn">NEW GAME</button>
-        <div class="dialogue-box">
-            <div class="dialogue-text" id="dialogueText">
-                Welcome to the Prisoner's Dilemma! You and your partner in crime have been arrested. You're in separate rooms. Will you STAY SILENT and cooperate, or BETRAY your partner to save yourself?
-            </div>
+    </div>
+    
+    <div class="dialogue-box">
+        <div class="dialogue-text" id="dialogueText">
+            Welcome to the Prisoner's Dilemma! You and your partner in crime have been arrested. You're in separate rooms. Will you STAY SILENT and cooperate, or BETRAY your partner to save yourself?
         </div>
     </div>
+    
     <div class="stats-modal" id="statsModal">
         <div class="modal-content">
             <h2 class="modal-title">Game Results</h2>
@@ -139,11 +143,11 @@
                             <span class="bar-value" id="chartPlayerValue">0 years</span>
                         </div>
                         <div class="score-bar-row">
-                            <span class="bar-label">AI Total</span>
+                            <span class="bar-label">Opponent</span>
                             <div class="bar-wrapper">
-                                <div class="bar ai-bar" id="chartAiBar"></div>
+                                <div class="bar ai-bar" id="chartOpponentBar"></div>
                             </div>
-                            <span class="bar-value" id="chartAiValue">0 years</span>
+                            <span class="bar-value" id="chartOpponentValue">0 years</span>
                         </div>
                     </div>
                 </div>
@@ -164,7 +168,7 @@
                         </div>
                         <div class="outcome-item">
                             <span class="outcome-label">They Betrayed You:</span>
-                            <span class="outcome-count" id="aiBetrayCount">0</span>
+                            <span class="outcome-count" id="opponentBetrayCount">0</span>
                         </div>
                     </div>
                 </div>
@@ -207,7 +211,7 @@
                     <p><strong>Both betray:</strong> 5 years each</p>
                 </div>
                 <div class="info-section">
-                    <h3>AI Strategies</h3>
+                    <h3>Opponent Strategies</h3>
                     <p><strong>Random:</strong> Unpredictable choices</p>
                     <p><strong>Always Cooperate:</strong> Always stays silent</p>
                     <p><strong>Always Betray:</strong> Always betrays</p>
@@ -222,7 +226,7 @@
     </div>
     <div class="custom-modal" id="strategyModal">
         <div class="custom-modal-content">
-            <h2 class="custom-modal-title">Choose AI Strategy</h2>
+            <h2 class="custom-modal-title">Choose Opponent Strategy</h2>
             <div class="strategy-selection">
                 <button class="strategy-btn" data-strategy="random">
                     <div class="strategy-name">Random</div>

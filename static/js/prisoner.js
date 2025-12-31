@@ -4,16 +4,16 @@ lucide.createIcons();
 let currentRound = 0;
 const MAX_ROUNDS = 10;
 let playerScore = 0;
-let aiScore = 0;
+let opponentScore = 0;
 let playerChoice = null;
-let aiChoice = null;
-let aiStrategy = 'random';
+let opponentChoice = null;
+let opponentStrategy = 'random';
 let gameHistory = [];
 let outcomeStats = {
     bothCoop: 0,
     bothBetray: 0,
     playerBetray: 0,
-    aiBetray: 0
+    opponentBetray: 0
 };
 
 let musicPlaying = false;
@@ -32,15 +32,15 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 const newGameBtn = document.getElementById('newGameBtn');
 const dialogueText = document.getElementById('dialogueText');
 const playerDisplay = document.getElementById('playerDisplay');
-const aiDisplay = document.getElementById('aiDisplay');
+const opponentDisplay = document.getElementById('opponentDisplay');
 const playerChoiceEl = document.getElementById('playerChoice');
-const aiChoiceEl = document.getElementById('aiChoice');
+const opponentChoiceEl = document.getElementById('opponentChoice');
 const playerScoreEl = document.getElementById('playerScore');
-const aiScoreEl = document.getElementById('aiScore');
+const opponentScoreEl = document.getElementById('opponentScore');
 const playerScoreDisplay = document.getElementById('playerScoreDisplay');
-const aiScoreDisplay = document.getElementById('aiScoreDisplay');
+const opponentScoreDisplay = document.getElementById('opponentScoreDisplay');
 const roundCountEl = document.getElementById('roundCount');
-const aiStrategyEl = document.getElementById('aiStrategy');
+const opponentStrategyEl = document.getElementById('opponentStrategy');
 const decisionArea = document.getElementById('decisionArea');
 const statsModal = document.getElementById('statsModal');
 const infoModal = document.getElementById('infoModal');
@@ -101,8 +101,8 @@ musicToggle.addEventListener('click', () => {
         updateMusicIcon(true);
     }
 });
-function getAIChoice() {
-    switch(aiStrategy) {
+function getOpponentChoice() {
+    switch(opponentStrategy) {
         case 'random':
             return Math.random() < 0.5 ? 'cooperate' : 'betray';
         
@@ -123,15 +123,15 @@ function getAIChoice() {
             return Math.random() < 0.5 ? 'cooperate' : 'betray';
     }
 }
-function calculateOutcome(player, ai) {
-    if (player === 'cooperate' && ai === 'cooperate') {
-        return { playerYears: 1, aiYears: 1, outcome: 'both-cooperate' };
-    } else if (player === 'cooperate' && ai === 'betray') {
-        return { playerYears: 10, aiYears: 0, outcome: 'ai-betrayed' };
-    } else if (player === 'betray' && ai === 'cooperate') {
-        return { playerYears: 0, aiYears: 10, outcome: 'player-betrayed' };
+function calculateOutcome(player, opponent) {
+    if (player === 'cooperate' && opponent === 'cooperate') {
+        return { playerYears: 1, opponentYears: 1, outcome: 'both-cooperate' };
+    } else if (player === 'cooperate' && opponent === 'betray') {
+        return { playerYears: 10, opponentYears: 0, outcome: 'opponent-betrayed' };
+    } else if (player === 'betray' && opponent === 'cooperate') {
+        return { playerYears: 0, opponentYears: 10, outcome: 'player-betrayed' };
     } else {
-        return { playerYears: 5, aiYears: 5, outcome: 'both-betray' };
+        return { playerYears: 5, opponentYears: 5, outcome: 'both-betray' };
     }
 }
 
@@ -139,9 +139,9 @@ function calculateOutcome(player, ai) {
 function updateDisplay() {
     roundCountEl.textContent = currentRound;
     playerScoreEl.textContent = playerScore;
-    aiScoreEl.textContent = aiScore;
+    opponentScoreEl.textContent = opponentScore;
     playerScoreDisplay.textContent = playerScore + ' years';
-    aiScoreDisplay.textContent = aiScore + ' years';
+    opponentScoreDisplay.textContent = opponentScore + ' years';
 }
 
 
@@ -151,7 +151,7 @@ function handlePlayerChoice(choice) {
     
     playSound(clickSfx);
     playerChoice = choice;
-    aiChoice = getAIChoice();
+    opponentChoice = getOpponentChoice();
     
     cooperateBtn.disabled = true;
     betrayBtn.disabled = true;
@@ -165,18 +165,18 @@ function revealChoices() {
     playerChoiceEl.textContent = playerChoice === 'cooperate' ? 'SILENT' : 'BETRAY';
     playerChoiceEl.classList.add(playerChoice);
     
-    aiChoiceEl.textContent = aiChoice === 'cooperate' ? 'SILENT' : 'BETRAY';
-    aiChoiceEl.classList.add(aiChoice);
-    const result = calculateOutcome(playerChoice, aiChoice);
+    opponentChoiceEl.textContent = opponentChoice === 'cooperate' ? 'SILENT' : 'BETRAY';
+    opponentChoiceEl.classList.add(opponentChoice);
+    const result = calculateOutcome(playerChoice, opponentChoice);
     playerScore += result.playerYears;
-    aiScore += result.aiYears;
+    opponentScore += result.opponentYears;
     
     gameHistory.push({
         round: currentRound,
         playerChoice: playerChoice,
-        aiChoice: aiChoice,
+        opponentChoice: opponentChoice,
         playerYears: result.playerYears,
-        aiYears: result.aiYears
+        opponentYears: result.opponentYears
     });
     
     //outcomes
@@ -186,8 +186,8 @@ function revealChoices() {
         outcomeStats.bothBetray++;
     } else if (result.outcome === 'player-betrayed') {
         outcomeStats.playerBetray++;
-    } else if (result.outcome === 'ai-betrayed') {
-        outcomeStats.aiBetray++;
+    } else if (result.outcome === 'opponent-betrayed') {
+        outcomeStats.opponentBetray++;
     }
     setTimeout(() => {
         updatePrisonerImages(result);
@@ -215,12 +215,12 @@ function updatePrisonerImages(result) {
         playSound(popSfx);
     }
     
-    if (result.aiYears === 0) {
-        aiDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-happy.png" alt="Opponent">';
-    } else if (result.aiYears >= 5) {
-        aiDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-sad.png" alt="Opponent">';
+    if (result.opponentYears === 0) {
+        opponentDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-happy.png" alt="Opponent">';
+    } else if (result.opponentYears >= 5) {
+        opponentDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-sad.png" alt="Opponent">';
     } else {
-        aiDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
+        opponentDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
     }
 }
 
@@ -248,15 +248,15 @@ function nextRound() {
     
     currentRound++;
     playerChoice = null;
-    aiChoice = null;
+    opponentChoice = null;
     
     playerChoiceEl.textContent = '?';
     playerChoiceEl.className = 'choice-reveal';
-    aiChoiceEl.textContent = '?';
-    aiChoiceEl.className = 'choice-reveal';
+    opponentChoiceEl.textContent = '?';
+    opponentChoiceEl.className = 'choice-reveal';
     
     playerDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="You">';
-    aiDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
+    opponentDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
     
     cooperateBtn.disabled = false;
     betrayBtn.disabled = false;
@@ -268,12 +268,12 @@ function nextRound() {
 function showStatsModal() {
     const modalResult = document.getElementById('modalResult');
     
-    if (playerScore < aiScore) {
-        modalResult.innerHTML = `<strong>You Win!</strong><br>You got ${playerScore} years vs AI's ${aiScore} years. Lower is better! You played smarter than the AI.`;
-    } else if (playerScore > aiScore) {
-        modalResult.innerHTML = `<strong>AI Wins!</strong><br>You got ${playerScore} years vs AI's ${aiScore} years. The AI outplayed you this time.`;
+    if (playerScore < opponentScore) {
+        modalResult.innerHTML = `<strong>You Win!</strong><br>You got ${playerScore} years vs Opponent's ${opponentScore} years. Lower is better! You played smarter than the opponent.`;
+    } else if (playerScore > opponentScore) {
+        modalResult.innerHTML = `<strong>Opponent Wins!</strong><br>You got ${playerScore} years vs Opponent's ${opponentScore} years. The opponent outplayed you this time.`;
     } else {
-        modalResult.innerHTML = `<strong>It's a Tie!</strong><br>Both got ${playerScore} years. You and the AI were equally matched.`;
+        modalResult.innerHTML = `<strong>It's a Tie!</strong><br>Both got ${playerScore} years. You and the opponent were equally matched.`;
     }
     
     updateStatsChart();
@@ -283,22 +283,22 @@ function showStatsModal() {
 
 
 function updateStatsChart() {
-    const maxScore = Math.max(playerScore, aiScore, 10);
+    const maxScore = Math.max(playerScore, opponentScore, 10);
     const playerBar = document.getElementById('chartPlayerBar');
-    const aiBar = document.getElementById('chartAiBar');
+    const opponentBar = document.getElementById('chartOpponentBar');
     const playerValue = document.getElementById('chartPlayerValue');
-    const aiValue = document.getElementById('chartAiValue');
+    const opponentValue = document.getElementById('chartOpponentValue');
     
     playerBar.style.width = ((playerScore / maxScore) * 100) + '%';
-    aiBar.style.width = ((aiScore / maxScore) * 100) + '%';
+    opponentBar.style.width = ((opponentScore / maxScore) * 100) + '%';
     
     playerValue.textContent = playerScore + ' years';
-    aiValue.textContent = aiScore + ' years';
+    opponentValue.textContent = opponentScore + ' years';
     
     document.getElementById('bothCoopCount').textContent = outcomeStats.bothCoop;
     document.getElementById('bothBetrayCount').textContent = outcomeStats.bothBetray;
     document.getElementById('playerBetrayCount').textContent = outcomeStats.playerBetray;
-    document.getElementById('aiBetrayCount').textContent = outcomeStats.aiBetray;
+    document.getElementById('opponentBetrayCount').textContent = outcomeStats.opponentBetray;
 }
 
 
@@ -311,24 +311,24 @@ function newGame() {
 function resetGame() {
     currentRound = 1;
     playerScore = 0;
-    aiScore = 0;
+    opponentScore = 0;
     playerChoice = null;
-    aiChoice = null;
+    opponentChoice = null;
     gameHistory = [];
     outcomeStats = {
         bothCoop: 0,
         bothBetray: 0,
         playerBetray: 0,
-        aiBetray: 0
+        opponentBetray: 0
     };
     
     playerChoiceEl.textContent = '?';
     playerChoiceEl.className = 'choice-reveal';
-    aiChoiceEl.textContent = '?';
-    aiChoiceEl.className = 'choice-reveal';
+    opponentChoiceEl.textContent = '?';
+    opponentChoiceEl.className = 'choice-reveal';
     
     playerDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="You">';
-    aiDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
+    opponentDisplay.innerHTML = '<img src="/static/assets/prisoner/prisoner-thinking.png" alt="Opponent">';
     
     cooperateBtn.disabled = false;
     betrayBtn.disabled = false;
@@ -336,7 +336,7 @@ function resetGame() {
     newGameBtn.classList.remove('active');
     
     updateDisplay();
-    dialogueText.textContent = `Round 1/${MAX_ROUNDS}. New game started with ${aiStrategy} AI strategy. Make your choice!`;
+    dialogueText.textContent = `Round 1/${MAX_ROUNDS}. New game started with ${opponentStrategy} opponent strategy. Make your choice!`;
     
     statsModal.classList.remove('visible');
     resetModal.classList.remove('visible');
@@ -389,7 +389,7 @@ document.getElementById('resetCancel').addEventListener('click', () => {
 document.querySelectorAll('.strategy-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         playSound(clickSfx);
-        aiStrategy = btn.dataset.strategy;
+        opponentStrategy = btn.dataset.strategy;
         
         const strategyNames = {
             'random': 'Random',
@@ -399,7 +399,7 @@ document.querySelectorAll('.strategy-btn').forEach(btn => {
             'grudger': 'Grudger'
         };
         
-        aiStrategyEl.textContent = strategyNames[aiStrategy];
+        opponentStrategyEl.textContent = strategyNames[opponentStrategy];
         strategyModal.classList.remove('visible');
         resetGame();
     });
