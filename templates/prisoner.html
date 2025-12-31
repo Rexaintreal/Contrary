@@ -68,10 +68,18 @@
                     <kbd>R</kbd>
                     <span>Reset</span>
                 </div>
+                <div class="shortcut-item">
+                    <kbd>M</kbd>
+                    <span>Run Sim</span>
+                </div>
             </div>
             <button class="stats-button-side" id="statsBtn">
                 <i data-lucide="bar-chart-3"></i>
                 <span>Show Stats</span>
+            </button>
+            <button class="sim-button-side" id="simBtn">
+                <i data-lucide="zap"></i>
+                <span>Run 100 Sims</span>
             </button>
         </div>
         <div class="game-area">
@@ -283,6 +291,10 @@
     <script>
         lucide.createIcons();
     </script>
+    <div class="scroll-hint" id="scrollHint">
+        <span>Scroll to play</span>
+        <i data-lucide="chevron-down"></i>
+    </div>
  </body>
 </html>
 

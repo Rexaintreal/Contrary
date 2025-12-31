@@ -48,6 +48,7 @@ const strategyModal = document.getElementById('strategyModal');
 const resetModal = document.getElementById('resetModal');
 const statsBtn = document.getElementById('statsBtn');
 const infoBtn = document.getElementById('infoBtn');
+const simBtn = document.getElementById('simBtn');
 
 
 function getMusicVolume() {
@@ -342,7 +343,71 @@ function resetGame() {
     resetModal.classList.remove('visible');
 }
 
+function runSimulation() {
+    simBtn.disabled = true;
 
+    currentRound = 100;
+    playerScore = 0;
+    opponentScore = 0;
+    gameHistory = [];
+    outcomeStats = {
+        bothCoop: 0,
+        bothBetray: 0,
+        playerBetray: 0,
+        opponentBetray: 0
+    };
+    
+    for (let i = 0; i < 100; i++) {
+        const playerChoice = Math.random() < 0.5 ? 'cooperate' : 'betray';
+        
+        let opponentChoice;
+        switch(opponentStrategy) {
+            case 'random':
+                opponentChoice = Math.random() < 0.5 ? 'cooperate' : 'betray';
+                break;
+            case 'alwaysCooperate':
+                opponentChoice = 'cooperate';
+                break;
+            case 'alwaysBetray':
+                opponentChoice = 'betray';
+                break;
+            case 'titForTat':
+                opponentChoice = gameHistory.length === 0 ? 'cooperate' : gameHistory[gameHistory.length - 1].playerChoice;
+                break;
+            case 'grudger':
+                const hasBetrayed = gameHistory.some(round => round.playerChoice === 'betray');
+                opponentChoice = hasBetrayed ? 'betray' : 'cooperate';
+                break;
+            default:
+                opponentChoice = Math.random() < 0.5 ? 'cooperate' : 'betray';
+        }
+        
+        const result = calculateOutcome(playerChoice, opponentChoice);
+        playerScore += result.playerYears;
+        opponentScore += result.opponentYears;
+        
+        if (result.outcome === 'both-cooperate') outcomeStats.bothCoop++;
+        else if (result.outcome === 'both-betray') outcomeStats.bothBetray++;
+        else if (result.outcome === 'player-betrayed') outcomeStats.playerBetray++;
+        else if (result.outcome === 'opponent-betrayed') outcomeStats.opponentBetray++;
+        
+        gameHistory.push({
+            round: i + 1,
+            playerChoice,
+            opponentChoice,
+            playerYears: result.playerYears,
+            opponentYears: result.opponentYears
+        });
+    }
+    
+    updateDisplay();
+    dialogueText.textContent = `Simulation complete! Ran 100 rounds. Average per round: You ${(playerScore / 100).toFixed(2)} years, Opponent ${(opponentScore / 100).toFixed(2)} years. Both cooperated ${outcomeStats.bothCoop} times, both betrayed ${outcomeStats.bothBetray} times.`;
+    
+    setTimeout(() => {
+        simBtn.disabled = false;
+        showStatsModal();
+    }, 1500);
+}
 
 cooperateBtn.addEventListener('click', () => handlePlayerChoice('cooperate'));
 betrayBtn.addEventListener('click', () => handlePlayerChoice('betray'));
@@ -359,6 +424,10 @@ infoBtn.addEventListener('click', () => {
     infoModal.classList.add('visible');
 });
 
+simBtn.addEventListener('click', () => {
+    playSound(clickSfx);
+    runSimulation();
+});
 
 document.getElementById('infoClose').addEventListener('click', () => {
     playSound(clickSfx);
@@ -425,6 +494,9 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'r' || e.key === 'R') {
         resetModal.classList.add('visible');
     }
+    if (e.key === 'm' || e.key === 'M') {
+        runSimulation();
+    }
     if (e.key === 'Escape') {
         statsModal.classList.remove('visible');
         infoModal.classList.remove('visible');
@@ -441,6 +513,13 @@ document.addEventListener('keydown', (e) => {
             modal.classList.remove('visible');
         }
     });
+});
+
+window.addEventListener('scroll', () => {
+    const hint = document.getElementById('scrollHint');
+    if (window.scrollY > 50) {
+        hint.classList.add('hidden');
+    }
 });
 
 //init

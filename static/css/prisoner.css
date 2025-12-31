@@ -1048,4 +1048,56 @@ kbd {
         height: 30px;
     }
 }
+.sim-button-side {
+    background: var(--prison-orange);
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.sim-button-side:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+}
+
+.sim-button-side:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sim-button-side:disabled:hover {
+    transform: none;
+}
+
+.scroll-hint {
+    position: fixed;
+    bottom: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: var(--prisoner-dark);
+    font-family: 'Cabin Sketch', cursive;
+    font-weight: bold;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-hint.hidden {
+    opacity: 0;
+}
 
