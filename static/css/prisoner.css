@@ -1,0 +1,853 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --prisoner-bg: #FFF8E7;
+    --prisoner-dark: #2C3E50;
+    --prisoner-bars: #34495E;
+    --cooperate-blue: #3498DB;
+    --betray-red: #E74C3C;
+    --neutral-yellow: #F39C12;
+    --success-green: #27AE60;
+    --fail-gray: #7F8C8D;
+    --fair-purple: #9B59B6;
+    --prison-orange: #E67E22;
+}
+
+body {
+    font-family: 'Patrick Hand', cursive;
+    background: linear-gradient(135deg, #FFF8E7 0%, #F5E6D3 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="%232C3E50" opacity="0.7"/><circle cx="10" cy="10" r="3" fill="%23FFF"/></svg>'), auto;
+}
+
+body.system-cursor {
+    cursor: default;
+}
+
+body.system-cursor * {
+    cursor: default !important;
+}
+
+body.system-cursor button,
+body.system-cursor a,
+body.system-cursor .decision-btn {
+    cursor: pointer !important;
+}
+.home-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--prisoner-dark);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.home-link:hover {
+    transform: rotate(-5deg) scale(1.1);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+}
+
+.game-screen {
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.stats-container {
+    position: fixed;
+    left: 20px;
+    top: 90px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+}
+
+.music-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.music-indicator:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.music-indicator.playing {
+    animation: musicBounce 2s ease-in-out infinite;
+}
+
+@keyframes musicBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.settings-link {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--prisoner-dark);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.settings-link:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.info-button {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    background: var(--cooperate-blue);
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.info-button:hover {
+    transform: scale(1.1);
+}
+
+.stats-panel {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+}
+
+.stats-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: var(--prisoner-dark);
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px dashed var(--prisoner-dark);
+    padding-bottom: 10px;
+}
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: var(--prisoner-dark);
+}
+
+.stat-item i {
+    color: var(--cooperate-blue);
+}
+
+.stat-item strong {
+    font-family: 'Cabin Sketch', cursive;
+    color: var(--betray-red);
+}
+
+.strategy-display {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px dashed var(--prisoner-dark);
+}
+
+.shortcuts-panel {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+}
+
+.shortcuts-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    color: var(--prisoner-dark);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    font-size: 16px;
+    color: var(--prisoner-dark);
+}
+
+kbd {
+    background: var(--prisoner-dark);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 14px;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.stats-button-side {
+    background: var(--fair-purple);
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 12px;
+    padding: 15px;
+    color: white;
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.stats-button-side:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+}
+
+.game-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+
+.player-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-card {
+    background: white;
+    border: 4px solid var(--prisoner-dark);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+    position: relative;
+    width: 320px;
+}
+
+.player-label {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 28px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--neutral-yellow);
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.prisoner-display {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.prisoner-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.1));
+}
+.choice-reveal {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 48px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    padding: 15px;
+    background: #F0F0F0;
+    border: 3px dashed var(--prisoner-dark);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.choice-reveal.cooperate {
+    background: rgba(52, 152, 219, 0.2);
+    color: var(--cooperate-blue);
+}
+
+.choice-reveal.betray {
+    background: rgba(231, 76, 60, 0.2);
+    color: var(--betray-red);
+}
+
+.score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.score-label {
+    font-size: 16px;
+    color: var(--fail-gray);
+}
+
+.score-value {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 28px;
+    color: var(--betray-red);
+    font-weight: bold;
+}
+
+.versus-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.vs-text {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 48px;
+    color: var(--prisoner-dark);
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+.prison-bars {
+    width: 6px;
+    height: 200px;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--prisoner-bars) 0px,
+        var(--prisoner-bars) 20px,
+        transparent 20px,
+        transparent 40px
+    );
+    position: relative;
+}
+
+.prison-bars::before,
+.prison-bars::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 200px;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--prisoner-bars) 0px,
+        var(--prisoner-bars) 20px,
+        transparent 20px,
+        transparent 40px
+    );
+}
+
+.prison-bars::before {
+    left: -15px;
+}
+
+.prison-bars::after {
+    right: -15px;
+}
+
+.decision-area {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.decision-prompt {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 32px;
+    color: var(--prisoner-dark);
+}
+
+.decision-buttons {
+    display: flex;
+    gap: 30px;
+}
+
+.decision-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.decision-btn img {
+    width: 280px;
+    height: auto;
+    filter: drop-shadow(4px 4px 3px rgba(0,0,0,0.2));
+}
+
+.decision-btn:hover {
+    transform: scale(1.05) rotate(-1deg);
+}
+
+.decision-btn:active {
+    transform: scale(0.98);
+}
+
+.decision-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.decision-btn:disabled:hover {
+    transform: none;
+}
+
+.decision-area.hidden {
+    display: none;
+}
+.btn-next-round,
+.btn-new-game {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 24px;
+    padding: 15px 40px;
+    border: 4px solid var(--prisoner-dark);
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+    margin: 10px;
+}
+
+.btn-next-round {
+    background: var(--success-green);
+    color: white;
+    display: none;
+}
+
+.btn-next-round.active {
+    display: block;
+}
+
+.btn-new-game {
+    background: var(--neutral-yellow);
+    color: var(--prisoner-dark);
+    display: none;
+}
+
+.btn-new-game.active {
+    display: block;
+}
+
+.btn-next-round:hover,
+.btn-new-game:hover {
+    transform: translateY(-3px);
+    box-shadow: 7px 7px 0 rgba(0,0,0,0.25);
+}
+
+.dialogue-box {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 900px;
+    background: white;
+    border: 4px solid var(--prisoner-dark);
+    border-radius: 20px;
+    padding: 25px 30px;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+    z-index: 50;
+}
+
+.dialogue-text {
+    font-size: 20px;
+    color: var(--prisoner-dark);
+    line-height: 1.5;
+    text-align: center;
+}
+.stats-modal,
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.stats-modal.visible,
+.custom-modal.visible {
+    display: flex;
+}
+
+.modal-content,
+.custom-modal-content {
+    background: var(--prisoner-bg);
+    border: 5px solid var(--prisoner-dark);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.2);
+    position: relative;
+}
+.modal-title,
+.custom-modal-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 42px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-result {
+    font-size: 22px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.chart-container {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.chart-title {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 28px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.score-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.score-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bar-label {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    color: var(--prisoner-dark);
+    min-width: 120px;
+}
+
+.bar-wrapper {
+    flex: 1;
+    background: #E0E0E0;
+    border: 2px solid var(--prisoner-dark);
+    border-radius: 10px;
+    height: 40px;
+    position: relative;
+    overflow: hidden;
+}
+.bar {
+    height: 100%;
+    transition: width 0.8s ease;
+    position: relative;
+    border-radius: 8px;
+}
+
+.player-bar {
+    background: linear-gradient(90deg, var(--cooperate-blue), #5DADE2);
+}
+
+.ai-bar {
+    background: linear-gradient(90deg, var(--betray-red), #EC7063);
+}
+
+.bar-value {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    color: var(--prisoner-dark);
+    min-width: 100px;
+    text-align: right;
+}
+
+.outcome-summary {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.outcome-summary h4 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.outcome-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.outcome-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--prisoner-bg);
+    border: 2px solid var(--prisoner-dark);
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.outcome-label {
+    color: var(--prisoner-dark);
+}
+
+.outcome-count {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 22px;
+    color: var(--betray-red);
+    font-weight: bold;
+}
+
+.math-explanation {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.math-explanation h4 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 26px;
+    color: var(--prisoner-dark);
+    margin-bottom: 15px;
+}
+
+.math-explanation p {
+    font-size: 18px;
+    color: var(--prisoner-dark);
+    line-height: 1.7;
+}
+
+.modal-buttons-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-action-btn {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 20px;
+    padding: 15px 30px;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+}
+
+.btn-continue {
+    background: var(--success-green);
+    color: white;
+}
+
+.btn-new {
+    background: var(--neutral-yellow);
+    color: var(--prisoner-dark);
+}
+
+.btn-ok {
+    background: var(--cooperate-blue);
+    color: white;
+}
+
+.btn-clear {
+    background: var(--fail-gray);
+    color: white;
+}
+
+.modal-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+}
+
+.custom-modal-text {
+    font-size: 20px;
+    color: var(--prisoner-dark);
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.custom-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-section {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.info-section h3 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: var(--prisoner-dark);
+    margin-bottom: 12px;
+}
+
+.info-section p {
+    font-size: 18px;
+    color: var(--prisoner-dark);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.strategy-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.strategy-btn {
+    background: white;
+    border: 3px solid var(--prisoner-dark);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.strategy-btn:hover {
+    background: var(--prisoner-bg);
+    transform: translateX(5px);
+}
+
+.strategy-name {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 24px;
+    color: var(--prisoner-dark);
+    margin-bottom: 5px;
+}
+
+.strategy-desc {
+    font-size: 16px;
+    color: var(--fail-gray);
+}
+
+@media (max-width: 1200px) {
+    .stats-container {
+        display: none;
+    }
+
+    .game-area {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .versus-divider {
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .player-card {
+        width: 280px;
+        padding: 20px;
+    }
+    .prisoner-display {
+        width: 180px;
+        height: 180px;
+    }
+
+    .decision-buttons {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .decision-btn img {
+        width: 240px;
+    }
+}
+

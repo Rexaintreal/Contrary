@@ -46,5 +46,17 @@
         "videoTitle": "Watch TED Ed explain it",
         "artSrc": "/static/assets/paradoxes/simpson-art.png",
         "polaroidCaption": "Data can lie both ways"
+    },
+    {
+        "id": "prisoner",
+        "title": "The Prisoner's Dilemma",
+        "date": "Game Theory Classic",
+        "description": "Two criminals are arrested. Separately, they're offered a deal: betray your partner and go free while they serve 10 years. If both stay silent, both get 1 year. If both betray, both get 5 years. The rational choice is to betray. But if both think rationally, both suffer. Cooperation beats logic, but trust is hard.",
+        "funFact": "Axelrod's tournament in 1980 proved the simplest strategy wins: Tit-for-Tat. Start by cooperating, then copy your opponent's last move. Kindness, forgiveness, and retaliation in perfect balance. It beat complex strategies from game theorists worldwide!",
+        "wikiLink": "https://en.wikipedia.org/wiki/Prisoner%27s_dilemma",
+        "videoLink": "https://www.youtube.com/watch?v=t9Lo2fgxWHw",
+        "videoTitle": "Watch The Place explain it",
+        "artSrc": "/static/assets/paradoxes/prisoner-art.png",
+        "polaroidCaption": "Trust or betray?"
     }
 ]

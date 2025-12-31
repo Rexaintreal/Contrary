@@ -30,9 +30,9 @@ def simpson():
 # def parrondo():
 #     return render_template('parrondo.html')
 
-# @app.route('/paradox/prisoner')
-# def prisoner():
-#     return render_template('prisoner.html')
+@app.route('/paradox/prisoner')
+def prisoner():
+    return render_template('prisoner.html')
 
 
 @app.route('/settings')

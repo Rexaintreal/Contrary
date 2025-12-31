@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisoner's Dilemma - Contrary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Patrick+Hand&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/prisoner.css') }}">
+ </head>
+ <body>
+    <a href="/paradoxes" class="home-link">
+        <i data-lucide="arrow-left"></i>
+    </a>
+    <div class="game-screen">
+        <div class="stats-container">
+            <div class="music-indicator" id="musicToggle">
+                <span id="wrapperSound">
+                    <i data-lucide="volume-2"></i>
+                </span>
+                <span id="wrapperMute" style="display: none;">
+                    <i data-lucide="volume-x"></i>
+                </span>
+            </div>
+            <a href="/settings" class="settings-link">
+                <i data-lucide="settings"></i>
+            </a>
+            <button class="info-button" id="infoBtn">
+                <i data-lucide="info"></i>
+            </button>
+            <div class="stats-panel">
+                <h3 class="stats-title">Game Stats</h3>
+                <div class="stat-item">
+                    <i data-lucide="hash"></i>
+                    <span>Round: <strong id="roundCount">0</strong>/10</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="user"></i>
+                    <span>Your Score: <strong id="playerScore">0</strong> years</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="cpu"></i>
+                    <span>AI Score: <strong id="aiScore">0</strong> years</span>
+                </div>
+                <div class="stat-item strategy-display">
+                    <i data-lucide="brain"></i>
+                    <span>AI Strategy: <strong id="aiStrategy">Random</strong></span>
+                </div>
+            </div>
+            <div class="shortcuts-panel">
+                <div class="shortcuts-title">Shortcuts</div>
+                <div class="shortcut-item">
+                    <kbd>C</kbd>
+                    <span>Cooperate</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>B</kbd>
+                    <span>Betray</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>S</kbd>
+                    <span>Show Stats</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Reset</span>
+                </div>
+            </div>
+            <button class="stats-button-side" id="statsBtn">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Show Stats</span>
+            </button>
+        </div>
+        <div class="game-area">
+            <div class="player-section left-player">
+                <div class="player-card">
+                    <div class="player-label">YOU</div>
+                    <div class="prisoner-display" id="playerDisplay">
+                        <img src="{{ url_for('static', filename='assets/prisoner/prisoner-thinking.png') }}" alt="You">
+                    </div>
+                    <div class="choice-reveal" id="playerChoice">?</div>
+                    <div class="score-display">
+                        <span class="score-label">Total Sentence</span>
+                        <span class="score-value" id="playerScoreDisplay">0 years</span>
+                    </div>
+                </div>
+            </div>
+            <div class="versus-divider">
+                <div class="vs-text">VS</div>
+                <div class="prison-bars"></div>
+            </div>
+            <div class="player-section right-player">
+                <div class="player-card">
+                    <div class="player-label">OPPONENT</div>
+                    <div class="prisoner-display" id="aiDisplay">
+                        <img src="{{ url_for('static', filename='assets/prisoner/prisoner-thinking.png') }}" alt="Opponent">
+                    </div>
+                    <div class="choice-reveal" id="aiChoice">?</div>
+                    <div class="score-display">
+                        <span class="score-label">Total Sentence</span>
+                        <span class="score-value" id="aiScoreDisplay">0 years</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="decision-area" id="decisionArea">
+            <div class="decision-prompt">Make your choice:</div>
+            <div class="decision-buttons">
+                <button class="decision-btn btn-cooperate" id="cooperateBtn">
+                    <img src="{{ url_for('static', filename='assets/prisoner/button-cooperate.png') }}" alt="Cooperate">
+                </button>
+                <button class="decision-btn btn-betray" id="betrayBtn">
+                    <img src="{{ url_for('static', filename='assets/prisoner/button-betray.png') }}" alt="Betray">
+                </button>
+            </div>
+        </div>
+        <button class="btn-next-round" id="nextRoundBtn">NEXT ROUND</button>
+        <button class="btn-new-game" id="newGameBtn">NEW GAME</button>
+        <div class="dialogue-box">
+            <div class="dialogue-text" id="dialogueText">
+                Welcome to the Prisoner's Dilemma! You and your partner in crime have been arrested. You're in separate rooms. Will you STAY SILENT and cooperate, or BETRAY your partner to save yourself?
+            </div>
+        </div>
+    </div>
+    <div class="stats-modal" id="statsModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Game Results</h2>
+            <p class="modal-result" id="modalResult"></p>
+            <div class="stats-visualization">
+                <div class="chart-container">
+                    <div class="chart-title">Score Comparison</div>
+                    <div class="score-bars">
+                        <div class="score-bar-row">
+                            <span class="bar-label">Your Total</span>
+                            <div class="bar-wrapper">
+                                <div class="bar player-bar" id="chartPlayerBar"></div>
+                            </div>
+                            <span class="bar-value" id="chartPlayerValue">0 years</span>
+                        </div>
+                        <div class="score-bar-row">
+                            <span class="bar-label">AI Total</span>
+                            <div class="bar-wrapper">
+                                <div class="bar ai-bar" id="chartAiBar"></div>
+                            </div>
+                            <span class="bar-value" id="chartAiValue">0 years</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="outcome-summary">
+                    <h4>Round Breakdown</h4>
+                    <div class="outcome-stats">
+                        <div class="outcome-item">
+                            <span class="outcome-label">Both Cooperated:</span>
+                            <span class="outcome-count" id="bothCoopCount">0</span>
+                        </div>
+                        <div class="outcome-item">
+                            <span class="outcome-label">Both Betrayed:</span>
+                            <span class="outcome-count" id="bothBetrayCount">0</span>
+                        </div>
+                        <div class="outcome-item">
+                            <span class="outcome-label">You Betrayed Them:</span>
+                            <span class="outcome-count" id="playerBetrayCount">0</span>
+                        </div>
+                        <div class="outcome-item">
+                            <span class="outcome-label">They Betrayed You:</span>
+                            <span class="outcome-count" id="aiBetrayCount">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="math-explanation">
+                <h4>The Dilemma Explained</h4>
+                <p>
+                    <strong>If both stay silent:</strong> Each gets 1 year (best group outcome)
+                    <br><br>
+                    <strong>If you betray but they cooperate:</strong> You go free, they get 10 years
+                    <br><br>
+                    <strong>If both betray:</strong> Each gets 5 years (worst group outcome)
+                    <br><br>
+                    The paradox: Individual rationality leads to worse outcomes for everyone. Trust and cooperation beat selfish logic, but it requires both players to resist temptation!
+                </p>
+            </div>
+            <div class="modal-buttons-grid">
+                <button class="modal-action-btn btn-continue" id="modalContinue">
+                    Continue
+                </button>
+                <button class="modal-action-btn btn-new" id="modalNewGame">
+                    New Game
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="infoModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">How to Play</h2>
+            <div class="info-content">
+                <div class="info-section">
+                    <h3>The Setup</h3>
+                    <p>You and an opponent are both arrested. You're in separate rooms. Each round, you both choose: STAY SILENT (cooperate) or BETRAY.</p>
+                </div>
+                <div class="info-section">
+                    <h3>The Outcomes</h3>
+                    <p><strong>Both stay silent:</strong> 1 year each</p>
+                    <p><strong>You betray, they cooperate:</strong> You get 0 years, they get 10 years</p>
+                    <p><strong>They betray, you cooperate:</strong> You get 10 years, they get 0 years</p>
+                    <p><strong>Both betray:</strong> 5 years each</p>
+                </div>
+                <div class="info-section">
+                    <h3>AI Strategies</h3>
+                    <p><strong>Random:</strong> Unpredictable choices</p>
+                    <p><strong>Always Cooperate:</strong> Always stays silent</p>
+                    <p><strong>Always Betray:</strong> Always betrays</p>
+                    <p><strong>Tit-for-Tat:</strong> Copies your previous move</p>
+                    <p><strong>Grudger:</strong> Cooperates until you betray once, then always betrays</p>
+                </div>
+            </div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="infoClose">Got it!</button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="strategyModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">Choose AI Strategy</h2>
+            <div class="strategy-selection">
+                <button class="strategy-btn" data-strategy="random">
+                    <div class="strategy-name">Random</div>
+                    <div class="strategy-desc">Unpredictable choices</div>
+                </button>
+                <button class="strategy-btn" data-strategy="alwaysCooperate">
+                    <div class="strategy-name">Always Cooperate</div>
+                    <div class="strategy-desc">Always stays silent</div>
+                </button>
+                <button class="strategy-btn" data-strategy="alwaysBetray">
+                    <div class="strategy-name">Always Betray</div>
+                    <div class="strategy-desc">Always betrays you</div>
+                </button>
+                <button class="strategy-btn" data-strategy="titForTat">
+                    <div class="strategy-name">Tit-for-Tat</div>
+                    <div class="strategy-desc">Copies your last move</div>
+                </button>
+                <button class="strategy-btn" data-strategy="grudger">
+                    <div class="strategy-name">Grudger</div>
+                    <div class="strategy-desc">Cooperates until betrayed once</div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-modal" id="resetModal">
+        <div class="custom-modal-content">
+            <h2 class="custom-modal-title">Start New Game?</h2>
+            <div class="custom-modal-text">This will reset all scores and start fresh. Continue?</div>
+            <div class="custom-modal-buttons">
+                <button class="modal-action-btn btn-ok" id="resetConfirm">Yes, New Game!</button>
+                <button class="modal-action-btn btn-clear" id="resetCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='assets/music/prisoner-music.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="clickSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/click.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="prisonDoorSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/prison-door.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="winSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/win.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="loseSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/lose.mp3') }}" type="audio/mpeg">
+    </audio>
+    <audio id="popSfx" preload="auto">
+        <source src="{{ url_for('static', filename='sfx/pop.mp3') }}" type="audio/mpeg">
+    </audio>
+    <script src="{{ url_for('static', filename='js/prisoner.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+ </body>
+</html>
+
