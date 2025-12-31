@@ -343,10 +343,12 @@ function resetGame() {
     resetModal.classList.remove('visible');
 }
 
-function runSimulation() {
+async function runSimulation() {
     simBtn.disabled = true;
+    const originalText = simBtn.textContent;
+    simBtn.textContent = "Simulating...";
 
-    currentRound = 100;
+    currentRound = 0;
     playerScore = 0;
     opponentScore = 0;
     gameHistory = [];
@@ -398,15 +400,22 @@ function runSimulation() {
             playerYears: result.playerYears,
             opponentYears: result.opponentYears
         });
+
+        if (i % 5 === 0) {
+            simBtn.textContent = `Running ${i}%`;
+            updateDisplay();
+            await new Promise(r => setTimeout(r, 10));
+        }
     }
     
     updateDisplay();
     dialogueText.textContent = `Simulation complete! Ran 100 rounds. Average per round: You ${(playerScore / 100).toFixed(2)} years, Opponent ${(opponentScore / 100).toFixed(2)} years. Both cooperated ${outcomeStats.bothCoop} times, both betrayed ${outcomeStats.bothBetray} times.`;
+    simBtn.textContent = originalText;
     
     setTimeout(() => {
         simBtn.disabled = false;
         showStatsModal();
-    }, 1500);
+    }, 500);
 }
 
 cooperateBtn.addEventListener('click', () => handlePlayerChoice('cooperate'));

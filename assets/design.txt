@@ -89,13 +89,8 @@ todo - fix random person spawning (no scroll bar)
 - add buttons instaed of shortcuts - done 
 - add reset modal - done
 - stop auto add after finding one match - done
-
 braess music - https://www.youtube.com/watch?v=fER8zIAhRD0 (Zelda Original Soundtrack - Saria's Song (The Lost Woods))
-
- Kass' Theme  - Breath of the Wild   for prisoners 
- Kaepora Gaebora's Theme - The Legend of Zelda: Ocarina of Time OST for settings page https://www.youtube.com/watch?v=yEzAsJ4yc24
-
-
-
- Kirby's Dream Land 3 - Ripple Field 1 (https://www.youtube.com/watch?v=mIAhvHSj1_I) - simpsons music credit
+Kass' Theme  - Breath of the Wild   for prisoners 
+Kaepora Gaebora's Theme - The Legend of Zelda: Ocarina of Time OST for settings page https://www.youtube.com/watch?v=yEzAsJ4yc24
+Kirby's Dream Land 3 - Ripple Field 1 (https://www.youtube.com/watch?v=mIAhvHSj1_I) - simpsons music credit
  
