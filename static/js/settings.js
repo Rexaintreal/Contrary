@@ -6,6 +6,7 @@ const sfxValue = document.getElementById('sfxValue');
 const sfxFill = document.getElementById('sfxFill');
 const cursorToggle = document.getElementById('systemCursor');
 const resetBtn = document.getElementById('resetBtn');
+const clearStatsBtn = document.getElementById('clearStatsBtn');
 const clickSfx = document.getElementById('clickSfx');
 const bgMusic = document.getElementById('bgMusic');
 const DEFAULT_VAL = 50;
@@ -154,6 +155,30 @@ resetBtn.addEventListener('click', () => {
     playPreviewSound();
     resetBtn.style.transform = 'rotate(-1deg) scale(0.95)';
     setTimeout(() => resetBtn.style.transform = 'rotate(-1deg)', 200);
+});
+
+//clear stats
+clearStatsBtn.addEventListener('click', () => {
+    const keys = Object.keys(localStorage);
+    
+    const settingsKeys = ['contraryMusicVolume', 'contrarySFXVolume', 'contrarySystemCursor'];
+    keys.forEach(key => {
+        if (!settingsKeys.includes(key) && key.startsWith('contrary')) {
+            localStorage.removeItem(key);
+        }
+    });
+    
+    playPreviewSound();
+    clearStatsBtn.style.transform = 'rotate(1deg) scale(0.95)';
+    setTimeout(() => clearStatsBtn.style.transform = 'rotate(1deg)', 200);
+    
+    const originalText = clearStatsBtn.innerHTML;
+    clearStatsBtn.innerHTML = '<i data-lucide="check"></i> Stats Cleared!';
+    lucide.createIcons();
+    setTimeout(() => {
+        clearStatsBtn.innerHTML = originalText;
+        lucide.createIcons();
+    }, 2000);
 });
 
 window.addEventListener('resize', () => {
