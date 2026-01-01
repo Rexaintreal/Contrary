@@ -132,21 +132,20 @@ Manage two hospitals treating patients with different medications and discover h
 - **Patrick Hand** - Secondary handwriting font
 - **Architects Daughter** - Accent font for playful elements
 
-**Color Palette**
-- **Backgrounds:**
-- #FFF8E7 (Floral White) - Gradient Start
-- #FFE4B5 (Moccasin) - Gradient Middle
-- #FFDAB9 (Peach Puff) - Gradient End
-- rgba(139, 69, 19, 0.08) - Lined paper texture overlay
-- **Text & UI:**
-- #8B4513 (Saddle Brown) - Primary text, borders
-- #654321 (Dark Brown) - Subtitles
-- #D2691E (Chocolate) - Accents, shadows
-- **Buttons:**
-- #FF6B6B (Soft Red) - Button background
-- #CC5555 (Dark Red) - Button shadow/3D effect
-- #FFF8E7 (Floral White) - Button text
+## Color Palette
 
+| Category | Color | Hex Code | Usage |
+|----------|-------|----------|-------|
+| **Backgrounds** | ![](https://img.shields.io/badge/-FFF8E7?style=flat&color=FFF8E7) | `#FFF8E7` | Floral White - Gradient Start |
+| | ![](https://img.shields.io/badge/-FFE4B5?style=flat&color=FFE4B5) | `#FFE4B5` | Moccasin - Gradient Middle |
+| | ![](https://img.shields.io/badge/-FFDAB9?style=flat&color=FFDAB9) | `#FFDAB9` | Peach Puff - Gradient End |
+| | ![](https://img.shields.io/badge/-8B4513?style=flat&color=8B451314) | `rgba(139, 69, 19, 0.08)` | Lined paper texture overlay |
+| **Text & UI** | ![](https://img.shields.io/badge/-8B4513?style=flat&color=8B4513) | `#8B4513` | Saddle Brown - Primary text, borders |
+| | ![](https://img.shields.io/badge/-654321?style=flat&color=654321) | `#654321` | Dark Brown - Subtitles |
+| | ![](https://img.shields.io/badge/-D2691E?style=flat&color=D2691E) | `#D2691E` | Chocolate - Accents, shadows |
+| **Buttons** | ![](https://img.shields.io/badge/-FF6B6B?style=flat&color=FF6B6B) | `#FF6B6B` | Soft Red - Button background |
+| | ![](https://img.shields.io/badge/-CC5555?style=flat&color=CC5555) | `#CC5555` | Dark Red - Button shadow/3D effect |
+| | ![](https://img.shields.io/badge/-FFF8E7?style=flat&color=FFF8E7) | `#FFF8E7` | Floral White - Button text |
 ---
 
 ## How It Works
