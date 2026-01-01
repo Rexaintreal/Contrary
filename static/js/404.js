@@ -14,44 +14,65 @@ const funFacts = [
     "The number 404 appears in the Fibonacci sequence... nowhere! It's truly lost.",
 ];
 
-let musicVolume = parseFloat(localStorage.getItem('musicVolume')) || 0.5;
-let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) || 0.5;
-let isMusicPlaying = localStorage.getItem('isMusicPlaying') !== 'false';
-
-bgMusic.volume = musicVolume;
-clickSfx.volume = sfxVolume;
-
-if (isMusicPlaying) {
-    bgMusic.play().catch(e => console.log('Music autoplay prevented'));
-    musicToggle.classList.add('playing');
-    wrapperSound.style.display = 'flex';
-    wrapperMute.style.display = 'none';
-} else {
-    wrapperSound.style.display = 'none';
-    wrapperMute.style.display = 'flex';
+function getMusicVolume() {
+    const saved = localStorage.getItem('contraryMusicVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
 }
+
+function getSFXVolume() {
+    const saved = localStorage.getItem('contrarySFXVolume');
+    return saved !== null ? parseInt(saved) / 100 : 0.5;
+}
+
+let musicPlaying = false;
+
+bgMusic.volume = 0.25 * getMusicVolume();
+clickSfx.volume = 0.5 * getSFXVolume();
+
+function updateMusicIcon(isPlaying) {
+    if (isPlaying) {
+        wrapperSound.style.display = 'flex';
+        wrapperMute.style.display = 'none';
+        musicToggle.classList.add('playing');
+    } else {
+        wrapperSound.style.display = 'none';
+        wrapperMute.style.display = 'flex';
+        musicToggle.classList.remove('playing');
+    }
+}
+
+function tryPlayMusic() {
+    bgMusic.volume = 0.25 * getMusicVolume();
+    bgMusic.play().then(() => {
+        musicPlaying = true;
+        updateMusicIcon(true);
+    }).catch(() => {
+        musicPlaying = false;
+        updateMusicIcon(false);
+    });
+}
+
+tryPlayMusic();
 
 musicToggle.addEventListener('click', () => {
     playSound(clickSfx);
     
-    if (bgMusic.paused) {
-        bgMusic.play();
-        musicToggle.classList.add('playing');
-        wrapperSound.style.display = 'flex';
-        wrapperMute.style.display = 'none';
-        localStorage.setItem('isMusicPlaying', 'true');
-    } else {
+    if (musicPlaying) {
         bgMusic.pause();
-        musicToggle.classList.remove('playing');
-        wrapperSound.style.display = 'none';
-        wrapperMute.style.display = 'flex';
-        localStorage.setItem('isMusicPlaying', 'false');
+        musicPlaying = false;
+        updateMusicIcon(false);
+    } else {
+        bgMusic.play();
+        bgMusic.volume = 0.25 * getMusicVolume();
+        musicPlaying = true;
+        updateMusicIcon(true);
     }
 });
 
 function playSound(sound) {
-    if (sound && sfxVolume > 0) {
+    if (sound) {
         sound.currentTime = 0;
+        sound.volume = 0.5 * getSFXVolume();
         sound.play().catch(e => console.log('Sound play prevented'));
     }
 }
@@ -82,3 +103,8 @@ setInterval(() => {
     errorCode.style.transform = `rotate(${rotation}deg)`;
 }, 100);
 
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('contrarySystemCursor') === 'true') {
+        document.body.classList.add('system-cursor');
+    }
+});
