@@ -1,4 +1,4 @@
-markdown<div align="center">
+<div align="center">
 
   <img src="static/assets/logo.png" alt="Contrary Logo" width="600"/>
 
@@ -18,14 +18,14 @@ markdown<div align="center">
 
 Ever wondered why math can feel so contrary to common sense? That's exactly what this project is about! Contrary is a cozy, hand-drawn web experience where mathematical paradoxes come alive through interactive storytelling. Think of it as a visual novel meets math class, but way more fun.
 I built this with Flask and vanilla JavaScript, drawing every asset myself in MS Paint (or Canva with a MOUSE) to create that warm, sketchbook vibe. Each paradox is its own little adventure with custom artwork, curated music from Kirby and Zelda games (i love those), and sound effects that make every click feel satisfying. Whether you're choosing doors in the Monty Hall problem or watching traffic pile up in Braess's paradox, the goal is simple: make counterintuitive math concepts feel approachable and honestly kind of magical.
-It's designed to feel like flipping through a friend's notebook full of doodles and discoveries, with handwritten fonts, soft peachy colors, and rounded corners everywhere. No intimidating textbooks here—just curious exploration of why our intuition sometimes gets things wonderfully wrong.
+It's designed to feel like flipping through a friend's notebook full of doodles and discoveries, with handwritten fonts, soft peachy colors, and rounded corners everywhere. No intimidating textbooks here just curious exploration of why our intuition sometimes gets things wonderfully wrong.
 
 ---
 
 ## Live Demo
 
-- Contrary is Live at []()
-- Demo Video: []()
+- Contrary is Live at [LINK](https://contrary.pythonanywhere.com/)
+- Demo Video: [Google Drive Link](https://drive.google.com/file/d/1Xq-06uYkJTDiNINhjhWrxZEuQuTypZKv/view?usp=sharing)
 
 ---
 
@@ -367,8 +367,7 @@ Contrary/
 ### Prerequisites
 - Python 3.8 or higher (i used 3.13.5)
 - pip (Python package manager)
-- A modern web browser with HTML5 Canvas and Web Audio API support
-
+- A Browser
 ### Installation Steps
 
 1. **Clone the repository**
